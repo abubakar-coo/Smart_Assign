@@ -1,0 +1,160 @@
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { TrendingUp, Users, Award, Building, Globe } from "lucide-react";
+
+const Hero = () => {
+
+  const stats = [
+    {
+      icon: Users,
+      label: "Happy Clients",
+      value: "1,500+",
+      color: "text-primary",
+    },
+    {
+      icon: TrendingUp,
+      label: "Revenue Generated",
+      value: "$1M+",
+      color: "text-secondary",
+    },
+    {
+      icon: Award,
+      label: "Projects Completed",
+      value: "5,000+",
+      color: "text-primary",
+    },
+    {
+      icon: Building,
+      label: "Years in Business",
+      value: "5+",
+      color: "text-secondary",
+    },
+  ];
+
+  return (
+    <section id="home" className="pt-24 pb-8 bg-gradient-hero min-h-screen relative">
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-8 items-center min-h-[70vh]">
+          {/* Left Content */}
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-tight">
+                Professional{" "}
+                <span className="bg-gradient-primary bg-clip-text text-transparent">
+                  Micro-Services
+                </span>{" "}
+                for Growing Businesses
+              </h1>
+              <p className="text-xl text-muted-foreground leading-relaxed">
+                We provide specialized, high-quality services that help businesses 
+                streamline operations and accelerate growth. From content creation 
+                to data management, we've got you covered.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button 
+                size="lg" 
+                className="bg-gradient-primary hover:shadow-hover text-lg px-8 py-3 transform hover:scale-105 transition-all duration-300 hover:-translate-y-1"
+                onClick={() => window.location.href = "/services"}
+              >
+                Explore Services
+              </Button>
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground text-lg px-8 py-3 transform hover:scale-105 transition-all duration-300 hover:-translate-y-1"
+                onClick={() => window.location.href = "/portfolio"}
+              >
+                View Portfolio
+              </Button>
+            </div>
+
+            <div className="pt-8">
+              <p className="text-base text-muted-foreground mb-4">Trusted by industry leaders</p>
+              <div className="flex items-center space-x-6 opacity-60">
+                <div className="w-20 h-8 bg-muted rounded flex items-center justify-center hover:opacity-100 transition-opacity duration-300">
+                  <span className="text-sm font-semibold">CLIENT</span>
+                </div>
+                <div className="w-20 h-8 bg-muted rounded flex items-center justify-center hover:opacity-100 transition-opacity duration-300">
+                  <span className="text-sm font-semibold">BRAND</span>
+                </div>
+                <div className="w-20 h-8 bg-muted rounded flex items-center justify-center hover:opacity-100 transition-opacity duration-300">
+                  <span className="text-sm font-semibold">CORP</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Dashboard */}
+          <div className="space-y-6">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-semibold text-foreground mb-2">
+                Company Dashboard
+              </h2>
+              <p className="text-base text-muted-foreground">
+                Real-time metrics and achievements
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              {stats.map((stat, index) => (
+                <Card 
+                  key={index} 
+                  className="p-6 shadow-card hover:shadow-hover transition-all duration-300 bg-white/80 backdrop-blur-sm transform hover:scale-105 cursor-pointer group"
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <stat.icon className={`w-8 h-8 ${stat.color} group-hover:scale-110 transition-transform duration-300`} />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
+                      {stat.value}
+                    </p>
+                    <p className="text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                      {stat.label}
+                    </p>
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            <Card className="p-6 shadow-card bg-white/80 backdrop-blur-sm hover:shadow-hover transition-all duration-300 transform hover:scale-[1.02]">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-foreground">
+                  Market Presence
+                </h3>
+                <div className="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">America</span>
+                  <span className="text-sm font-medium">45%</span>
+                </div>
+                <div className="w-full bg-muted rounded-full h-2">
+                  <div className="bg-gradient-primary h-2 rounded-full w-[45%] transition-all duration-1000 ease-out"></div>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">UK</span>
+                  <span className="text-sm font-medium">35%</span>
+                </div>
+                <div className="w-full bg-muted rounded-full h-2">
+                  <div className="bg-gradient-secondary h-2 rounded-full w-[35%] transition-all duration-1000 ease-out"></div>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">Canada</span>
+                  <span className="text-sm font-medium">20%</span>
+                </div>
+                <div className="w-full bg-muted rounded-full h-2">
+                  <div className="bg-primary h-2 rounded-full w-[20%] transition-all duration-1000 ease-out"></div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Hero;

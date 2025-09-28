@@ -1,0 +1,978 @@
+import { useState, useEffect } from "react";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { getAllSubscriptions } from "../api/emailSubscription";
+import { getAllJobApplications } from "../api/jobApplication";
+import { Mail, Users, XCircle, RefreshCw, CheckCircle, Briefcase, Eye, Send, Clock, DollarSign, User, FileText, MessageSquare, Lock } from "lucide-react";
+
+const Admin = () => {
+  const [subscriptions, setSubscriptions] = useState<any[]>([]);
+  const [jobApplications, setJobApplications] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
+  const [activeTab, setActiveTab] = useState<'emails' | 'applications' | 'contacts'>('emails');
+  const [selectedApplication, setSelectedApplication] = useState<any>(null);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [confirmationStatus, setConfirmationStatus] = useState<'pending' | 'confirmed' | 'rejected'>('pending');
+  
+  // Login state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginData, setLoginData] = useState({ username: '', password: '' });
+  const [loginError, setLoginError] = useState('');
+
+  // Login function
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError('');
+    
+    // Simple hardcoded credentials (in production, use proper authentication)
+    if (loginData.username === 'admin' && loginData.password === 'smartassign2024') {
+      setIsLoggedIn(true);
+      localStorage.setItem('adminLoggedIn', 'true');
+    } else {
+      setLoginError('Invalid username or password');
+    }
+  };
+
+  // Check if already logged in
+  useEffect(() => {
+    const loggedIn = localStorage.getItem('adminLoggedIn');
+    if (loggedIn === 'true') {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  // Logout function
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem('adminLoggedIn');
+    setLoginData({ username: '', password: '' });
+  };
+
+  // Load subscriptions
+  const loadSubscriptions = async () => {
+    setIsLoading(true);
+    try {
+      const data = await getAllSubscriptions();
+      console.log('🔍 Admin loading subscriptions:', data);
+      setSubscriptions(data);
+      setLastRefresh(new Date());
+    } catch (error) {
+      console.error('Error loading subscriptions:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Load job applications
+  const loadJobApplications = async () => {
+    try {
+      const data = await getAllJobApplications();
+      console.log('🔍 Admin loading job applications:', data);
+      setJobApplications(data);
+    } catch (error) {
+      console.error('Error loading job applications:', error);
+    }
+  };
+
+  // Filter contact form inquiries
+  const contactInquiries = jobApplications.filter(app => app.source === 'contact-form');
+  console.log("🔍 Contact inquiries filtered:", contactInquiries);
+  console.log("🔍 All job applications:", jobApplications);
+
+  useEffect(() => {
+    loadSubscriptions();
+    loadJobApplications();
+    
+    // Auto-refresh every 2 minutes
+    const interval = setInterval(() => {
+      loadSubscriptions();
+      loadJobApplications();
+    }, 120000);
+
+    // Keyboard shortcut for refresh
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if ((e.ctrlKey && e.key === 'r') || e.key === 'F5' || e.key === ' ') {
+        e.preventDefault();
+        loadSubscriptions();
+        loadJobApplications();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []);
+
+  // Filter subscriptions based on search term
+  const filteredSubscriptions = subscriptions.filter(sub =>
+    sub.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Filter job applications based on search term
+  const filteredJobApplications = jobApplications.filter(app =>
+    app.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    app.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    app.position.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // View application details
+  const viewApplication = (application: any) => {
+    console.log('🔍 Viewing application:', application);
+    console.log('📄 CV File:', application.cvFile);
+    console.log('📸 Payment Screenshot:', application.paymentScreenshot);
+    console.log('📝 CV File Name:', application.cvFileName);
+    console.log('📷 Payment Screenshot Name:', application.paymentScreenshotName);
+    setSelectedApplication(application);
+    setShowConfirmationModal(true);
+  };
+
+  // Confirm application
+  const confirmApplication = async (application: any, status: 'confirmed' | 'rejected') => {
+    try {
+      // Update application status in localStorage
+      const applications = JSON.parse(localStorage.getItem('jobApplications') || '[]');
+      const updatedApplications = applications.map((app: any) => 
+        app.id === application.id ? { ...app, status, confirmedAt: new Date().toISOString() } : app
+      );
+      localStorage.setItem('jobApplications', JSON.stringify(updatedApplications));
+      
+      // Reload applications
+      await loadJobApplications();
+      
+      // Send email notification
+      await sendEmailNotification(application, status);
+      
+      setShowConfirmationModal(false);
+      setSelectedApplication(null);
+      
+      alert(`Application ${status === 'confirmed' ? 'confirmed' : 'rejected'} successfully! Email sent to candidate.`);
+    } catch (error) {
+      console.error('Error confirming application:', error);
+      alert('Error confirming application. Please try again.');
+    }
+  };
+
+  // Send email notification
+  const sendEmailNotification = async (application: any, status: 'confirmed' | 'rejected') => {
+    const emailContent = status === 'confirmed' 
+      ? `
+        Dear ${application.fullName},
+        
+        Congratulations! Your job application for ${application.position} has been CONFIRMED.
+        
+        Application Details:
+        - Name: ${application.fullName}
+        - Email: ${application.email}
+        - Phone: ${application.phone}
+        - Position: ${application.position}
+        - Country: ${application.country}
+        - Experience: ${application.experience} years
+        - Skills: ${application.skills}
+        
+        Next Steps:
+        1. Payment: Please complete the payment within 24 hours
+        2. Interview: After payment confirmation, we will schedule your interview
+        3. WhatsApp: We will contact you on WhatsApp for further details
+        
+        Payment Details:
+        ${application.country === 'Pakistan' 
+          ? `- Amount: PKR 1,500
+             - Jazz Cash: 03278528854 (Sheikh Muhammad Abubakar)
+             - EasyPaisa: 03278528854 (Sheikh Muhammad Abubakar)
+             - Meezan Bank: 121531315351 (Sheikh Muhammad Abubakar)`
+          : `- Amount: USD $10
+             - Binance ID: 12345678
+             - Crypto Wallet: Send to your own wallet address`
+        }
+        
+        Please send payment screenshot and transaction ID to our WhatsApp: +92-327-8528854
+        
+        We look forward to working with you!
+        
+        Best regards,
+        Smart Assign Team
+      `
+      : `
+        Dear ${application.fullName},
+        
+        Thank you for your interest in joining our team.
+        
+        Unfortunately, your application for ${application.position} has not been selected for this round.
+        
+        Application Details:
+        - Name: ${application.fullName}
+        - Position: ${application.position}
+        - Country: ${application.country}
+        
+        We encourage you to apply for other positions in the future.
+        
+        Best regards,
+        Smart Assign Team
+      `;
+
+    // In a real application, you would send this email via an email service
+    console.log('📧 Email notification sent:', {
+      to: application.email,
+      subject: `Application ${status === 'confirmed' ? 'Confirmed' : 'Update'} - Smart Assign`,
+      content: emailContent
+    });
+  };
+
+  // Login form
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Navigation />
+        <div className="pt-16 w-full max-w-md mx-auto px-4">
+          <Card className="p-8 shadow-lg">
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                <Lock className="w-8 h-8 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold text-foreground">Admin Login</h1>
+              <p className="text-muted-foreground">Enter your credentials to access the admin panel</p>
+            </div>
+            
+            <form onSubmit={handleLogin} className="space-y-6">
+              <div>
+                <Label htmlFor="username" className="text-sm font-medium text-foreground">
+                  Username
+                </Label>
+                <div className="relative mt-1">
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    id="username"
+                    type="text"
+                    value={loginData.username}
+                    onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
+                    className="pl-10"
+                    placeholder="Enter username"
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <Label htmlFor="password" className="text-sm font-medium text-foreground">
+                  Password
+                </Label>
+                <div className="relative mt-1">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type="password"
+                    value={loginData.password}
+                    onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                    className="pl-10"
+                    placeholder="Enter password"
+                    required
+                  />
+                </div>
+              </div>
+              
+              {loginError && (
+                <div className="text-red-500 text-sm text-center bg-red-50 p-3 rounded-md">
+                  {loginError}
+                </div>
+              )}
+              
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
+                Login
+              </Button>
+            </form>
+            
+            <div className="mt-6 text-center text-sm text-muted-foreground">
+              <p>Default Credentials:</p>
+              <p><strong>Username:</strong> admin</p>
+              <p><strong>Password:</strong> smartassign2024</p>
+            </div>
+          </Card>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen">
+      <Navigation />
+      <div className="pt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-4xl font-bold text-foreground mb-4">
+                  Admin Dashboard
+                </h1>
+                <p className="text-xl text-muted-foreground">
+                  Manage email subscriptions and job applications
+                </p>
+              </div>
+              <div className="flex items-center space-x-4">
+                <Button onClick={() => window.location.reload()} className="bg-primary hover:bg-primary/90">
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Refresh Page
+                </Button>
+                <Button onClick={handleLogout} variant="outline" className="border-red-300 text-red-600 hover:bg-red-50">
+                  <Lock className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
+              </div>
+            </div>
+            
+            {lastRefresh && (
+              <div className="text-sm text-muted-foreground mt-4">
+                <div className="flex items-center space-x-2">
+                  <div className={`w-2 h-2 rounded-full ${isLoading ? 'bg-yellow-500 animate-pulse' : 'bg-green-500'}`}></div>
+                  <span>
+                    Last updated: {lastRefresh.toLocaleTimeString()}
+                  </span>
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                      Auto-refresh every 2 minutes
+                    </div>
+                    <div className="text-xs text-green-600 mt-1 font-medium">
+                      📊 {subscriptions.length} emails, {jobApplications.length} applications
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Tab Navigation */}
+          <div className="mb-8">
+            <div className="flex space-x-1 bg-muted p-1 rounded-lg w-fit">
+              <button
+                onClick={() => setActiveTab('emails')}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  activeTab === 'emails'
+                    ? 'bg-background text-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <Mail className="w-4 h-4 mr-2 inline" />
+                Email Subscriptions ({subscriptions.length})
+              </button>
+              <button
+                onClick={() => setActiveTab('applications')}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  activeTab === 'applications'
+                    ? 'bg-background text-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <Briefcase className="w-4 h-4 mr-2 inline" />
+                Job Applications ({jobApplications.length})
+              </button>
+              <button
+                onClick={() => setActiveTab('contacts')}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  activeTab === 'contacts'
+                    ? 'bg-background text-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <MessageSquare className="w-4 h-4 mr-2 inline" />
+                Contact Inquiries ({contactInquiries.length})
+              </button>
+            </div>
+          </div>
+
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <Card className="p-6 shadow-card">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center">
+                  <Users className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-foreground">
+                    {subscriptions.length}
+                  </p>
+                  <p className="text-muted-foreground">Total Subscriptions</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 shadow-card">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                  <CheckCircle className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-foreground">
+                    {subscriptions.filter(sub => sub.status === 'active').length}
+                  </p>
+                  <p className="text-muted-foreground">Active Subscriptions</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 shadow-card">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                  <Briefcase className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-foreground">
+                    {jobApplications.length}
+                  </p>
+                  <p className="text-muted-foreground">Job Applications</p>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Search and Refresh */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-6">
+            <div className="flex-1">
+              <Input
+                type="text"
+                placeholder="Search emails..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full"
+              />
+            </div>
+            <Button onClick={() => window.location.reload()} className="bg-blue-600 hover:bg-blue-700 text-white">
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Refresh Page
+            </Button>
+          </div>
+
+          {/* Content based on active tab */}
+          {activeTab === 'emails' ? (
+            <Card className="shadow-card">
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-foreground mb-4">
+                  Email Subscriptions
+                </h3>
+                
+                {isLoading ? (
+                  <div className="text-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                    <p className="text-muted-foreground mt-2">Loading...</p>
+                  </div>
+                ) : filteredSubscriptions.length === 0 ? (
+                  <div className="text-center py-8">
+                    <Mail className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                    <p className="text-muted-foreground mb-4">
+                      {searchTerm ? 'No emails found matching your search' : 'No subscriptions yet'}
+                    </p>
+                    <Button onClick={() => window.location.reload()} className="bg-blue-500 hover:bg-blue-600">
+                      <RefreshCw className="w-4 h-4 mr-2" />
+                      Refresh Page
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-border">
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Email</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Subscribed Date</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Status</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Source</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredSubscriptions.map((subscription) => (
+                          <tr key={subscription.id} className="border-b border-border/50 hover:bg-muted/50">
+                            <td className="py-3 px-4 text-foreground">{subscription.email}</td>
+                            <td className="py-3 px-4 text-muted-foreground">
+                              {new Date(subscription.subscribedAt).toLocaleDateString()}
+                            </td>
+                            <td className="py-3 px-4">
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                subscription.status === 'active'
+                                  ? 'bg-green-100 text-green-800'
+                                  : 'bg-red-100 text-red-800'
+                              }`}>
+                                {subscription.status}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 text-muted-foreground capitalize">
+                              {subscription.source}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            </Card>
+          ) : activeTab === 'applications' ? (
+            <Card className="shadow-card">
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-foreground mb-4">
+                  Job Applications
+                </h3>
+                
+                {filteredJobApplications.length === 0 ? (
+                  <div className="text-center py-8">
+                    <Briefcase className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                    <p className="text-muted-foreground mb-4">
+                      {searchTerm ? 'No applications found matching your search' : 'No job applications yet'}
+                    </p>
+                    <Button onClick={() => window.location.reload()} className="bg-blue-500 hover:bg-blue-600">
+                      <RefreshCw className="w-4 h-4 mr-2" />
+                      Refresh Page
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-border">
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Name</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Email</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Position</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Country</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Experience</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Applied Date</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Status</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredJobApplications.map((application) => (
+                          <tr key={application.id} className="border-b border-border/50 hover:bg-muted/50">
+                            <td className="py-3 px-4 text-foreground font-medium">{application.fullName}</td>
+                            <td className="py-3 px-4 text-foreground">{application.email}</td>
+                            <td className="py-3 px-4 text-foreground">{application.position}</td>
+                            <td className="py-3 px-4 text-muted-foreground">{application.country}</td>
+                            <td className="py-3 px-4 text-muted-foreground">{application.experience} years</td>
+                            <td className="py-3 px-4 text-muted-foreground">
+                              {new Date(application.appliedAt).toLocaleDateString()}
+                            </td>
+                            <td className="py-3 px-4">
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                application.status === 'confirmed'
+                                  ? 'bg-green-100 text-green-800'
+                                  : application.status === 'rejected'
+                                  ? 'bg-red-100 text-red-800'
+                                  : 'bg-yellow-100 text-yellow-800'
+                              }`}>
+                                {application.status}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4">
+                              <div className="flex space-x-2">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => viewApplication(application)}
+                                  className="flex items-center"
+                                >
+                                  <Eye className="w-4 h-4 mr-1" />
+                                  View
+                                </Button>
+                                {application.status === 'pending' && (
+                                  <>
+                                    <Button
+                                      size="sm"
+                                      onClick={() => confirmApplication(application, 'confirmed')}
+                                      className="bg-green-600 hover:bg-green-700 text-white"
+                                    >
+                                      <CheckCircle className="w-4 h-4 mr-1" />
+                                      Confirm
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="destructive"
+                                      onClick={() => confirmApplication(application, 'rejected')}
+                                    >
+                                      <XCircle className="w-4 h-4 mr-1" />
+                                      Reject
+                                    </Button>
+                                  </>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            </Card>
+          ) : (
+            <Card className="shadow-card">
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-foreground mb-4">
+                  Contact Form Inquiries
+                </h3>
+                
+                {contactInquiries.length === 0 ? (
+                  <div className="text-center py-8">
+                    <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                    <p className="text-muted-foreground mb-4">
+                      No contact inquiries yet
+                    </p>
+                    <Button onClick={() => window.location.reload()} className="bg-blue-500 hover:bg-blue-600">
+                      <RefreshCw className="w-4 h-4 mr-2" />
+                      Refresh Page
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-border">
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Name</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Email</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Subject</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Message</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Submitted Date</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Status</th>
+                          <th className="text-left py-3 px-4 font-medium text-foreground">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {contactInquiries.map((inquiry) => (
+                          <tr key={inquiry.id} className="border-b border-border/50 hover:bg-muted/50">
+                            <td className="py-3 px-4 text-foreground font-medium">{inquiry.fullName}</td>
+                            <td className="py-3 px-4 text-muted-foreground">{inquiry.email}</td>
+                            <td className="py-3 px-4 text-muted-foreground">
+                              {inquiry.coverLetter.split('\n')[0]?.replace('Subject: ', '') || 'No Subject'}
+                            </td>
+                            <td className="py-3 px-4 text-muted-foreground max-w-xs truncate">
+                              {inquiry.coverLetter.split('\n\nMessage: ')[1] || 'No Message'}
+                            </td>
+                            <td className="py-3 px-4 text-muted-foreground">
+                              {new Date(inquiry.appliedAt).toLocaleDateString()}
+                            </td>
+                            <td className="py-3 px-4">
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                inquiry.status === 'confirmed'
+                                  ? 'bg-green-100 text-green-800'
+                                  : inquiry.status === 'rejected'
+                                  ? 'bg-red-100 text-red-800'
+                                  : 'bg-yellow-100 text-yellow-800'
+                              }`}>
+                                {inquiry.status}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4">
+                              <div className="flex space-x-2">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => viewApplication(inquiry)}
+                                  className="h-8 px-3 py-1 text-xs"
+                                >
+                                  <Eye className="w-3 h-3 mr-1" />
+                                  View
+                                </Button>
+                                {inquiry.status === 'pending' && (
+                                  <>
+                                    <Button
+                                      size="sm"
+                                      onClick={() => confirmApplication(inquiry, 'confirmed')}
+                                      className="h-8 px-3 py-1 text-xs bg-green-600 hover:bg-green-700"
+                                    >
+                                      <CheckCircle className="w-3 h-3 mr-1" />
+                                      Confirm
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="destructive"
+                                      onClick={() => confirmApplication(inquiry, 'rejected')}
+                                      className="h-8 px-3 py-1 text-xs"
+                                    >
+                                      <XCircle className="w-3 h-3 mr-1" />
+                                      Reject
+                                    </Button>
+                                  </>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            </Card>
+          )}
+        </div>
+      </div>
+
+      {/* Confirmation Modal */}
+      {showConfirmationModal && selectedApplication && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <h3 className="text-2xl font-bold text-foreground mb-4">Application Details</h3>
+            
+            <div className="space-y-6 mb-6">
+              {/* Personal Information */}
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h4 className="text-lg font-semibold text-foreground mb-4 flex items-center">
+                  <User className="w-5 h-5 mr-2" />
+                  Personal Information
+                </h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Full Name</label>
+                    <p className="text-foreground font-medium">{selectedApplication.fullName}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Email</label>
+                    <p className="text-foreground">{selectedApplication.email}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Phone</label>
+                    <p className="text-foreground">{selectedApplication.phone}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Country</label>
+                    <p className="text-foreground">{selectedApplication.country}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Professional Information */}
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h4 className="text-lg font-semibold text-foreground mb-4 flex items-center">
+                  <Briefcase className="w-5 h-5 mr-2" />
+                  Professional Information
+                </h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Position Applied</label>
+                    <p className="text-foreground font-medium">{selectedApplication.position}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Experience</label>
+                    <p className="text-foreground">{selectedApplication.experience} years</p>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <label className="text-sm font-medium text-muted-foreground">Skills & Technologies</label>
+                  <p className="text-foreground">{selectedApplication.skills}</p>
+                </div>
+                {selectedApplication.coverLetter && (
+                  <div className="mt-4">
+                    <label className="text-sm font-medium text-muted-foreground">Cover Letter</label>
+                    <p className="text-foreground bg-white p-3 rounded border">{selectedApplication.coverLetter}</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Payment Information */}
+              <div className="bg-green-50 p-4 rounded-lg">
+                <h4 className="text-lg font-semibold text-foreground mb-4 flex items-center">
+                  <DollarSign className="w-5 h-5 mr-2" />
+                  Payment Information
+                </h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Payment Method</label>
+                    <p className="text-foreground font-medium">{selectedApplication.paymentMethod || 'Not specified'}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Bank/Platform</label>
+                    <p className="text-foreground">{selectedApplication.bankName || 'Not specified'}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Account/Phone</label>
+                    <p className="text-foreground">{selectedApplication.accountNumber || 'Not specified'}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Transaction ID</label>
+                    <p className="text-foreground">{selectedApplication.transactionId || 'Not provided'}</p>
+                  </div>
+                </div>
+                {selectedApplication.walletAddress && (
+                  <div className="mt-4">
+                    <label className="text-sm font-medium text-muted-foreground">Wallet Address</label>
+                    <p className="text-foreground bg-white p-3 rounded border font-mono text-sm">{selectedApplication.walletAddress}</p>
+                  </div>
+                )}
+                {selectedApplication.network && (
+                  <div className="mt-4">
+                    <label className="text-sm font-medium text-muted-foreground">Blockchain Network</label>
+                    <p className="text-foreground">{selectedApplication.network}</p>
+                  </div>
+                )}
+                {selectedApplication.coin && (
+                  <div className="mt-4">
+                    <label className="text-sm font-medium text-muted-foreground">Cryptocurrency</label>
+                    <p className="text-foreground">{selectedApplication.coin}</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Application Details */}
+              <div className="bg-yellow-50 p-4 rounded-lg">
+                <h4 className="text-lg font-semibold text-foreground mb-4 flex items-center">
+                  <Clock className="w-5 h-5 mr-2" />
+                  Application Details
+                </h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Applied Date</label>
+                    <p className="text-foreground">{new Date(selectedApplication.appliedAt).toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Status</label>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      selectedApplication.status === 'confirmed'
+                        ? 'bg-green-100 text-green-800'
+                        : selectedApplication.status === 'rejected'
+                        ? 'bg-red-100 text-red-800'
+                        : 'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      {selectedApplication.status}
+                    </span>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">CV Uploaded</label>
+                    {selectedApplication.cvFileName ? (
+                      <div className="mt-2">
+                        <p className="text-foreground mb-2">{selectedApplication.cvFileName}</p>
+                        <a 
+                          href={selectedApplication.cvFile ? URL.createObjectURL(selectedApplication.cvFile) : '#'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 underline text-sm"
+                        >
+                          📄 View CV
+                        </a>
+                      </div>
+                    ) : (
+                      <p className="text-foreground">No CV uploaded</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Payment Screenshot</label>
+                    {selectedApplication.paymentScreenshotName ? (
+                      <div className="mt-2">
+                        <p className="text-foreground mb-2">{selectedApplication.paymentScreenshotName}</p>
+                        <a 
+                          href={selectedApplication.paymentScreenshot ? URL.createObjectURL(selectedApplication.paymentScreenshot) : '#'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 underline text-sm"
+                        >
+                          📸 View Screenshot
+                        </a>
+                      </div>
+                    ) : (
+                      <p className="text-foreground">No screenshot uploaded</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* File Previews Section */}
+            {(selectedApplication.cvFileName || selectedApplication.paymentScreenshotName) && (
+              <div className="bg-gray-50 p-4 rounded-lg mb-6">
+                <h4 className="text-lg font-semibold text-foreground mb-4 flex items-center">
+                  <FileText className="w-5 h-5 mr-2" />
+                  Uploaded Files
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {selectedApplication.cvFileName && (
+                    <div className="border rounded-lg p-4">
+                      <h5 className="font-medium text-foreground mb-2">📄 CV Document</h5>
+                      <p className="text-sm text-muted-foreground mb-3">{selectedApplication.cvFileName}</p>
+                      {selectedApplication.cvFile ? (
+                        <a 
+                          href={URL.createObjectURL(selectedApplication.cvFile)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center text-blue-600 hover:text-blue-800 underline text-sm"
+                        >
+                          <FileText className="w-4 h-4 mr-1" />
+                          Open CV
+                        </a>
+                      ) : (
+                        <p className="text-sm text-gray-500">File not available for preview</p>
+                      )}
+                    </div>
+                  )}
+                  
+                  {selectedApplication.paymentScreenshotName && (
+                    <div className="border rounded-lg p-4">
+                      <h5 className="font-medium text-foreground mb-2">📸 Payment Screenshot</h5>
+                      <p className="text-sm text-muted-foreground mb-3">{selectedApplication.paymentScreenshotName}</p>
+                      {selectedApplication.paymentScreenshot ? (
+                        <div className="space-y-2">
+                          <a 
+                            href={URL.createObjectURL(selectedApplication.paymentScreenshot)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center text-blue-600 hover:text-blue-800 underline text-sm"
+                          >
+                            <FileText className="w-4 h-4 mr-1" />
+                            Open Screenshot
+                          </a>
+                          <div className="mt-2">
+                            <img 
+                              src={URL.createObjectURL(selectedApplication.paymentScreenshot)}
+                              alt="Payment Screenshot"
+                              className="w-full h-32 object-cover rounded border"
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="text-sm text-gray-500">File not available for preview</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <div className="flex justify-end space-x-3">
+              <Button
+                variant="outline"
+                onClick={() => setShowConfirmationModal(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => confirmApplication(selectedApplication, 'rejected')}
+                variant="destructive"
+                className="flex items-center"
+              >
+                <XCircle className="w-4 h-4 mr-2" />
+                Reject Application
+              </Button>
+              <Button
+                onClick={() => confirmApplication(selectedApplication, 'confirmed')}
+                className="bg-green-600 hover:bg-green-700 text-white flex items-center"
+              >
+                <CheckCircle className="w-4 h-4 mr-2" />
+                Confirm Application
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Footer />
+    </div>
+  );
+};
+
+export default Admin;
