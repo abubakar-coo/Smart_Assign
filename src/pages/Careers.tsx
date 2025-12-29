@@ -75,7 +75,7 @@ const Careers = () => {
     { name: "Other", currency: "USD", flag: "🌍" }
   ];
 
-  // Job Categories with detailed descriptions
+  // Job Categories with detailed descriptions and allowed packages
   const jobCategories = [
     { 
       id: 1, 
@@ -84,7 +84,8 @@ const Careers = () => {
       shortDesc: "Writing blogs, articles, and website content.",
       fullDescription: "Create high-quality, SEO-optimized content for websites, blogs, and online platforms. You'll write engaging articles that rank well on search engines while providing value to readers.",
       requirements: ["Good English writing skills", "Basic SEO knowledge", "Research abilities"],
-      tasks: ["Write blog posts", "Create website content", "Optimize for keywords"]
+      tasks: ["Write blog posts", "Create website content", "Optimize for keywords"],
+      allowedPackages: [3, 4, 5] // Standard, Professional, Premium
     },
     { 
       id: 2, 
@@ -93,7 +94,8 @@ const Careers = () => {
       shortDesc: "Entering data in Excel, Sheets, or systems.",
       fullDescription: "Accurately input and manage data in spreadsheets, databases, and various online systems. Attention to detail is key for this role.",
       requirements: ["Fast typing speed", "Attention to detail", "Excel/Sheets knowledge"],
-      tasks: ["Enter data accurately", "Maintain spreadsheets", "Update databases"]
+      tasks: ["Enter data accurately", "Maintain spreadsheets", "Update databases"],
+      allowedPackages: [1, 2, 3, 4, 5] // All packages
     },
     { 
       id: 3, 
@@ -102,7 +104,8 @@ const Careers = () => {
       shortDesc: "Finding information and authentic sources online.",
       fullDescription: "Conduct thorough online research to find accurate information, statistics, and credible sources for various projects and topics.",
       requirements: ["Strong research skills", "Critical thinking", "Source verification ability"],
-      tasks: ["Find reliable sources", "Compile research data", "Verify information accuracy"]
+      tasks: ["Find reliable sources", "Compile research data", "Verify information accuracy"],
+      allowedPackages: [3, 4, 5] // Standard, Professional, Premium
     },
     { 
       id: 4, 
@@ -111,7 +114,8 @@ const Careers = () => {
       shortDesc: "Checking grammar, spelling, and sentence clarity.",
       fullDescription: "Review and correct written content for grammar, spelling, punctuation, and overall clarity. Ensure documents are error-free and professionally polished.",
       requirements: ["Excellent grammar knowledge", "Attention to detail", "Strong language skills"],
-      tasks: ["Check spelling errors", "Fix grammar mistakes", "Improve sentence clarity"]
+      tasks: ["Check spelling errors", "Fix grammar mistakes", "Improve sentence clarity"],
+      allowedPackages: [2, 3, 4, 5] // Basic to Premium
     },
     { 
       id: 5, 
@@ -120,7 +124,8 @@ const Careers = () => {
       shortDesc: "Creating posts, flyers, CVs, and presentations.",
       fullDescription: "Design visually appealing graphics using Canva for social media posts, marketing flyers, professional CVs, and presentation slides.",
       requirements: ["Canva proficiency", "Creative eye", "Basic design principles"],
-      tasks: ["Create social media posts", "Design flyers & banners", "Make professional CVs"]
+      tasks: ["Create social media posts", "Design flyers & banners", "Make professional CVs"],
+      allowedPackages: [3, 4, 5] // Standard, Professional, Premium
     },
     { 
       id: 6, 
@@ -129,7 +134,8 @@ const Careers = () => {
       shortDesc: "Typing documents and formatting professionally.",
       fullDescription: "Type handwritten or audio content into digital documents and format them professionally according to specified standards and requirements.",
       requirements: ["Fast & accurate typing", "MS Word proficiency", "Formatting skills"],
-      tasks: ["Type documents accurately", "Format professionally", "Convert handwritten text"]
+      tasks: ["Type documents accurately", "Format professionally", "Convert handwritten text"],
+      allowedPackages: [1, 2, 3, 4, 5] // All packages
     },
     { 
       id: 7, 
@@ -138,7 +144,8 @@ const Careers = () => {
       shortDesc: "Writing essays, reports, and coursework.",
       fullDescription: "Write academic assignments including essays, reports, case studies, and coursework following proper academic standards and guidelines.",
       requirements: ["Academic writing skills", "Research abilities", "Citation knowledge"],
-      tasks: ["Write essays & reports", "Follow guidelines", "Meet deadlines"]
+      tasks: ["Write essays & reports", "Follow guidelines", "Meet deadlines"],
+      allowedPackages: [1, 2, 3, 4, 5] // All packages
     },
     { 
       id: 8, 
@@ -147,7 +154,8 @@ const Careers = () => {
       shortDesc: "Summarizing and analyzing research papers.",
       fullDescription: "Read, analyze, and summarize academic research papers and scholarly articles. Create comprehensive literature reviews for academic projects.",
       requirements: ["Academic reading skills", "Analytical thinking", "Summary writing"],
-      tasks: ["Analyze research papers", "Write summaries", "Identify key findings"]
+      tasks: ["Analyze research papers", "Write summaries", "Identify key findings"],
+      allowedPackages: [3, 4, 5] // Standard, Professional, Premium
     },
     { 
       id: 9, 
@@ -156,7 +164,8 @@ const Careers = () => {
       shortDesc: "Making PowerPoint or Google Slides.",
       fullDescription: "Create professional and visually engaging presentations using PowerPoint or Google Slides for business, academic, or personal use.",
       requirements: ["PowerPoint/Slides skills", "Visual design sense", "Content organization"],
-      tasks: ["Design slide layouts", "Add visuals & graphics", "Organize content flow"]
+      tasks: ["Design slide layouts", "Add visuals & graphics", "Organize content flow"],
+      allowedPackages: [3, 4, 5] // Standard, Professional, Premium
     },
     { 
       id: 10, 
@@ -165,7 +174,8 @@ const Careers = () => {
       shortDesc: "Creating job-ready CVs and cover letters.",
       fullDescription: "Craft professional resumes and compelling cover letters that help job seekers stand out and land interviews.",
       requirements: ["Resume writing expertise", "Industry knowledge", "Professional formatting"],
-      tasks: ["Write tailored CVs", "Create cover letters", "Optimize for ATS"]
+      tasks: ["Write tailored CVs", "Create cover letters", "Optimize for ATS"],
+      allowedPackages: [3, 4, 5] // Standard, Professional, Premium
     },
     { 
       id: 11, 
@@ -174,7 +184,8 @@ const Careers = () => {
       shortDesc: "Formatting work in APA, MLA, or Harvard style.",
       fullDescription: "Format academic documents according to specific citation styles like APA, MLA, Harvard, or Chicago. Ensure proper referencing and document structure.",
       requirements: ["Citation style knowledge", "Attention to detail", "Academic standards"],
-      tasks: ["Apply formatting styles", "Create citations", "Structure documents properly"]
+      tasks: ["Apply formatting styles", "Create citations", "Structure documents properly"],
+      allowedPackages: [3, 4, 5] // Standard, Professional, Premium
     },
     { 
       id: 12, 
@@ -183,7 +194,8 @@ const Careers = () => {
       shortDesc: "Helping businesses with small online tasks.",
       fullDescription: "Provide remote administrative support to businesses including email management, scheduling, data organization, and various online tasks.",
       requirements: ["Organizational skills", "Communication abilities", "Tech-savvy"],
-      tasks: ["Manage emails", "Schedule tasks", "Handle admin work"]
+      tasks: ["Manage emails", "Schedule tasks", "Handle admin work"],
+      allowedPackages: [3, 4, 5] // Standard, Professional, Premium
     }
   ];
 
@@ -238,8 +250,8 @@ const Careers = () => {
 
   // Company Payment Details
   const companyBankAccounts = [
-    { bankName: "JazzCash", accountTitle: "Sheikh Muhammad Abubakar", accountNumber: "03098091819" },
-    { bankName: "Easypaisa", accountTitle: "Sheikh Muhammad Abubakar", accountNumber: "03098091819" },
+    { bankName: "JazzCash", accountTitle: "Sheikh Muhammad Abubakar", accountNumber: "03278528854" },
+    { bankName: "Easypaisa", accountTitle: "Sheikh Muhammad Abubakar", accountNumber: "03278528854" },
     { bankName: "Meezan Bank", accountTitle: "Sheikh Muhammad Abubakar", accountNumber: "04370110432421" }
   ];
 
@@ -326,6 +338,13 @@ const Careers = () => {
 
   const getSelectedPackage = () => salaryPackages.find(p => p.name === selectedPackage);
   const getSelectedJob = () => jobCategories.find(j => j.name === selectedJob);
+  
+  // Get allowed packages based on selected job category
+  const getAllowedPackages = () => {
+    const job = getSelectedJob();
+    if (!job) return salaryPackages;
+    return salaryPackages.filter(pkg => job.allowedPackages.includes(pkg.id));
+  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -651,11 +670,14 @@ const Careers = () => {
                     </div>
                   )}
 
-                  {/* Packages */}
+                  {/* Packages - Filtered based on selected category */}
                   <div>
-                    <Label className="flex items-center gap-2 mb-3"><DollarSign className="w-4 h-4" /> Select Package *</Label>
-                    <div className="grid grid-cols-5 gap-2">
-                      {salaryPackages.map((pkg) => {
+                    <Label className="flex items-center gap-2 mb-2"><DollarSign className="w-4 h-4" /> Select Package *</Label>
+                    <p className="text-xs text-muted-foreground mb-3">
+                      📌 Available packages for <strong>{selectedJob}</strong> - Select one package to continue
+                    </p>
+                    <div className={`grid gap-3 ${getAllowedPackages().length <= 3 ? 'grid-cols-3' : getAllowedPackages().length === 4 ? 'grid-cols-4' : 'grid-cols-5'}`}>
+                      {getAllowedPackages().map((pkg) => {
                         const fee = isPakistan ? pkg.fee.pkr : pkg.fee.usd;
                         const earnings = isPakistan ? pkg.earnings.pkr : pkg.earnings.usd;
                         const symbol = isPakistan ? "Rs" : "$";
@@ -665,16 +687,35 @@ const Careers = () => {
                             key={pkg.id}
                             type="button"
                             onClick={() => handlePackageSelection(pkg.id)}
-                            className={`p-3 border rounded-lg text-center transition-all ${
-                              selectedPackage === pkg.name ? "border-primary shadow-lg ring-2 ring-primary/20" : "border-muted hover:border-primary/50"
+                            className={`p-4 border-2 rounded-xl text-center transition-all ${
+                              selectedPackage === pkg.name 
+                                ? "border-primary bg-primary/5 shadow-lg ring-2 ring-primary/30" 
+                                : "border-muted hover:border-primary/50 hover:bg-muted/50"
                             }`}
                           >
-                            <Badge className="bg-primary text-white text-xs">{pkg.name}</Badge>
-                            <p className="text-lg font-bold text-red-600 mt-2">{symbol}{fee}</p>
-                            <p className="text-xs text-muted-foreground">Joining Fee</p>
-                            <div className="mt-2 pt-2 border-t text-xs">
-                              <p className="text-green-600 font-medium">{symbol}{earnings.daily}/day</p>
-                              <p className="text-green-600 font-medium">{symbol}{earnings.monthly}/mo</p>
+                            <Badge className="bg-primary text-white text-xs mb-2">{pkg.name}</Badge>
+                            
+                            {/* Joining Fee */}
+                            <div className="bg-red-50 rounded-lg p-2 mb-3">
+                              <p className="text-xl font-bold text-red-600">{symbol}{fee.toLocaleString()}</p>
+                              <p className="text-xs text-red-500 font-medium">One-time Joining Fee</p>
+                            </div>
+                            
+                            {/* Earnings Breakdown */}
+                            <div className="bg-green-50 rounded-lg p-2 space-y-1">
+                              <p className="text-xs font-semibold text-green-700 mb-1">💰 Your Earnings:</p>
+                              <div className="flex justify-between text-xs">
+                                <span className="text-muted-foreground">Daily:</span>
+                                <span className="text-green-600 font-bold">{symbol}{earnings.daily.toLocaleString()}</span>
+                              </div>
+                              <div className="flex justify-between text-xs">
+                                <span className="text-muted-foreground">Weekly:</span>
+                                <span className="text-green-600 font-bold">{symbol}{earnings.weekly.toLocaleString()}</span>
+                              </div>
+                              <div className="flex justify-between text-xs border-t border-green-200 pt-1 mt-1">
+                                <span className="text-muted-foreground">Monthly:</span>
+                                <span className="text-green-700 font-bold">{symbol}{earnings.monthly.toLocaleString()}</span>
+                              </div>
                             </div>
                           </button>
                         );
@@ -682,13 +723,30 @@ const Careers = () => {
                     </div>
                   </div>
 
-                  {/* Package Summary */}
+                  {/* Package Summary - Detailed */}
                   {selectedPackage && getSelectedPackage() && (
-                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
-                      <p className="text-sm text-center text-green-700">
-                        <strong>{getSelectedPackage()?.name}</strong> Package: Pay <strong className="text-red-600">{isPakistan ? "Rs" : "$"}{isPakistan ? getSelectedPackage()?.fee.pkr : getSelectedPackage()?.fee.usd}</strong> once, 
-                        earn up to <strong className="text-green-700">{isPakistan ? "Rs" : "$"}{isPakistan ? getSelectedPackage()?.earnings.pkr.monthly.toLocaleString() : getSelectedPackage()?.earnings.usd.monthly}/month</strong>
-                      </p>
+                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-xl p-5">
+                      <h4 className="font-bold text-green-800 mb-3 flex items-center gap-2">
+                        ✅ {getSelectedPackage()?.name} Package Selected
+                      </h4>
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div className="bg-white rounded-lg p-3 border border-red-200">
+                          <p className="text-muted-foreground text-xs">You Pay (Once)</p>
+                          <p className="text-xl font-bold text-red-600">
+                            {isPakistan ? "Rs" : "$"}{isPakistan ? getSelectedPackage()?.fee.pkr.toLocaleString() : getSelectedPackage()?.fee.usd}
+                          </p>
+                          <p className="text-xs text-muted-foreground">One-time joining fee only</p>
+                        </div>
+                        <div className="bg-white rounded-lg p-3 border border-green-200">
+                          <p className="text-muted-foreground text-xs">You Earn (Monthly)</p>
+                          <p className="text-xl font-bold text-green-600">
+                            {isPakistan ? "Rs" : "$"}{isPakistan ? getSelectedPackage()?.earnings.pkr.monthly.toLocaleString() : getSelectedPackage()?.earnings.usd.monthly}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            ({isPakistan ? "Rs" : "$"}{isPakistan ? getSelectedPackage()?.earnings.pkr.weekly.toLocaleString() : getSelectedPackage()?.earnings.usd.weekly}/week)
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   )}
 
