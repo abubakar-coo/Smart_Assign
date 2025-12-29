@@ -10,18 +10,32 @@ import {
   Briefcase, ScrollText, Users, ArrowRight, DollarSign
 } from "lucide-react";
 
+// Mapping of service titles to their exact slugs (matching ServiceDetail.tsx)
+const serviceSlugMap: Record<string, string> = {
+  "Presentation (PPT) Design": "presentation-ppt-design",
+  "Academic Formatting (APA / MLA / Harvard)": "academic-formatting",
+  "Virtual Assistance (Small Tasks)": "virtual-assistance",
+};
+
 // Helper function to convert service title to URL slug
 const titleToSlug = (title: string): string => {
+  // Check if we have a manual mapping
+  if (serviceSlugMap[title]) {
+    return serviceSlugMap[title];
+  }
+  
+  // Otherwise, generate slug automatically
   return title
+    .replace(/\([^)]*\)/g, '') // Remove parentheses content FIRST
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .replace(/\([^)]*\)/g, '') // Remove parentheses content
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
+    .replace(/[^a-z0-9]+/g, '-') // Replace all non-alphanumeric with hyphens
+    .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
+    .replace(/-+/g, '-'); // Replace multiple hyphens with single hyphen
 };
 
 const ServicesDetails = () => {
+  const navigate = useNavigate();
+  
   const allServices = [
     {
       icon: Search,

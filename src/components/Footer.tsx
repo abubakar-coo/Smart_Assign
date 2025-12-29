@@ -17,12 +17,39 @@ const Footer = () => {
     { name: "Contact", href: "/contact" },
   ];
 
+  // Helper function to convert service title to URL slug
+  const titleToSlug = (title: string): string => {
+    const serviceSlugMap: Record<string, string> = {
+      "Presentation (PPT) Design": "presentation-ppt-design",
+      "Academic Formatting (APA / MLA / Harvard)": "academic-formatting",
+      "Virtual Assistance (Small Tasks)": "virtual-assistance",
+    };
+    
+    if (serviceSlugMap[title]) {
+      return serviceSlugMap[title];
+    }
+    
+    return title
+      .replace(/\([^)]*\)/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .replace(/-+/g, '-');
+  };
+
   const services = [
-    { name: "UGC Ad Campaigns", href: "/services" },
-    { name: "Data Entry & Cleanup", href: "/services" },
-    { name: "Prompt Engineering", href: "/services" },
-    { name: "E-Commerce Solutions", href: "/services" },
-    { name: "AI Content Creation", href: "/services" },
+    { name: "SEO Content Writing", href: `/services/${titleToSlug("SEO Content Writing")}` },
+    { name: "Data Entry", href: `/services/${titleToSlug("Data Entry")}` },
+    { name: "Research Assistance", href: `/services/${titleToSlug("Research Assistance")}` },
+    { name: "Proofreading & Editing", href: `/services/${titleToSlug("Proofreading & Editing")}` },
+    { name: "Canva Designing", href: `/services/${titleToSlug("Canva Designing")}` },
+    { name: "Typing & Formatting", href: `/services/${titleToSlug("Typing & Formatting")}` },
+    { name: "Assignment Writing", href: `/services/${titleToSlug("Assignment Writing")}` },
+    { name: "Literature Review", href: `/services/${titleToSlug("Literature Review")}` },
+    { name: "Presentation (PPT) Design", href: `/services/${titleToSlug("Presentation (PPT) Design")}` },
+    { name: "Resume & Cover Letter Writing", href: `/services/${titleToSlug("Resume & Cover Letter Writing")}` },
+    { name: "Academic Formatting (APA / MLA / Harvard)", href: `/services/${titleToSlug("Academic Formatting (APA / MLA / Harvard)")}` },
+    { name: "Virtual Assistance (Small Tasks)", href: `/services/${titleToSlug("Virtual Assistance (Small Tasks)")}` },
   ];
 
   const contactInfo = [

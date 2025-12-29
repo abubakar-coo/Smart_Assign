@@ -171,6 +171,7 @@ const Team = () => {
                         src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${ceo.name}&backgroundColor=ffd5dc,b6e3f4,c0aede,d1d4f9,ffdfbf&mood=happy&clothing=shirt&clothingColor=262e33,65c9ff,ff6b6b,4ecdc4,45b7d1&accessoriesProbability=50&facialHairProbability=30&glassesProbability=30&hairColor=0e0e0e,2c1b18,724133,afafaf,ecdcbf,6a4c35,8b4513,a55728,ca8c04,ffdbac,ffd5dc,ecdcbf&skinColor=edb98a,fd9841,fdbcb4,fd9841`}
                         alt={ceo.name}
                         className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-all duration-500 avatar-glow"
+                        loading="lazy"
                         style={{
                           filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
                           transform: 'translateZ(10px)'
@@ -254,6 +255,7 @@ const Team = () => {
                           src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${member.name}&backgroundColor=ffd5dc,b6e3f4,c0aede,d1d4f9,ffdfbf&mood=happy&clothing=shirt&clothingColor=262e33,65c9ff,ff6b6b,4ecdc4,45b7d1&accessoriesProbability=40&facialHairProbability=25&glassesProbability=25&hairColor=0e0e0e,2c1b18,724133,afafaf,ecdcbf,6a4c35,8b4513,a55728,ca8c04,ffdbac,ffd5dc,ecdcbf&skinColor=edb98a,fd9841,fdbcb4,fd9841`}
                           alt={member.name}
                           className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-all duration-500 avatar-glow"
+                          loading="lazy"
                           style={{
                             filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
                             transform: 'translateZ(10px)'

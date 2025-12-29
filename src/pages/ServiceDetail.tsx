@@ -13,7 +13,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { 
   ArrowLeft, CheckCircle, DollarSign, MapPin, 
   User, Mail, Phone, FileText, Upload, CreditCard,
-  ArrowRight, Clock, Package, FileCheck, Star
+  ArrowRight, Clock, Package, FileCheck, Star, AlertCircle
 } from "lucide-react";
 import { supabase, STORAGE_CONFIG } from "@/lib/supabase";
 
@@ -475,15 +475,44 @@ const ServiceDetail = () => {
   const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null);
   const [projectFiles, setProjectFiles] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [budgetError, setBudgetError] = useState<string>("");
 
   const isPakistan = formData.country === "Pakistan";
 
-  // Calculate 30% payment
+  // Budget limits
+  const BUDGET_LIMITS = {
+    USD: { min: 20, max: 5000 },
+    PKR: { min: 3000, max: 1500000 }
+  };
+
+  const currentLimits = isPakistan ? BUDGET_LIMITS.PKR : BUDGET_LIMITS.USD;
+
+  // Validate budget amount
+  const validateBudget = (amount: string) => {
+    if (!amount) {
+      setBudgetError("");
+      return true;
+    }
+    const budget = parseFloat(amount);
+    if (isNaN(budget)) {
+      setBudgetError("Please enter a valid number");
+      return false;
+    }
+    if (budget < currentLimits.min) {
+      setBudgetError(`Minimum amount is ${isPakistan ? 'Rs' : '$'}${currentLimits.min.toLocaleString()}`);
+      return false;
+    }
+    // No error if exceeds max - will be clamped in handleInputChange
+    setBudgetError("");
+    return true;
+  };
+
+  // Calculate 50% payment
   const calculatePayment = () => {
     if (!formData.budget) return 0;
     const budget = parseFloat(formData.budget);
     if (isNaN(budget)) return 0;
-    return budget * 0.3;
+    return budget * 0.5;
   };
 
   const paymentAmount = calculatePayment();
@@ -512,12 +541,30 @@ const ServiceDetail = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // For budget field, clamp to max if exceeds
+    if (name === "budget") {
+      const budget = parseFloat(value);
+      if (!isNaN(budget) && budget > currentLimits.max) {
+        // Clamp to maximum value
+        setFormData(prev => ({ ...prev, [name]: currentLimits.max.toString() }));
+        validateBudget(currentLimits.max.toString());
+      } else {
+        setFormData(prev => ({ ...prev, [name]: value }));
+        validateBudget(value);
+      }
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleCountryChange = (country: string) => {
     setSelectedCountry(country);
     setFormData(prev => ({ ...prev, country }));
+    // Re-validate budget when country changes (different limits)
+    if (formData.budget) {
+      validateBudget(formData.budget);
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -539,6 +586,17 @@ const ServiceDetail = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate budget before submission
+    if (!validateBudget(formData.budget)) {
+      toast({
+        title: "Invalid Budget Amount",
+        description: budgetError,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -570,7 +628,7 @@ const ServiceDetail = () => {
       submitData.append("Project Details", formData.projectDetails);
       submitData.append("Requirements", formData.requirements);
       submitData.append("Budget", `${isPakistan ? 'Rs' : '$'}${formData.budget}`);
-      submitData.append("30% Advance Payment", `${isPakistan ? 'Rs' : '$'}${paymentAmount.toFixed(2)}`);
+      submitData.append("50% Advance Payment", `${isPakistan ? 'Rs' : '$'}${paymentAmount.toFixed(2)}`);
       submitData.append("Deadline", formData.deadline);
       
       // Project files
@@ -942,10 +1000,17 @@ const ServiceDetail = () => {
                         value={formData.budget}
                         onChange={handleInputChange}
                         required
-                        placeholder="Enter amount"
-                        min="0"
+                        placeholder={`Enter amount (min ${isPakistan ? 'Rs' : '$'}${currentLimits.min.toLocaleString()})`}
+                        min={currentLimits.min}
                         step="0.01"
+                        className={budgetError ? "border-red-500" : ""}
                       />
+                      {budgetError && (
+                        <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
+                          <AlertCircle className="w-4 h-4" />
+                          {budgetError}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <Label htmlFor="deadline">Deadline</Label>
@@ -966,7 +1031,7 @@ const ServiceDetail = () => {
                 <div>
                   <h3 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
                     <CreditCard className="w-5 h-5 text-primary" />
-                    Payment (30% Advance)
+                    Payment (50% Advance)
                   </h3>
                   <Card className="p-6 bg-green-50 border-green-200">
                     <div className="space-y-4">
@@ -977,7 +1042,7 @@ const ServiceDetail = () => {
                         </span>
                       </div>
                       <div className="flex justify-between items-center border-t pt-4">
-                        <span className="text-lg font-semibold text-foreground">30% Advance Payment:</span>
+                        <span className="text-lg font-semibold text-foreground">50% Advance Payment:</span>
                         <span className="text-2xl font-bold text-green-600">
                           {isPakistan ? 'Rs' : '$'}{paymentAmount.toFixed(2)}
                         </span>

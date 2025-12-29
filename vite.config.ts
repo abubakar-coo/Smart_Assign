@@ -20,17 +20,45 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     // Performance optimizations
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          ui: ['lucide-react']
+        manualChunks: (id) => {
+          // Vendor chunks
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'vendor-react';
+            }
+            if (id.includes('react-router')) {
+              return 'vendor-router';
+            }
+            if (id.includes('lucide-react')) {
+              return 'vendor-icons';
+            }
+            if (id.includes('@radix-ui')) {
+              return 'vendor-radix';
+            }
+            if (id.includes('@supabase')) {
+              return 'vendor-supabase';
+            }
+            if (id.includes('@tanstack')) {
+              return 'vendor-query';
+            }
+            // Other node_modules
+            return 'vendor-other';
+          }
         }
       }
-    }
+    },
+    // Enable minification
+    minify: 'esbuild',
+    // Source maps only in dev
+    sourcemap: false,
+    // Optimize asset handling
+    assetsInlineLimit: 4096,
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'lucide-react']
+    include: ['react', 'react-dom', 'react-router-dom'],
+    exclude: ['lovable-tagger']
   }
 }));
