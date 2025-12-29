@@ -17,7 +17,6 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     // Performance optimizations
-    minify: 'terser',
     rollupOptions: {
       output: {
         manualChunks: {
