@@ -1,7 +1,72 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Star, Quote, ArrowLeft, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+
+// Animated counter component
+const AnimatedCounter = ({ 
+  end, 
+  duration = 2000, 
+  suffix = "",
+  decimals = 0
+}: { 
+  end: number; 
+  duration?: number; 
+  suffix?: string;
+  decimals?: number;
+}) => {
+  const [count, setCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isVisible) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTime: number;
+    let animationFrame: number;
+
+    const animate = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const currentValue = easeOutQuart * end;
+      setCount(decimals > 0 ? parseFloat(currentValue.toFixed(decimals)) : Math.floor(currentValue));
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(animationFrame);
+  }, [isVisible, end, duration, decimals]);
+
+  return (
+    <span ref={ref}>
+      {decimals > 0 ? count.toFixed(decimals) : count.toLocaleString()}{suffix}
+    </span>
+  );
+};
 
 const Testimonials = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
@@ -72,10 +137,10 @@ const Testimonials = () => {
   };
 
   const stats = [
-    { label: "Client Satisfaction", value: "98%" },
-    { label: "Projects Completed", value: "1,200+" },
-    { label: "Repeat Clients", value: "85%" },
-    { label: "Average Rating", value: "4.9/5" },
+    { label: "Client Satisfaction", displayValue: <AnimatedCounter end={98} suffix="%" /> },
+    { label: "Projects Completed", displayValue: <AnimatedCounter end={1200} suffix="+" /> },
+    { label: "Repeat Clients", displayValue: <AnimatedCounter end={85} suffix="%" /> },
+    { label: "Average Rating", displayValue: <><AnimatedCounter end={4.9} decimals={1} />/5</> },
   ];
 
   return (
@@ -97,7 +162,7 @@ const Testimonials = () => {
           {stats.map((stat, index) => (
             <Card key={index} className="p-6 text-center shadow-card bg-white/80 backdrop-blur-sm border-0">
               <div className="text-3xl font-bold text-primary mb-1">
-                {stat.value}
+                {stat.displayValue}
               </div>
               <div className="text-base text-muted-foreground">
                 {stat.label}

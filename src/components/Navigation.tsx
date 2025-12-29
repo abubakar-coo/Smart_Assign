@@ -33,7 +33,7 @@ const Navigation = () => {
               <img 
                 src="/images/smart-assign-main-name.png" 
                 alt="Smart Assign" 
-                className="h-full w-auto object-contain transition-all duration-300 group-hover:scale-110 logo-hd"
+                className="h-full w-auto object-contain transition-all duration-300 group-hover:scale-110 logo-hd brightness-125 contrast-110"
                 onError={(e) => {
                   // Fallback to gradient icon if logo not found
                   e.currentTarget.style.display = 'none';

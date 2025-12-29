@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Zap, Mail, Phone, MapPin, Linkedin, Facebook, MessageSquare, Instagram, CheckCircle, AlertCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, Facebook, MessageSquare, Instagram, CheckCircle, AlertCircle } from "lucide-react";
 import { useState } from "react";
-import { saveEmailSubscription } from "../api/emailSubscription";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -52,13 +51,23 @@ const Footer = () => {
     setMessage(null);
 
     try {
-      const result = await saveEmailSubscription(email);
-      
-      if (result.success) {
-        setMessage({ type: 'success', text: result.message });
-        setEmail(''); // Clear the input
+      const submitData = new FormData();
+      submitData.append("Email", email);
+      submitData.append("Subscribed At", new Date().toLocaleString());
+      submitData.append("Source", "Newsletter Subscription");
+      submitData.append("_subject", "New Newsletter Subscription");
+      submitData.append("_template", "table");
+
+      const response = await fetch("https://formsubmit.co/ajax/abubakararif164@gmail.com", {
+        method: "POST",
+        body: submitData
+      });
+
+      if (response.ok) {
+        setMessage({ type: 'success', text: 'Successfully subscribed! Thank you.' });
+        setEmail('');
       } else {
-        setMessage({ type: 'error', text: result.message });
+        setMessage({ type: 'error', text: 'Subscription failed. Please try again.' });
       }
     } catch (error) {
       setMessage({ type: 'error', text: 'Something went wrong. Please try again.' });
@@ -74,24 +83,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Company Info */}
           <div className="space-y-6">
-            <div className="flex items-center">
-              <div className="h-10 flex items-center justify-center relative">
-                <img 
-                  src="/images/smart-assign-main-name.png" 
-                  alt="Smart Assign" 
-                  className="h-full w-auto object-contain logo-hd"
-                  onError={(e) => {
-                    // Fallback to gradient icon if logo not found
-                    e.currentTarget.style.display = 'none';
-                    const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
-                    if (nextElement) nextElement.style.display = 'flex';
-                  }}
-                />
-                <div className="h-10 w-28 bg-gradient-primary rounded-lg hidden items-center justify-center">
-                  <Zap className="w-5 h-5 text-white" />
-                </div>
-              </div>
-            </div>
+            <h3 className="text-lg font-semibold">Smart Assign</h3>
             <p className="text-white/80 leading-relaxed">
               Professional micro-services that help businesses grow. 
               Quality, reliability, and excellence in every project.

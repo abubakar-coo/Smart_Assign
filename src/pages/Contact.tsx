@@ -8,8 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { Mail, Phone, MapPin, Linkedin, Instagram, Facebook, MessageSquare } from "lucide-react";
-import { saveJobApplication } from "../api/jobApplication";
-import { saveContactInquiry } from "../api/database";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -26,51 +24,41 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-      try {
-        // Simple contact form data
-        const contactData = {
-          fullName: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          subject: formData.subject,
-          message: formData.message,
-          submittedAt: new Date().toISOString(),
-          source: "contact-form"
-        };
-        
-        console.log("📝 Saving contact form data:", contactData);
-        
-        // Try to save to Supabase database first
-        try {
-          const result = await saveContactInquiry(contactData);
-          console.log("✅ Contact form saved to database:", result);
-        } catch (dbError) {
-          console.warn("⚠️ Database not available, saving to localStorage:", dbError);
-          
-          // Fallback to localStorage
-          const existingData = JSON.parse(localStorage.getItem('contactInquiries') || '[]');
-          const contactDataWithId = {
-            id: Date.now().toString(),
-            ...contactData
-          };
-          existingData.push(contactDataWithId);
-          localStorage.setItem('contactInquiries', JSON.stringify(existingData));
-        }
-        
-        console.log("✅ Contact form saved successfully");
-        
-        // Trigger admin panel refresh
-        window.dispatchEvent(new CustomEvent('contactFormSubmitted'));
-      
-      toast({
-        title: "Message Sent Successfully",
-        description: "Your information has been received! We'll contact you soon.",
+    try {
+      // Create FormData for FormSubmit.co
+      const submitData = new FormData();
+      submitData.append("Name", formData.name);
+      submitData.append("Email", formData.email);
+      submitData.append("Phone", formData.phone);
+      submitData.append("Subject", formData.subject);
+      submitData.append("Message", formData.message);
+      submitData.append("Submitted At", new Date().toLocaleString());
+      submitData.append("Source", "Contact Form");
+      submitData.append("_subject", `Contact Form: ${formData.subject}`);
+      submitData.append("_template", "table");
+
+      // Send to FormSubmit.co
+      const response = await fetch("https://formsubmit.co/ajax/abubakararif164@gmail.com", {
+        method: "POST",
+        body: submitData
       });
 
-      // Reset form
-      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+      if (response.ok) {
+        toast({
+          title: "Message Sent Successfully",
+          description: "Your information has been received! We'll contact you soon.",
+        });
+        // Reset form
+        setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to send message. Please try again.",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
-      console.error("Error saving contact:", error);
+      console.error("Error sending contact:", error);
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",

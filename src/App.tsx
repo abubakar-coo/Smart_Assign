@@ -14,7 +14,6 @@ import ServiceDetail from "./pages/ServiceDetail";
 import PortfolioDetail from "./pages/PortfolioDetail";
 import Careers from "./pages/Careers";
 import CareersTest from "./pages/CareersTest";
-import CareersMultiStep from "./pages/CareersMultiStep";
 import FileTest from "./pages/FileTest";
 import Admin from "./pages/Admin";
 import AdminSimple from "./pages/AdminSimple";
@@ -43,8 +42,7 @@ const App = () => (
           <Route path="/portfolio/:projectId" element={<PortfolioDetail />} />
               <Route path="/testimonials" element={<TestimonialsPage />} />
               <Route path="/team" element={<TeamPage />} />
-              <Route path="/careers" element={<CareersMultiStep />} />
-              <Route path="/careers-original" element={<Careers />} />
+              <Route path="/careers" element={<Careers />} />
               <Route path="/file-test" element={<FileTest />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin-simple" element={<AdminSimple />} />

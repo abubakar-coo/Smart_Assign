@@ -1,6 +1,71 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { TrendingUp, Users, Award, Building, Globe } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+
+// Animated counter component
+const AnimatedCounter = ({ 
+  end, 
+  duration = 2000, 
+  prefix = "", 
+  suffix = "" 
+}: { 
+  end: number; 
+  duration?: number; 
+  prefix?: string; 
+  suffix?: string;
+}) => {
+  const [count, setCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isVisible) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTime: number;
+    let animationFrame: number;
+
+    const animate = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      setCount(Math.floor(easeOutQuart * end));
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(animationFrame);
+  }, [isVisible, end, duration]);
+
+  return (
+    <span ref={ref}>
+      {prefix}{count.toLocaleString()}{suffix}
+    </span>
+  );
+};
 
 const Hero = () => {
 
@@ -8,25 +73,29 @@ const Hero = () => {
     {
       icon: Users,
       label: "Happy Clients",
-      value: "1,500+",
+      value: 1500,
+      displayValue: <AnimatedCounter end={1500} suffix="+" />,
       color: "text-primary",
     },
     {
       icon: TrendingUp,
       label: "Revenue Generated",
-      value: "$1M+",
+      value: 1,
+      displayValue: <AnimatedCounter end={1} prefix="$" suffix="M+" />,
       color: "text-secondary",
     },
     {
       icon: Award,
       label: "Projects Completed",
-      value: "5,000+",
+      value: 5000,
+      displayValue: <AnimatedCounter end={5000} suffix="+" />,
       color: "text-primary",
     },
     {
       icon: Building,
       label: "Years in Business",
-      value: "5+",
+      value: 5,
+      displayValue: <AnimatedCounter end={5} suffix="+" />,
       color: "text-secondary",
     },
   ];
@@ -109,7 +178,7 @@ const Hero = () => {
                   </div>
                   <div className="space-y-1">
                     <p className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
-                      {stat.value}
+                      {stat.displayValue}
                     </p>
                     <p className="text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-300">
                       {stat.label}
