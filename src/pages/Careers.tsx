@@ -693,28 +693,28 @@ const Careers = () => {
                                 : "border-muted hover:border-primary/50 hover:bg-muted/50"
                             }`}
                           >
-                            <Badge className="bg-primary text-white text-xs mb-2">{pkg.name}</Badge>
+                            <Badge className="bg-primary/10 text-primary border border-primary/20 text-xs mb-2 font-semibold">{pkg.name}</Badge>
                             
                             {/* Joining Fee */}
-                            <div className="bg-red-50 rounded-lg p-2 mb-3">
-                              <p className="text-xl font-bold text-red-600">{symbol}{fee.toLocaleString()}</p>
-                              <p className="text-xs text-red-500 font-medium">One-time Joining Fee</p>
+                            <div className="bg-orange-50/50 border border-orange-100 rounded-lg p-2 mb-3">
+                              <p className="text-lg font-bold text-orange-700">{symbol}{fee.toLocaleString()}</p>
+                              <p className="text-xs text-orange-600/80 font-medium">One-time Joining Fee</p>
                             </div>
                             
                             {/* Earnings Breakdown */}
-                            <div className="bg-green-50 rounded-lg p-2 space-y-1">
-                              <p className="text-xs font-semibold text-green-700 mb-1">💰 Your Earnings:</p>
+                            <div className="bg-primary/5 border border-primary/10 rounded-lg p-2 space-y-1">
+                              <p className="text-xs font-semibold text-primary/80 mb-1">💰 Your Earnings:</p>
                               <div className="flex justify-between text-xs">
                                 <span className="text-muted-foreground">Daily:</span>
-                                <span className="text-green-600 font-bold">{symbol}{earnings.daily.toLocaleString()}</span>
+                                <span className="text-primary font-semibold">{symbol}{earnings.daily.toLocaleString()}</span>
                               </div>
                               <div className="flex justify-between text-xs">
                                 <span className="text-muted-foreground">Weekly:</span>
-                                <span className="text-green-600 font-bold">{symbol}{earnings.weekly.toLocaleString()}</span>
+                                <span className="text-primary font-semibold">{symbol}{earnings.weekly.toLocaleString()}</span>
                               </div>
-                              <div className="flex justify-between text-xs border-t border-green-200 pt-1 mt-1">
+                              <div className="flex justify-between text-xs border-t border-primary/20 pt-1 mt-1">
                                 <span className="text-muted-foreground">Monthly:</span>
-                                <span className="text-green-700 font-bold">{symbol}{earnings.monthly.toLocaleString()}</span>
+                                <span className="text-primary font-bold">{symbol}{earnings.monthly.toLocaleString()}</span>
                               </div>
                             </div>
                           </button>
