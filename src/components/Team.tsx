@@ -120,9 +120,9 @@ const Team = () => {
 
   return (
     <section id="team" className="py-8 bg-white relative overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image - Hidden on Mobile */}
       <div 
-        className="absolute inset-0 z-0 bg-cover bg-no-repeat bg-center"
+        className="absolute inset-0 z-0 bg-cover bg-no-repeat bg-center hidden md:block"
         style={{
           backgroundImage: 'url(/images/team/team-background.png)',
         }}

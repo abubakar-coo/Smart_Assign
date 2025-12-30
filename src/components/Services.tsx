@@ -105,9 +105,9 @@ const Services = () => {
 
   return (
     <section id="services" className="py-24 md:py-32 bg-gradient-to-b from-white to-gray-50/50 relative overflow-hidden">
-      {/* Background Image - Original without any effects */}
+      {/* Background Image - Hidden on Mobile */}
       <div 
-        className="absolute inset-0 z-0 bg-cover bg-no-repeat bg-center"
+        className="absolute inset-0 z-0 bg-cover bg-no-repeat bg-center hidden md:block"
         style={{
           backgroundImage: 'url(/images/hero/services-background.png)',
         }}
