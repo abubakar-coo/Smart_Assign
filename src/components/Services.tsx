@@ -1,11 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { 
-  Search, Database, BookOpen, CheckCircle, Palette,
-  FileText, GraduationCap, FileCheck, Presentation,
-  Briefcase, FileEdit, Users
-} from "lucide-react";
 
 // Helper function to convert service title to URL slug
 const titleToSlug = (title: string): string => {
@@ -20,45 +15,9 @@ const titleToSlug = (title: string): string => {
 
 const Services = () => {
   const navigate = useNavigate();
-  
-  // Service image with green gradient (website's main color)
-  const ServiceImage = ({ service }: { service: any }) => {
-    // Special handling for SEO Content Writing with custom 3D image
-    const isSEOService = service.title === "SEO Content Writing";
-    
-    return (
-      <div className="w-full h-32 rounded-2xl relative overflow-hidden group-hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-primary to-primary-glow shadow-lg">
-        <div className="absolute inset-0 flex items-center justify-center">
-          {isSEOService ? (
-            <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-2xl ring-4 ring-white/30 p-2">
-              <img
-                src="/images/services/seo-content-writing-icon.png"
-                alt="SEO Content Writing"
-                className="w-full h-full object-contain"
-                loading="lazy"
-                decoding="async"
-                fetchPriority="low"
-              />
-            </div>
-          ) : (
-            <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-2xl ring-4 ring-white/30">
-              <service.icon className="w-10 h-10 text-white drop-shadow-lg" />
-            </div>
-          )}
-        </div>
-        <div className="absolute top-2 right-2 w-6 h-6 bg-white/30 rounded-full animate-pulse shadow-lg"></div>
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/30 to-transparent p-3">
-          <div className="text-white font-bold text-sm drop-shadow-lg">
-            {service.title.split(' ')[0]}
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   const allServices = [
     {
-      icon: Search,
       title: "SEO Content Writing",
       description: "High-quality, SEO-optimized content that helps websites rank better on search engines. Well-researched, plagiarism-free, and tailored to your target audience.",
       features: ["Blog posts", "Website content", "Articles", "Keyword optimization"],
@@ -66,7 +25,6 @@ const Services = () => {
       gradient: "from-primary to-primary-glow",
     },
     {
-      icon: Database,
       title: "Data Entry",
       description: "Accurate and fast data entry services for businesses and individuals. We ensure confidentiality, precision, and timely delivery.",
       features: ["Excel / Google Sheets", "CRM data entry", "Copy-paste tasks", "PDF to Excel/Word"],
@@ -74,7 +32,6 @@ const Services = () => {
       gradient: "from-primary to-primary-glow",
     },
     {
-      icon: BookOpen,
       title: "Research Assistance",
       description: "Reliable research support with authentic sources, helping clients save time and make informed decisions.",
       features: ["Academic research", "Market research", "Online research", "Data collection"],
@@ -82,7 +39,6 @@ const Services = () => {
       gradient: "from-primary to-primary-glow",
     },
     {
-      icon: CheckCircle,
       title: "Proofreading & Editing",
       description: "We improve clarity, grammar, and structure while maintaining your original tone and meaning.",
       features: ["Grammar correction", "Sentence improvement", "Academic & business editing"],
@@ -90,7 +46,6 @@ const Services = () => {
       gradient: "from-primary to-primary-glow",
     },
     {
-      icon: Palette,
       title: "Canva Designing",
       description: "Eye-catching and professional designs created using Canva for digital and print use.",
       features: ["Social media posts", "Presentations", "Flyers & posters", "CVs & resumes"],
@@ -98,7 +53,6 @@ const Services = () => {
       gradient: "from-primary to-primary-glow",
     },
     {
-      icon: FileText,
       title: "Typing & Formatting",
       description: "Clean, professional typing and formatting according to academic or business standards.",
       features: ["PDF to Word", "Formatting documents", "Reports & assignments"],
@@ -106,7 +60,6 @@ const Services = () => {
       gradient: "from-primary to-primary-glow",
     },
     {
-      icon: GraduationCap,
       title: "Assignment Writing",
       description: "Custom-written assignments with proper structure, references, and plagiarism-free content.",
       features: ["Essays", "Case studies", "Reports", "Coursework"],
@@ -114,7 +67,6 @@ const Services = () => {
       gradient: "from-primary to-primary-glow",
     },
     {
-      icon: FileCheck,
       title: "Literature Review",
       description: "In-depth literature reviews using credible academic sources, written in a clear and structured manner.",
       features: ["Systematic reviews", "Thematic reviews", "APA / Harvard referencing"],
@@ -122,7 +74,6 @@ const Services = () => {
       gradient: "from-primary to-primary-glow",
     },
     {
-      icon: Presentation,
       title: "Presentation (PPT) Design",
       description: "Professionally designed PowerPoint or Google Slides presentations that are visually appealing and easy to understand.",
       features: ["Academic presentations", "Business & pitch decks", "Charts, icons & visuals", "Clean layouts"],
@@ -130,7 +81,6 @@ const Services = () => {
       gradient: "from-primary to-primary-glow",
     },
     {
-      icon: Briefcase,
       title: "Resume & Cover Letter Writing",
       description: "ATS-friendly resumes and persuasive cover letters that help clients stand out in job applications.",
       features: ["Modern CV design", "Keyword optimization", "Job-specific cover letters"],
@@ -138,7 +88,6 @@ const Services = () => {
       gradient: "from-primary to-primary-glow",
     },
     {
-      icon: FileEdit,
       title: "Academic Formatting",
       description: "We format documents according to international academic standards with proper citations and references.",
       features: ["In-text citations", "Reference lists", "Proper margins & headings"],
@@ -146,7 +95,6 @@ const Services = () => {
       gradient: "from-primary to-primary-glow",
     },
     {
-      icon: Users,
       title: "Virtual Assistance",
       description: "Reliable virtual assistance for small business and professional daily tasks.",
       features: ["Email handling", "Data management", "Online research", "Admin support"],
@@ -156,9 +104,19 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-24 md:py-32 bg-gradient-to-b from-white to-gray-50/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+    <section id="services" className="py-24 md:py-32 bg-gradient-to-b from-white to-gray-50/50 relative overflow-hidden">
+      {/* Background Image - Original without any effects */}
+      <div 
+        className="absolute inset-0 z-0 bg-cover bg-no-repeat bg-center"
+        style={{
+          backgroundImage: 'url(/images/hero/services-background.png)',
+        }}
+      />
+      
+      {/* Content */}
+      <div className="relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header - Top Center */}
         <div className="text-center mb-16 md:mb-20">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 tracking-tight">
             Our Professional Services
@@ -169,18 +127,14 @@ const Services = () => {
           </p>
         </div>
 
-        {/* Services Grid - Equal height cards with bottom alignment - Only 4 Main Services */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {allServices.slice(0, 4).map((service, index) => (
+        {/* Services Grid - Right Side 2x2 Layout */}
+        <div className="flex justify-end">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 w-full md:w-1/2">
+            {allServices.slice(0, 4).map((service, index) => (
             <Card 
               key={index} 
               className="p-6 lg:p-8 shadow-sm hover:shadow-lg transition-all duration-300 group cursor-pointer border border-gray-100 bg-white flex flex-col rounded-xl hover:-translate-y-1"
             >
-              {/* Service Image */}
-              <div className="mb-4">
-                <ServiceImage service={service} />
-              </div>
-
               {/* Content Section - Grows to fill space */}
               <div className="flex flex-col flex-1">
                 {/* Title */}
@@ -221,7 +175,8 @@ const Services = () => {
                 </Button>
               </div>
             </Card>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* View All Services CTA */}
@@ -234,6 +189,7 @@ const Services = () => {
             View All Services
           </Button>
         </div>
+      </div>
       </div>
     </section>
   );

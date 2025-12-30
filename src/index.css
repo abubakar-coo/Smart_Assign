@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hero Background Image Responsive Styles - Mobile: Blur and Center */
+@media (max-width: 768px) {
+  section#home > div:first-child {
+    background-position: 50% 50% !important;
+    background-size: cover !important;
+    background-attachment: scroll !important;
+    filter: blur(8px);
+    transform: scale(1.1);
+  }
+}
+
+@media (max-width: 640px) {
+  section#home > div:first-child {
+    background-position: 50% 50% !important;
+    background-size: cover !important;
+    background-attachment: scroll !important;
+    filter: blur(10px);
+    transform: scale(1.2);
+  }
+}
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
