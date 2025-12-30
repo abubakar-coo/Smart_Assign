@@ -44,8 +44,8 @@ const ServiceDetail = () => {
         "Keyword research included",
         "SEO optimization",
         "Content formatting"
-      ],
-      deliverables: [
+        ],
+        deliverables: [
         "Completed content in Word/Google Docs",
         "Keyword research report",
         "SEO meta tags",
@@ -61,7 +61,7 @@ const ServiceDetail = () => {
     {
       slug: "data-entry",
       title: "Data Entry",
-      category: "Data Management",
+        category: "Data Management",
       description: "Accurate and fast data entry services for businesses and individuals. We ensure confidentiality, precision, and timely delivery.",
       whatYoullGet: [
         "Accurate data entry (99.9% accuracy)",
@@ -69,7 +69,9 @@ const ServiceDetail = () => {
         "Data validation and cleanup",
         "Confidential handling",
         "Multiple format support",
-        "Error-free delivery"
+        "Error-free delivery",
+        "Quality assurance check",
+        "Organized data structure"
       ],
       workScope: [
         "Excel/Google Sheets data entry",
@@ -77,20 +79,23 @@ const ServiceDetail = () => {
         "Copy-paste tasks",
         "PDF to Excel/Word conversion",
         "Database management",
-        "Bulk data processing"
-      ],
-      deliverables: [
+        "Bulk data processing",
+        "Data verification",
+        "Format standardization"
+        ],
+        deliverables: [
         "Formatted Excel/CSV files",
         "Organized database",
         "Data validation report",
         "Original file backup",
-        "Revision support"
+        "Revision support",
+        "Data accuracy report"
       ],
       timeline: "1-3 days",
       maxDeliveryTime: "3 days",
-      pricingRange: { min: 5, max: 30 },
-      pricingDetails: "$5 – $10 per hour | $15 – $30 per project (basic)",
-      requirements: "Source files/documents, target format, data structure requirements, deadline"
+      pricingRange: { min: 30, max: 100 },
+      pricingDetails: "$30+ per hour | $15 – $30 per project (basic) - Hourly rate includes: data entry, formatting, validation, and quality check. For bulk projects, pricing is project-based.",
+      requirements: "Source files/documents, target format, data structure requirements, deadline, expected volume"
     },
     {
       slug: "research-assistance",
@@ -103,7 +108,9 @@ const ServiceDetail = () => {
         "Data analysis and summary",
         "Research findings presentation",
         "Source verification",
-        "Formatted bibliography"
+        "Formatted bibliography",
+        "In-depth analysis",
+        "Verified information"
       ],
       workScope: [
         "Academic research",
@@ -111,20 +118,24 @@ const ServiceDetail = () => {
         "Online research",
         "Data collection",
         "Information gathering",
-        "Source compilation"
-      ],
-      deliverables: [
+        "Source compilation",
+        "Data analysis",
+        "Report writing"
+        ],
+        deliverables: [
         "Research report/document",
         "Source list with links",
         "Data summary/analysis",
         "Findings presentation",
-        "Bibliography/references"
+        "Bibliography/references",
+        "Research methodology",
+        "Key insights summary"
       ],
       timeline: "2-5 days",
       maxDeliveryTime: "5 days",
-      pricingRange: { min: 5, max: 20 },
-      pricingDetails: "$10 – $20 per task | $5 – $8 per hour",
-      requirements: "Research topic, scope, preferred sources, report format, deadline"
+      pricingRange: { min: 30, max: 150 },
+      pricingDetails: "$30+ per hour | $10 – $20 per task - Hourly rate includes: comprehensive research, source verification, data analysis, and formatted report. For specific tasks, pricing is task-based.",
+      requirements: "Research topic, scope, preferred sources, report format, deadline, research depth required"
     },
     {
       slug: "proofreading-editing",
@@ -137,7 +148,9 @@ const ServiceDetail = () => {
         "Style consistency",
         "Clarity enhancement",
         "Error-free document",
-        "Track changes file"
+        "Track changes file",
+        "Comprehensive editing",
+        "Professional polish"
       ],
       workScope: [
         "Grammar correction",
@@ -145,25 +158,29 @@ const ServiceDetail = () => {
         "Sentence improvement",
         "Academic & business editing",
         "Style guide adherence",
-        "Formatting review"
-      ],
-      deliverables: [
+        "Formatting review",
+        "Punctuation fixes",
+        "Word choice optimization"
+        ],
+        deliverables: [
         "Edited document",
         "Track changes version",
         "Style/error report",
         "Original file backup",
-        "Revision support"
+        "Revision support",
+        "Editing summary",
+        "Before/after comparison"
       ],
       timeline: "1-3 days",
       maxDeliveryTime: "3 days",
-      pricingRange: { min: 5, max: 25 },
-      pricingDetails: "$5 – $10 per 1,000 words | $15 – $25 for detailed editing",
-      requirements: "Document to edit, word count, style preference (APA/MLA/etc.), deadline"
+      pricingRange: { min: 20, max: 100 },
+      pricingDetails: "$20+ per 1,000 words | $15 – $25 for detailed editing - Price includes: grammar check, spelling correction, sentence improvement, style consistency, and track changes. Detailed editing includes structural improvements.",
+      requirements: "Document to edit, word count, style preference (APA/MLA/etc.), deadline, editing depth required"
     },
     {
       slug: "canva-designing",
-      title: "Canva Designing",
-      category: "Graphic Design",
+        title: "Canva Designing",
+        category: "Graphic Design",
       description: "Eye-catching and professional designs created using Canva for digital and print use.",
       whatYoullGet: [
         "Professional Canva designs",
@@ -171,7 +188,9 @@ const ServiceDetail = () => {
         "Multiple format delivery",
         "Brand-consistent designs",
         "Unlimited revisions (within scope)",
-        "Source file included"
+        "Source file included",
+        "Custom graphics",
+        "Professional layouts"
       ],
       workScope: [
         "Social media posts",
@@ -179,25 +198,29 @@ const ServiceDetail = () => {
         "Flyers & posters",
         "CVs & resumes",
         "Marketing materials",
-        "Logo designs"
-      ],
-      deliverables: [
+        "Logo designs",
+        "Banner designs",
+        "Infographics"
+        ],
+        deliverables: [
         "Design files (PNG/JPG/PDF)",
         "Canva source file",
         "Multiple sizes/formats",
         "Brand guidelines (if needed)",
-        "Revision support"
+        "Revision support",
+        "Design variations",
+        "Print-ready files"
       ],
       timeline: "1-3 days",
       maxDeliveryTime: "3 days",
-      pricingRange: { min: 5, max: 50 },
-      pricingDetails: "$5 – $10 per design | $25 – $50 for bulk designs",
-      requirements: "Design type, content/text, images/brand assets, color preferences, dimensions, deadline"
+      pricingRange: { min: 15, max: 100 },
+      pricingDetails: "$15+ per design | $25 – $50 for bulk designs - Price includes: professional design, high-resolution files, source file, unlimited revisions (within scope), and multiple format delivery. Bulk orders get discounted rates.",
+      requirements: "Design type, content/text, images/brand assets, color preferences, dimensions, deadline, number of designs needed"
     },
     {
       slug: "typing-formatting",
-      title: "Typing & Formatting",
-      category: "Document Services",
+        title: "Typing & Formatting",
+        category: "Document Services",
       description: "Clean, professional typing and formatting according to academic or business standards.",
       whatYoullGet: [
         "Accurately typed documents",
@@ -205,7 +228,9 @@ const ServiceDetail = () => {
         "Multiple format options",
         "Error-free output",
         "Format consistency",
-        "Quick turnaround"
+        "Quick turnaround",
+        "Proper structure",
+        "Clean layout"
       ],
       workScope: [
         "PDF to Word conversion",
@@ -213,19 +238,23 @@ const ServiceDetail = () => {
         "Document formatting",
         "Reports & assignments",
         "Template creation",
-        "Format standardization"
-      ],
-      deliverables: [
+        "Format standardization",
+        "Page layout",
+        "Typography adjustment"
+        ],
+        deliverables: [
         "Formatted Word/DOCX file",
         "Original file backup",
         "Format style guide",
-        "Revision support"
+        "Revision support",
+        "Formatted PDF version",
+        "Formatting checklist"
       ],
       timeline: "1-2 days",
       maxDeliveryTime: "2 days",
-      pricingRange: { min: 5, max: 20 },
-      pricingDetails: "$5 – $8 per document | $10 – $20 for complex formatting",
-      requirements: "Source document, target format, formatting style, page count, deadline"
+      pricingRange: { min: 20, max: 100 },
+      pricingDetails: "$20+ per document (up to 12 pages) | $10 – $20 for complex formatting - Price includes: accurate typing, professional formatting, proper structure, error-free output, and format consistency. For documents over 12 pages, additional charges apply.",
+      requirements: "Source document, target format, formatting style, page count, deadline, specific formatting requirements"
     },
     {
       slug: "assignment-writing",
@@ -247,8 +276,8 @@ const ServiceDetail = () => {
         "Coursework",
         "Research papers",
         "Academic papers"
-      ],
-      deliverables: [
+        ],
+        deliverables: [
         "Completed assignment",
         "Reference list/bibliography",
         "Outline/structure",
@@ -281,8 +310,8 @@ const ServiceDetail = () => {
         "Source synthesis",
         "Critical evaluation",
         "Research compilation"
-      ],
-      deliverables: [
+        ],
+        deliverables: [
         "Literature review document",
         "Source bibliography",
         "Citation list",
@@ -303,10 +332,12 @@ const ServiceDetail = () => {
       whatYoullGet: [
         "Professional slide design",
         "Clean and engaging layouts",
-        "Visual elements (charts/icons)",
+        "Visual elements (charts, icons, graphics)",
         "Brand consistency",
         "Multiple format delivery",
-        "Source file included"
+        "Source file included",
+        "Custom graphics",
+        "Professional animations"
       ],
       workScope: [
         "Academic presentations (10-50+ slides)",
@@ -314,20 +345,24 @@ const ServiceDetail = () => {
         "Charts, icons & visuals",
         "Clean layouts",
         "Animation (if needed)",
-        "Template creation"
-      ],
-      deliverables: [
+        "Template creation",
+        "Slide transitions",
+        "Data visualization"
+        ],
+        deliverables: [
         "PowerPoint/Google Slides file",
         "PDF version",
         "Source file with editable elements",
         "Design template",
-        "Revision support"
+        "Revision support",
+        "Multiple format options",
+        "Design guide"
       ],
       timeline: "2-5 days",
       maxDeliveryTime: "5 days",
-      pricingRange: { min: 5, max: 50 },
-      pricingDetails: "$5 – $10 per design | $25 – $50 for bulk designs",
-      requirements: "Number of slides, content/text, design style, brand colors, charts/data, deadline"
+      pricingRange: { min: 20, max: 200 },
+      pricingDetails: "$20+ per presentation | $25 – $50 for bulk designs - Price includes: professional slide design, custom graphics, clean layouts, visual elements, source file, and unlimited revisions (within scope). Price varies based on number of slides.",
+      requirements: "Number of slides, content/text, design style, brand colors, charts/data, deadline, animation requirements"
     },
     {
       slug: "resume-cover-letter-writing",
@@ -349,8 +384,8 @@ const ServiceDetail = () => {
         "Job-specific tailoring",
         "LinkedIn profile optimization (optional)",
         "Format customization"
-      ],
-      deliverables: [
+        ],
+        deliverables: [
         "Resume (Word/PDF)",
         "Cover letter",
         "ATS-friendly version",
@@ -383,15 +418,15 @@ const ServiceDetail = () => {
         "Proper margins & headings",
         "Table of contents",
         "Page numbering"
-      ],
-      deliverables: [
+        ],
+        deliverables: [
         "Formatted document",
         "Citation guide",
         "Reference list",
         "Original file backup",
         "Revision support"
-      ],
-      timeline: "1-3 days",
+        ],
+        timeline: "1-3 days",
       maxDeliveryTime: "3 days",
       pricingRange: { min: 5, max: 25 },
       pricingDetails: "$5 – $10 per document | $15 – $25 for complex formatting",
@@ -408,7 +443,9 @@ const ServiceDetail = () => {
         "Timely delivery",
         "Regular updates",
         "Confidential handling",
-        "Quality work"
+        "Quality work",
+        "Efficient support",
+        "Organized results"
       ],
       workScope: [
         "Email handling",
@@ -416,19 +453,23 @@ const ServiceDetail = () => {
         "Online research",
         "Admin support",
         "Document organization",
-        "Small business tasks"
+        "Small business tasks",
+        "Schedule management",
+        "Customer service support"
       ],
       deliverables: [
         "Completed tasks",
         "Work report",
         "Organized files/data",
-        "Summary of work done"
+        "Summary of work done",
+        "Task documentation",
+        "Follow-up support"
       ],
       timeline: "1-3 days",
       maxDeliveryTime: "3 days",
-      pricingRange: { min: 5, max: 30 },
-      pricingDetails: "$5 – $10 per hour | $15 – $30 per project",
-      requirements: "Task description, scope, deadline, access/permissions needed"
+      pricingRange: { min: 10, max: 50 },
+      pricingDetails: "$10+ per hour | $15 – $30 per project - Hourly rate includes: task completion, regular updates, professional service, and organized deliverables. For specific projects, pricing is project-based.",
+      requirements: "Task description, scope, deadline, access/permissions needed, expected hours, priority level"
     }
   ];
 
@@ -476,6 +517,7 @@ const ServiceDetail = () => {
   const [projectFiles, setProjectFiles] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [budgetError, setBudgetError] = useState<string>("");
+  const [countryError, setCountryError] = useState<string>("");
 
   const isPakistan = formData.country === "Pakistan";
 
@@ -561,6 +603,10 @@ const ServiceDetail = () => {
   const handleCountryChange = (country: string) => {
     setSelectedCountry(country);
     setFormData(prev => ({ ...prev, country }));
+    // Clear country error when country is selected
+    if (country) {
+      setCountryError("");
+    }
     // Re-validate budget when country changes (different limits)
     if (formData.budget) {
       validateBudget(formData.budget);
@@ -586,6 +632,17 @@ const ServiceDetail = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate country selection
+    if (!formData.country || formData.country.trim() === "") {
+      setCountryError("Please select your country");
+      toast({
+        title: "Country Required",
+        description: "Please select your country to proceed.",
+        variant: "destructive",
+      });
+      return;
+    }
     
     // Validate budget before submission
     if (!validateBudget(formData.budget)) {
@@ -668,6 +725,8 @@ const ServiceDetail = () => {
         setSelectedCountry("");
         setPaymentScreenshot(null);
         setProjectFiles([]);
+        setCountryError("");
+        setBudgetError("");
       } else {
         toast({
           title: "Error",
@@ -786,14 +845,14 @@ const ServiceDetail = () => {
                   {currentService.requirements}
                 </p>
               </Card>
-            </div>
+                      </div>
 
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Pricing Card */}
               <Card className="p-6 shadow-card border-0 sticky top-24">
                 <div className="space-y-6">
-                  <div>
+                      <div>
                     <h3 className="text-xl font-bold text-foreground mb-2">Pricing</h3>
                     <p className="text-2xl font-bold text-primary">
                       {isPakistan ? 'Rs' : '$'}{currentService.pricingRange.min} - {isPakistan ? 'Rs' : '$'}{currentService.pricingRange.max}
@@ -801,7 +860,7 @@ const ServiceDetail = () => {
                     <p className="text-sm text-muted-foreground mt-2">
                       {currentService.pricingDetails}
                     </p>
-                  </div>
+                      </div>
 
                   <div className="border-t pt-4">
                     <div className="flex items-center gap-3 mb-4">
@@ -809,7 +868,7 @@ const ServiceDetail = () => {
                       <div>
                         <div className="font-semibold text-foreground">Delivery Time</div>
                         <div className="text-sm text-muted-foreground">{currentService.timeline}</div>
-                      </div>
+                    </div>
                     </div>
                   </div>
 
@@ -843,7 +902,7 @@ const ServiceDetail = () => {
       {/* Service Request Form */}
       <section id="request-form" className="py-20 bg-muted/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Card className="p-8 shadow-card border-0">
+              <Card className="p-8 shadow-card border-0">
             <h2 className="text-3xl font-bold text-foreground mb-6">Request This Service</h2>
             <p className="text-muted-foreground mb-8">
               Fill out the form below with your project requirements. We'll review and get back to you within 24 hours.
@@ -867,7 +926,7 @@ const ServiceDetail = () => {
                       required
                       placeholder="Your full name"
                     />
-                  </div>
+                    </div>
                   <div>
                     <Label htmlFor="email">Email *</Label>
                     <Input
@@ -894,8 +953,8 @@ const ServiceDetail = () => {
                   </div>
                   <div>
                     <Label className="flex items-center gap-2"><MapPin className="w-4 h-4" /> Country *</Label>
-                    <Select onValueChange={handleCountryChange} value={formData.country}>
-                      <SelectTrigger>
+                    <Select onValueChange={handleCountryChange} value={formData.country} required>
+                      <SelectTrigger className={countryError ? "border-red-500" : ""}>
                         <SelectValue placeholder="Select your country" />
                       </SelectTrigger>
                       <SelectContent>
@@ -906,9 +965,15 @@ const ServiceDetail = () => {
                         ))}
                       </SelectContent>
                     </Select>
+                    {countryError && (
+                      <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {countryError}
+                      </p>
+                    )}
                   </div>
                 </div>
-              </div>
+            </div>
 
               {/* Project Details */}
               <div>
@@ -928,7 +993,7 @@ const ServiceDetail = () => {
                       placeholder="Tell us about your project..."
                       className="min-h-[100px]"
                     />
-                  </div>
+                </div>
                   <div>
                     <Label htmlFor="requirements">Specific Requirements *</Label>
                     <Textarea
@@ -982,9 +1047,9 @@ const ServiceDetail = () => {
                             >
                               ×
                             </Button>
-                          </div>
-                        ))}
-                      </div>
+                    </div>
+                  ))}
+                </div>
                     )}
                   </div>
 
@@ -1012,7 +1077,7 @@ const ServiceDetail = () => {
                         </p>
                       )}
                     </div>
-                    <div>
+                <div>
                       <Label htmlFor="deadline">Deadline</Label>
                       <Input
                         id="deadline"
@@ -1050,8 +1115,8 @@ const ServiceDetail = () => {
                       <p className="text-sm text-muted-foreground mt-2">
                         Please send the advance payment and upload the screenshot below.
                       </p>
-                    </div>
-                  </Card>
+                </div>
+              </Card>
 
                   {/* Payment Methods */}
                   <div className="mt-6 space-y-4">
@@ -1066,8 +1131,8 @@ const ServiceDetail = () => {
                               <div className="text-sm text-muted-foreground">Name: {account.accountTitle}</div>
                             </Card>
                           ))}
-                        </div>
-                      </div>
+            </div>
+          </div>
                     ) : (
                       <div>
                         <Label className="mb-3 block">Payment Methods (International - Crypto):</Label>

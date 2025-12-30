@@ -1,8 +1,15 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Linkedin, Twitter, Mail, Award, Users, Target } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+// Helper function to create URL-friendly slug from name
+const nameToSlug = (name: string): string => {
+  return name.toLowerCase().replace(/\s+/g, '-');
+};
 
 const Team = () => {
+  const navigate = useNavigate();
   const ceo = {
     name: "Abubakar Arif",
     role: "CEO & Founder",
@@ -172,6 +179,8 @@ const Team = () => {
                         alt={ceo.name}
                         className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-all duration-500 avatar-glow"
                         loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                         style={{
                           filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
                           transform: 'translateZ(10px)'
@@ -226,16 +235,17 @@ const Team = () => {
           </Card>
         </div>
 
-        {/* Team Members */}
+        {/* Team Members - Only 4 Members (CEO is separate) */}
         <div className="mb-6">
           <h3 className="text-3xl font-semibold text-foreground text-center mb-12">
             Our Expert Team
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {teamMembers.map((member, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {teamMembers.slice(0, 4).map((member, index) => (
               <Card
                 key={index}
                 className="p-6 shadow-card hover:shadow-hover transition-all duration-300 group cursor-pointer border-0 hover:scale-105 hover:-translate-y-2"
+                onClick={() => navigate(`/team/${nameToSlug(member.name)}`)}
               >
                 <div className="text-center space-y-4">
                   <div className="relative mx-auto w-32 h-32">
@@ -256,6 +266,8 @@ const Team = () => {
                           alt={member.name}
                           className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-all duration-500 avatar-glow"
                           loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                           style={{
                             filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
                             transform: 'translateZ(10px)'

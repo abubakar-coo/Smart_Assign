@@ -39,21 +39,14 @@ const Footer = () => {
 
   const services = [
     { name: "SEO Content Writing", href: `/services/${titleToSlug("SEO Content Writing")}` },
-    { name: "Data Entry", href: `/services/${titleToSlug("Data Entry")}` },
     { name: "Research Assistance", href: `/services/${titleToSlug("Research Assistance")}` },
-    { name: "Proofreading & Editing", href: `/services/${titleToSlug("Proofreading & Editing")}` },
-    { name: "Canva Designing", href: `/services/${titleToSlug("Canva Designing")}` },
     { name: "Typing & Formatting", href: `/services/${titleToSlug("Typing & Formatting")}` },
-    { name: "Assignment Writing", href: `/services/${titleToSlug("Assignment Writing")}` },
+    { name: "Canva Designing", href: `/services/${titleToSlug("Canva Designing")}` },
     { name: "Literature Review", href: `/services/${titleToSlug("Literature Review")}` },
-    { name: "Presentation (PPT) Design", href: `/services/${titleToSlug("Presentation (PPT) Design")}` },
-    { name: "Resume & Cover Letter Writing", href: `/services/${titleToSlug("Resume & Cover Letter Writing")}` },
-    { name: "Academic Formatting (APA / MLA / Harvard)", href: `/services/${titleToSlug("Academic Formatting (APA / MLA / Harvard)")}` },
-    { name: "Virtual Assistance (Small Tasks)", href: `/services/${titleToSlug("Virtual Assistance (Small Tasks)")}` },
   ];
 
   const contactInfo = [
-    { icon: Mail, text: "admin@smartassign.info", href: "mailto:admin@smartassign.info" },
+    { icon: Mail, text: "smartassignmentofficial@gmail.com", href: "mailto:smartassignmentofficial@gmail.com" },
     { icon: Phone, text: "+92 3098091819", href: "tel:+923098091819" },
     { icon: MapPin, text: "Remote", href: "#" },
   ];
@@ -159,7 +152,7 @@ const Footer = () => {
 
           {/* Services */}
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold">Our Services</h3>
+            <h3 className="text-lg font-semibold">Main Services</h3>
             <ul className="space-y-3">
               {services.map((service, index) => (
                 <li key={index}>
@@ -244,15 +237,15 @@ const Footer = () => {
               © {currentYear} Smart Assign. All rights reserved.
             </div>
             <div className="flex space-x-6 text-sm">
-              <a href="#" className="text-white/60 hover:text-primary transition-colors">
+              <Link to="/privacy-policy" className="text-white/60 hover:text-primary transition-colors">
                 Privacy Policy
-              </a>
-              <a href="#" className="text-white/60 hover:text-primary transition-colors">
+              </Link>
+              <Link to="/terms-of-service" className="text-white/60 hover:text-primary transition-colors">
                 Terms of Service
-              </a>
-              <a href="#" className="text-white/60 hover:text-primary transition-colors">
+              </Link>
+              <Link to="/cookie-policy" className="text-white/60 hover:text-primary transition-colors">
                 Cookie Policy
-              </a>
+              </Link>
             </div>
           </div>
         </div>

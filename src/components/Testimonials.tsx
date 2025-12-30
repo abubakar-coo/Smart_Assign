@@ -128,12 +128,15 @@ const Testimonials = () => {
     }
   ];
 
+  // Only show first 2 testimonials on home page
+  const homePageTestimonials = testimonials.slice(0, 2);
+
   const nextTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    setCurrentTestimonial((prev) => (prev + 1) % homePageTestimonials.length);
   };
 
   const prevTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    setCurrentTestimonial((prev) => (prev - 1 + homePageTestimonials.length) % homePageTestimonials.length);
   };
 
   const stats = [
@@ -188,12 +191,12 @@ const Testimonials = () => {
                   </div>
                   
                   <blockquote className="text-2xl text-foreground leading-relaxed">
-                    "{testimonials[currentTestimonial].text}"
+                    "{homePageTestimonials[currentTestimonial].text}"
                   </blockquote>
                   
                   <div className="bg-muted px-4 py-2 rounded-full inline-block">
                     <span className="text-base font-medium text-muted-foreground">
-                      Service: {testimonials[currentTestimonial].service}
+                      Service: {homePageTestimonials[currentTestimonial].service}
                     </span>
                   </div>
                 </div>
@@ -201,19 +204,19 @@ const Testimonials = () => {
                 <div className="text-center lg:text-right space-y-4">
                   <div className="w-20 h-20 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto lg:ml-auto">
                     <span className="text-3xl font-bold text-white">
-                      {testimonials[currentTestimonial].avatar}
+                      {homePageTestimonials[currentTestimonial].avatar}
                     </span>
                   </div>
                   
                   <div>
                     <div className="font-semibold text-foreground text-xl">
-                      {testimonials[currentTestimonial].name}
+                      {homePageTestimonials[currentTestimonial].name}
                     </div>
                     <div className="text-primary font-medium">
-                      {testimonials[currentTestimonial].role}
+                      {homePageTestimonials[currentTestimonial].role}
                     </div>
                     <div className="text-muted-foreground text-base">
-                      {testimonials[currentTestimonial].company}
+                      {homePageTestimonials[currentTestimonial].company}
                     </div>
                   </div>
                 </div>
@@ -231,7 +234,7 @@ const Testimonials = () => {
                 </Button>
                 
                 <div className="flex space-x-2">
-                  {testimonials.map((_, index) => (
+                  {homePageTestimonials.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentTestimonial(index)}
@@ -257,9 +260,9 @@ const Testimonials = () => {
           </Card>
         </div>
 
-        {/* All Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {testimonials.slice(0, 6).map((testimonial, index) => (
+        {/* All Testimonials Grid - Only 2 Testimonials on Home Page */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          {testimonials.slice(0, 2).map((testimonial, index) => (
             <Card 
               key={index} 
               className={`p-6 shadow-card hover:shadow-hover transition-all duration-300 cursor-pointer border-0 ${

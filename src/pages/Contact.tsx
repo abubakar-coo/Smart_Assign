@@ -201,7 +201,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground">Email</h3>
-                      <p className="text-muted-foreground">admin@smartassign.info</p>
+                      <p className="text-muted-foreground">smartassignmentofficial@gmail.com</p>
                     </div>
                   </div>
                 </Card>

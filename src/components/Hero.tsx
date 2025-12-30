@@ -101,31 +101,30 @@ const Hero = () => {
   ];
 
   return (
-    <section id="home" className="pt-24 pb-8 bg-gradient-hero min-h-screen relative">
-
+    <section id="home" className="pt-24 pb-8 min-h-screen bg-gradient-hero">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8 items-center min-h-[70vh]">
-          {/* Left Content */}
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-tight">
-                Professional{" "}
-                <span className="bg-gradient-primary bg-clip-text text-transparent">
-                  Micro-Services
-                </span>{" "}
-                for Growing Businesses
-              </h1>
-              <p className="text-xl text-muted-foreground leading-relaxed">
-                We provide specialized, high-quality services that help businesses 
-                streamline operations and accelerate growth. From content creation 
-                to data management, we've got you covered.
-              </p>
-            </div>
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[70vh] py-12">
+            {/* Left Content */}
+            <div className="space-y-8">
+              <div className="space-y-6">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-[1.1] tracking-tight">
+                  Professional{" "}
+                  <span className="bg-gradient-primary bg-clip-text text-transparent">
+                    Micro-Services
+                  </span>{" "}
+                  for Growing Businesses
+                </h1>
+                <p className="text-lg md:text-xl text-foreground/90 leading-relaxed max-w-2xl">
+                  We provide specialized, high-quality services that help businesses 
+                  streamline operations and accelerate growth. From content creation 
+                  to data management, we've got you covered.
+                </p>
+              </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
                 size="lg" 
-                className="bg-gradient-primary hover:shadow-hover text-lg px-8 py-3 transform hover:scale-105 transition-all duration-300 hover:-translate-y-1"
+                className="bg-gradient-primary hover:shadow-lg text-base font-semibold px-8 py-6 rounded-lg transition-all duration-200 hover:scale-[1.02]"
                 onClick={() => window.location.href = "/services"}
               >
                 Explore Services
@@ -133,7 +132,7 @@ const Hero = () => {
               <Button 
                 variant="outline" 
                 size="lg"
-                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground text-lg px-8 py-3 transform hover:scale-105 transition-all duration-300 hover:-translate-y-1"
+                className="border-2 border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground text-base font-semibold px-8 py-6 rounded-lg transition-all duration-200 hover:scale-[1.02] hover:border-primary"
                 onClick={() => window.location.href = "/portfolio"}
               >
                 View Portfolio
@@ -154,10 +153,10 @@ const Hero = () => {
                 </div>
               </div>
             </div>
-          </div>
+            </div>
 
-          {/* Right Dashboard */}
-          <div className="space-y-6">
+            {/* Right Dashboard */}
+            <div className="space-y-6">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-semibold text-foreground mb-2">
                 Company Dashboard
@@ -167,11 +166,11 @@ const Hero = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 lg:gap-6">
               {stats.map((stat, index) => (
                 <Card 
                   key={index} 
-                  className="p-6 shadow-card hover:shadow-hover transition-all duration-300 bg-white/80 backdrop-blur-sm transform hover:scale-105 cursor-pointer group"
+                  className="p-6 lg:p-8 shadow-sm hover:shadow-lg transition-all duration-300 bg-white border border-gray-100 rounded-xl transform hover:scale-[1.02] cursor-pointer group"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <stat.icon className={`w-8 h-8 ${stat.color} group-hover:scale-110 transition-transform duration-300`} />
@@ -188,7 +187,7 @@ const Hero = () => {
               ))}
             </div>
 
-            <Card className="p-6 shadow-card bg-white/80 backdrop-blur-sm hover:shadow-hover transition-all duration-300 transform hover:scale-[1.02]">
+            <Card className="p-6 lg:p-8 shadow-sm bg-white border border-gray-100 rounded-xl hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-foreground">
                   Market Presence
@@ -219,9 +218,9 @@ const Hero = () => {
                 </div>
               </div>
             </Card>
+            </div>
           </div>
         </div>
-      </div>
     </section>
   );
 };

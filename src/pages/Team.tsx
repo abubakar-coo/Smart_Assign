@@ -3,8 +3,15 @@ import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Linkedin, Twitter, Mail, Award, Users, Target, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+// Helper function to create URL-friendly slug from name
+const nameToSlug = (name: string): string => {
+  return name.toLowerCase().replace(/\s+/g, '-');
+};
 
 const TeamPage = () => {
+  const navigate = useNavigate();
   const ceo = {
     name: "Abubakar Arif",
     role: "CEO & Founder",
@@ -128,7 +135,7 @@ const TeamPage = () => {
       {/* CEO Section */}
       <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Card className="p-8 shadow-hover bg-gradient-hero border-0">
+          <Card className="p-8 shadow-hover bg-gradient-hero border-0 cursor-pointer hover:shadow-2xl transition-all duration-300" onClick={() => navigate(`/team/${nameToSlug(ceo.name)}`)}>
             <div className="grid lg:grid-cols-2 gap-8 items-center">
               <div className="space-y-6">
                 <div>
@@ -156,6 +163,16 @@ const TeamPage = () => {
                     </div>
                   ))}
                 </div>
+                <Button 
+                  variant="outline" 
+                  className="mt-4"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/team/${nameToSlug(ceo.name)}`);
+                  }}
+                >
+                  View Full Profile <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
               </div>
 
               <div className="flex justify-center">
@@ -192,7 +209,8 @@ const TeamPage = () => {
             {teamMembers.map((member, index) => (
               <Card
                 key={index}
-                className="p-6 shadow-card hover:shadow-hover transition-all duration-300 group cursor-pointer border-0"
+                className="p-6 shadow-card hover:shadow-hover transition-all duration-300 group cursor-pointer border-0 hover:scale-105"
+                onClick={() => navigate(`/team/${nameToSlug(member.name)}`)}
               >
                 <div className="text-center space-y-4">
                   <div className="relative mx-auto w-24 h-24">
@@ -220,11 +238,23 @@ const TeamPage = () => {
                     </p>
                   </div>
 
-                  <div className="bg-muted px-3 py-1 rounded-full inline-block">
+                  <div className="bg-muted px-3 py-1 rounded-full inline-block mb-4">
                     <span className="text-sm font-medium text-muted-foreground">
                       {member.experience}
                     </span>
                   </div>
+                  
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    className="w-full group-hover:bg-primary group-hover:text-white transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/team/${nameToSlug(member.name)}`);
+                    }}
+                  >
+                    View Profile <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
                 </div>
               </Card>
             ))}

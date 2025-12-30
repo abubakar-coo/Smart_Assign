@@ -23,12 +23,28 @@ const Services = () => {
   
   // Service image with green gradient (website's main color)
   const ServiceImage = ({ service }: { service: any }) => {
+    // Special handling for SEO Content Writing with custom 3D image
+    const isSEOService = service.title === "SEO Content Writing";
+    
     return (
       <div className="w-full h-32 rounded-2xl relative overflow-hidden group-hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-primary to-primary-glow shadow-lg">
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-2xl ring-4 ring-white/30">
-            <service.icon className="w-10 h-10 text-white drop-shadow-lg" />
-          </div>
+          {isSEOService ? (
+            <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-2xl ring-4 ring-white/30 p-2">
+              <img
+                src="/images/services/seo-content-writing-icon.png"
+                alt="SEO Content Writing"
+                className="w-full h-full object-contain"
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
+              />
+            </div>
+          ) : (
+            <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-2xl ring-4 ring-white/30">
+              <service.icon className="w-10 h-10 text-white drop-shadow-lg" />
+            </div>
+          )}
         </div>
         <div className="absolute top-2 right-2 w-6 h-6 bg-white/30 rounded-full animate-pulse shadow-lg"></div>
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/30 to-transparent p-3">
@@ -140,25 +156,25 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-20 bg-white">
+    <section id="services" className="py-24 md:py-32 bg-gradient-to-b from-white to-gray-50/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold text-foreground mb-4">
+        <div className="text-center mb-16 md:mb-20">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 tracking-tight">
             Our Professional Services
           </h2>
-          <p className="text-2xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Explore our comprehensive range of services designed to help you succeed. 
             From content creation to virtual assistance, we've got you covered.
           </p>
         </div>
 
-        {/* Services Grid - Equal height cards with bottom alignment */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {allServices.map((service, index) => (
+        {/* Services Grid - Equal height cards with bottom alignment - Only 4 Main Services */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          {allServices.slice(0, 4).map((service, index) => (
             <Card 
               key={index} 
-              className="p-6 shadow-card hover:shadow-hover transition-all duration-300 group cursor-pointer border-0 bg-white flex flex-col"
+              className="p-6 lg:p-8 shadow-sm hover:shadow-lg transition-all duration-300 group cursor-pointer border border-gray-100 bg-white flex flex-col rounded-xl hover:-translate-y-1"
             >
               {/* Service Image */}
               <div className="mb-4">
@@ -209,10 +225,10 @@ const Services = () => {
         </div>
 
         {/* View All Services CTA */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-16 md:mt-20">
           <Button 
             size="lg"
-            className="bg-gradient-primary hover:shadow-hover"
+            className="bg-gradient-primary hover:shadow-lg text-base font-semibold px-8 py-6 rounded-lg transition-all duration-200 hover:scale-[1.02]"
             onClick={() => window.location.href = '/services'}
           >
             View All Services

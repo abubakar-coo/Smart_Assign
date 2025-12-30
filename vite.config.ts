@@ -56,6 +56,12 @@ export default defineConfig(({ mode }) => ({
     sourcemap: false,
     // Optimize asset handling
     assetsInlineLimit: 4096,
+    // Target modern browsers for smaller bundles
+    target: 'esnext',
+    // CSS code splitting
+    cssCodeSplit: true,
+    // Report compressed size
+    reportCompressedSize: false,
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],

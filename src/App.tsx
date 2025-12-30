@@ -19,6 +19,10 @@ const TeamPage = lazy(() => import("./pages/Team"));
 const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
 const PortfolioDetail = lazy(() => import("./pages/PortfolioDetail"));
 const Careers = lazy(() => import("./pages/Careers"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
+const TeamMemberDetail = lazy(() => import("./pages/TeamMemberDetail"));
 
 // Loading component
 const PageLoader = () => (
@@ -31,10 +35,14 @@ const PageLoader = () => (
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000, // 1 minute
-      gcTime: 5 * 60 * 1000, // 5 minutes (garbage collection time, previously cacheTime)
+      staleTime: 5 * 60 * 1000, // 5 minutes (increased from 1 minute)
+      gcTime: 10 * 60 * 1000, // 10 minutes (increased from 5 minutes)
       refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
       retry: 1,
+      // Network mode for better performance
+      networkMode: 'online',
     },
   },
 });
@@ -57,6 +65,10 @@ const App = () => (
             <Route path="/testimonials" element={<TestimonialsPage />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/careers" element={<Careers />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
+            <Route path="/team/:memberName" element={<TeamMemberDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

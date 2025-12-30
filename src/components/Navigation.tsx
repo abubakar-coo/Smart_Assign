@@ -24,26 +24,17 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-border z-50">
+    <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200/50 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center hover:scale-105 transition-transform duration-300 group">
-            <div className="h-12 flex items-center justify-center relative mt-2">
-              <img 
-                src="/images/smart-assign-main-name.png" 
-                alt="Smart Assign" 
-                className="h-full w-auto object-contain transition-all duration-300 group-hover:scale-110 logo-hd brightness-125 contrast-110"
-                onError={(e) => {
-                  // Fallback to gradient icon if logo not found
-                  e.currentTarget.style.display = 'none';
-                  const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
-                  if (nextElement) nextElement.style.display = 'flex';
-                }}
+          <Link to="/" className="flex items-center hover:scale-105 transition-transform duration-300 group opacity-100 hover:opacity-100">
+            <div className="h-[76px] sm:h-[84px] md:h-[92px] lg:h-[104px]">
+              <img
+                src="/images/smart-assign-main-name.png"
+                alt="Smart Assign"
+                className="h-full w-auto object-contain"
               />
-              <div className="h-12 w-32 bg-gradient-primary rounded-lg hidden items-center justify-center">
-                <Zap className="w-6 h-6 text-white" />
-              </div>
             </div>
           </Link>
 
