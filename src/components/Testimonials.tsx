@@ -107,7 +107,7 @@ const Testimonials = () => {
           }
         });
       },
-      { threshold: 0.2, rootMargin: "0px 0px -50px 0px" }
+      { threshold: 0.05, rootMargin: "0px" }
     );
 
     cardRefs.current.forEach((card) => {
@@ -201,13 +201,11 @@ const Testimonials = () => {
 
   return (
     <section ref={sectionRef} id="testimonials" className="py-8 bg-gradient-hero">
-      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out delay-300
-        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-opacity duration-300 delay-100
+        ${isVisible ? 'opacity-100' : 'opacity-0'}
       `}>
         {/* Header */}
-        <div className={`text-center mb-8 transition-all duration-700 ease-out delay-500
-          ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-        `}>
+        <div className="text-center mb-8">
           <h2 className="text-5xl font-bold text-foreground mb-4">
             What Our Clients Say
           </h2>
@@ -229,14 +227,11 @@ const Testimonials = () => {
               ref={(el) => {
                 cardRefs.current[index] = el;
               }}
-              className={`p-6 text-center shadow-card bg-white/90 border-0 transform transition-all duration-500 ease-out
-                ${cardVisible 
-                  ? 'opacity-100 translate-y-0 scale-100 hover:scale-105 hover:shadow-xl' 
-                  : 'opacity-0 translate-y-8 scale-95'
-                }
+              className={`p-6 text-center shadow-card bg-white/90 border-0 transition-opacity duration-300 hover:shadow-lg
+                ${cardVisible ? 'opacity-100' : 'opacity-0'}
               `}
               style={{
-                transitionDelay: `${animationDelay}ms`,
+                transitionDelay: `${Math.min(animationDelay, 150)}ms`,
               }}
             >
               <div className="text-3xl font-bold text-primary mb-1">
@@ -256,14 +251,11 @@ const Testimonials = () => {
             ref={(el) => {
               cardRefs.current[4] = el; // Use index 4 for testimonial card
             }}
-            className={`p-8 md:p-12 shadow-hover bg-white/95 border-0 relative overflow-hidden transform transition-all duration-700 ease-out
-              ${visibleCards.has(4) 
-                ? 'opacity-100 translate-y-0 scale-100 hover:shadow-2xl' 
-                : 'opacity-0 translate-y-12 scale-95'
-              }
+            className={`p-8 md:p-12 shadow-hover bg-white/95 border-0 relative overflow-hidden transition-opacity duration-300 hover:shadow-xl
+              ${visibleCards.has(4) ? 'opacity-100' : 'opacity-0'}
             `}
             style={{
-              transitionDelay: '400ms',
+              transitionDelay: '200ms',
             }}
           >
             <div className="absolute top-6 left-6 text-primary/20">

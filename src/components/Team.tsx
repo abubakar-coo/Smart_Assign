@@ -43,7 +43,7 @@ const Team = () => {
           }
         });
       },
-      { threshold: 0.2, rootMargin: "0px 0px -50px 0px" }
+      { threshold: 0.05, rootMargin: "0px" }
     );
 
     memberRefs.current.forEach((member) => {
@@ -183,14 +183,12 @@ const Team = () => {
       />
       
       {/* Content */}
-      <div className={`relative z-10 transition-all duration-700 ease-out delay-300
-        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+      <div className={`relative z-10 transition-opacity duration-300 delay-100
+        ${isVisible ? 'opacity-100' : 'opacity-0'}
       `}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className={`text-center mb-8 transition-all duration-700 ease-out delay-500
-          ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-        `}>
+        <div className="text-center mb-8">
           <h2 className="text-5xl font-bold text-foreground mb-4">
             Meet Our Team
           </h2>
@@ -209,13 +207,9 @@ const Team = () => {
               ref={(el) => {
                 memberRefs.current[0] = el;
               }}
-              className={`flex items-center space-x-6 group cursor-pointer transform transition-all duration-500 ease-out
-                ${visibleMembers.has(0) 
-                  ? 'opacity-100 translate-x-0 scale-100 hover:translate-x-2' 
-                  : 'opacity-0 -translate-x-8 scale-95'
-                }
+              className={`flex items-center space-x-6 group cursor-pointer transition-opacity duration-300
+                ${visibleMembers.has(0) ? 'opacity-100' : 'opacity-0'}
               `}
-              style={{ transitionDelay: '0ms' }}
               onClick={() => navigate(`/team/${nameToSlug(ceo.name)}`)}
             >
               <div className="relative flex-shrink-0">
@@ -256,13 +250,10 @@ const Team = () => {
                 ref={(el) => {
                   memberRefs.current[memberIndex] = el;
                 }}
-                className={`flex items-center space-x-6 group cursor-pointer transform transition-all duration-500 ease-out
-                  ${memberVisible 
-                    ? 'opacity-100 translate-x-0 scale-100 hover:translate-x-2 hover:scale-[1.02]' 
-                    : 'opacity-0 -translate-x-8 scale-95'
-                  }
+                className={`flex items-center space-x-6 group cursor-pointer transition-opacity duration-300
+                  ${memberVisible ? 'opacity-100' : 'opacity-0'}
                 `}
-                style={{ transitionDelay: `${animationDelay}ms` }}
+                style={{ transitionDelay: `${Math.min(animationDelay, 150)}ms` }}
                 onClick={() => navigate(`/team/${nameToSlug(member.name)}`)}
               >
                 <div className="relative flex-shrink-0">
