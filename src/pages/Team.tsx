@@ -12,6 +12,21 @@ const nameToSlug = (name: string): string => {
 
 const TeamPage = () => {
   const navigate = useNavigate();
+  
+  // Helper function to get image path from name
+  const getImagePath = (name: string): string => {
+    // Try to match exact file names in team folder
+    const nameMap: { [key: string]: string } = {
+      "Abubakar Arif": "abubakar-arif",
+      "Shifa Seher": "Shifa-Seher",
+      "Faizan Waqas": "Faizan-Waqas",
+      "Emma Collins": "Emma-Collins",
+    };
+    
+    const fileName = nameMap[name] || nameToSlug(name);
+    return `/images/team/${fileName}.png`;
+  };
+
   const ceo = {
     name: "Abubakar Arif",
     role: "CEO & Founder",
@@ -24,7 +39,7 @@ const TeamPage = () => {
       "Featured Technology Leader",
       "Certified in Advanced Project Management",
     ],
-    image: "/api/placeholder/300/300",
+    image: getImagePath("Abubakar Arif"),
   };
 
   const teamMembers = [
@@ -33,14 +48,14 @@ const TeamPage = () => {
       role: "COO - Chief Operating Officer",
       specialty: "Operations & Strategic Planning",
       experience: "8+ years",
-      image: "/api/placeholder/200/200",
+      image: getImagePath("Shifa Seher"),
     },
     {
       name: "Faizan Waqas",
       role: "General Manager",
       specialty: "Project Management & Operations",
       experience: "2+ years",
-      image: "/api/placeholder/200/200",
+      image: getImagePath("Faizan Waqas"),
     },
     // Women Team Members
     {
@@ -48,7 +63,7 @@ const TeamPage = () => {
       role: "Senior Designer",
       specialty: "UI/UX & Brand Identity",
       experience: "6+ years",
-      image: "/api/placeholder/200/200",
+      image: getImagePath("Emma Collins"),
     },
     {
       name: "Sophia Martinez",
@@ -177,12 +192,23 @@ const TeamPage = () => {
 
               <div className="flex justify-center">
                 <div className="relative">
-                  <div className="w-64 h-64 rounded-3xl bg-gradient-primary p-1">
-                    <div className="w-full h-full rounded-3xl bg-muted flex items-center justify-center">
-                      <span className="text-7xl font-bold text-muted-foreground">
-                        AA
-                      </span>
-                    </div>
+                  <div className="w-64 h-64 rounded-3xl overflow-hidden bg-white shadow-lg">
+                    <img
+                      src={ceo.image}
+                      alt={ceo.name}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                      onError={(e) => {
+                        // Fallback to initials if image not found
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML = `<div class="w-full h-full rounded-3xl bg-gradient-primary flex items-center justify-center"><span class="text-7xl font-bold text-white">AA</span></div>`;
+                        }
+                      }}
+                    />
                   </div>
                   <div className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-secondary rounded-full flex items-center justify-center">
                     <Award className="w-6 h-6 text-white" />
@@ -214,15 +240,27 @@ const TeamPage = () => {
               >
                 <div className="text-center space-y-4">
                   <div className="relative mx-auto w-24 h-24">
-                    <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-primary to-primary-glow p-0.5">
-                      <div className="w-full h-full rounded-2xl bg-muted flex items-center justify-center">
-                        <span className="text-2xl font-bold text-muted-foreground">
-                          {member.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </span>
-                      </div>
+                    <div className="w-24 h-24 rounded-2xl overflow-hidden bg-white shadow-lg">
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                        onError={(e) => {
+                          // Fallback to initials if image not found
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          const parent = target.parentElement;
+                          if (parent) {
+                            const initials = member.name
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("");
+                            parent.innerHTML = `<div class="w-full h-full rounded-2xl bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center"><span class="text-2xl font-bold text-white">${initials}</span></div>`;
+                          }
+                        }}
+                      />
                     </div>
                   </div>
 

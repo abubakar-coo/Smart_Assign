@@ -7,16 +7,14 @@ const Hero = () => {
 
   return (
     <section id="home" className="pt-24 pb-8 min-h-screen relative overflow-hidden">
-      {/* Background Image - Blur on Mobile, Clear on Desktop */}
+      {/* Background Image - Hidden on Mobile */}
       <div 
-        className="absolute inset-0 z-0 bg-cover bg-no-repeat"
+        className="absolute inset-0 z-0 bg-cover bg-no-repeat hidden md:block"
         style={{
           backgroundImage: 'url(/images/hero/hero-background.png)',
           backgroundPosition: 'center center',
         }}
       />
-      {/* Mobile Blur Overlay */}
-      <div className="absolute inset-0 z-0 md:hidden backdrop-blur-md bg-gradient-hero/40" />
       {/* Light overlay for better text readability */}
       <div className="absolute inset-0 z-0 bg-gradient-hero/60" />
       

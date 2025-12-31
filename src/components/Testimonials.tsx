@@ -41,6 +41,7 @@ const AnimatedCounter = ({
 
     let startTime: number;
     let animationFrame: number;
+    let rafId: number;
 
     const animate = (currentTime: number) => {
       if (!startTime) startTime = currentTime;
@@ -52,13 +53,17 @@ const AnimatedCounter = ({
       setCount(decimals > 0 ? parseFloat(currentValue.toFixed(decimals)) : Math.floor(currentValue));
 
       if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate);
+        rafId = requestAnimationFrame(animate);
+      } else {
+        setCount(end);
       }
     };
 
-    animationFrame = requestAnimationFrame(animate);
+    rafId = requestAnimationFrame(animate);
 
-    return () => cancelAnimationFrame(animationFrame);
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, [isVisible, end, duration, decimals]);
 
   return (
@@ -163,7 +168,7 @@ const Testimonials = () => {
         {/* Stats Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
           {stats.map((stat, index) => (
-            <Card key={index} className="p-6 text-center shadow-card bg-white/80 backdrop-blur-sm border-0">
+            <Card key={index} className="p-6 text-center shadow-card bg-white/90 border-0">
               <div className="text-3xl font-bold text-primary mb-1">
                 {stat.displayValue}
               </div>
@@ -176,7 +181,7 @@ const Testimonials = () => {
 
         {/* Featured Testimonial */}
         <div className="mb-6">
-          <Card className="p-8 md:p-12 shadow-hover bg-white/90 backdrop-blur-sm border-0 relative overflow-hidden">
+          <Card className="p-8 md:p-12 shadow-hover bg-white/95 border-0 relative overflow-hidden">
             <div className="absolute top-6 left-6 text-primary/20">
               <Quote className="w-16 h-16" />
             </div>
@@ -201,14 +206,14 @@ const Testimonials = () => {
                   </div>
                 </div>
 
-                <div className="text-center lg:text-right space-y-4">
-                  <div className="w-20 h-20 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto lg:ml-auto">
+                <div className="text-center space-y-4">
+                  <div className="w-20 h-20 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto">
                     <span className="text-3xl font-bold text-white">
                       {homePageTestimonials[currentTestimonial].avatar}
                     </span>
                   </div>
                   
-                  <div>
+                  <div className="space-y-1">
                     <div className="font-semibold text-foreground text-xl">
                       {homePageTestimonials[currentTestimonial].name}
                     </div>
@@ -265,10 +270,10 @@ const Testimonials = () => {
           {testimonials.slice(0, 2).map((testimonial, index) => (
             <Card 
               key={index} 
-              className={`p-6 shadow-card hover:shadow-hover transition-all duration-300 cursor-pointer border-0 ${
+              className={`p-6 shadow-card hover:shadow-hover transition-all duration-200 cursor-pointer border-0 ${
                 index === currentTestimonial 
                   ? 'bg-white ring-2 ring-primary' 
-                  : 'bg-white/80 backdrop-blur-sm'
+                  : 'bg-white/90'
               }`}
               onClick={() => setCurrentTestimonial(index)}
             >

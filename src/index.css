@@ -381,3 +381,31 @@ All colors MUST be HSL.
 .logo-hd:hover {
   opacity: 1 !important;
 }
+
+/* Testimonials Section Performance Optimizations */
+#testimonials {
+  will-change: scroll-position;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+#testimonials .shadow-card,
+#testimonials .shadow-hover {
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Optimize animated counters */
+#testimonials span[data-counter] {
+  will-change: contents;
+  transform: translateZ(0);
+}
+
+/* Reduce repaints during scroll */
+#testimonials * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

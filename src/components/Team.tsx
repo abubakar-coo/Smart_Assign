@@ -152,21 +152,19 @@ const Team = () => {
               onClick={() => navigate(`/team/${nameToSlug(ceo.name)}`)}
             >
               <div className="relative flex-shrink-0">
-                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary via-primary/80 to-secondary p-2 shadow-lg">
-                  <div className="w-full h-full rounded-full overflow-hidden bg-white">
-                    <img
-                      src={getImagePath(ceo.name)}
-                      alt={ceo.name}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                      decoding="async"
-                      onError={(e) => {
-                        // Fallback to DiceBear if local image not found
-                        const target = e.target as HTMLImageElement;
-                        target.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${ceo.name}&backgroundColor=ffd5dc,b6e3f4,c0aede,d1d4f9,ffdfbf&mood=happy&clothing=shirt&clothingColor=262e33,65c9ff,ff6b6b,4ecdc4,45b7d1&accessoriesProbability=50&facialHairProbability=30&glassesProbability=30&hairColor=0e0e0e,2c1b18,724133,afafaf,ecdcbf,6a4c35,8b4513,a55728,ca8c04,ffdbac,ffd5dc,ecdcbf&skinColor=edb98a,fd9841,fdbcb4,fd9841`;
-                      }}
-                    />
-                  </div>
+                <div className="w-32 h-32 rounded-full overflow-hidden bg-white shadow-lg">
+                  <img
+                    src={getImagePath(ceo.name)}
+                    alt={ceo.name}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    onError={(e) => {
+                      // Fallback to DiceBear if local image not found
+                      const target = e.target as HTMLImageElement;
+                      target.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${ceo.name}&backgroundColor=ffd5dc,b6e3f4,c0aede,d1d4f9,ffdfbf&mood=happy&clothing=shirt&clothingColor=262e33,65c9ff,ff6b6b,4ecdc4,45b7d1&accessoriesProbability=50&facialHairProbability=30&glassesProbability=30&hairColor=0e0e0e,2c1b18,724133,afafaf,ecdcbf,6a4c35,8b4513,a55728,ca8c04,ffdbac,ffd5dc,ecdcbf&skinColor=edb98a,fd9841,fdbcb4,fd9841`;
+                    }}
+                  />
                 </div>
               </div>
               <div className="flex-1">
@@ -187,21 +185,19 @@ const Team = () => {
                 onClick={() => navigate(`/team/${nameToSlug(member.name)}`)}
               >
                 <div className="relative flex-shrink-0">
-                  <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary via-primary/80 to-secondary p-2 shadow-lg">
-                    <div className="w-full h-full rounded-full overflow-hidden bg-white">
-                      <img
-                        src={getImagePath(member.name)}
-                        alt={member.name}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                        decoding="async"
-                        onError={(e) => {
-                          // Fallback to DiceBear if local image not found
-                          const target = e.target as HTMLImageElement;
-                          target.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${member.name}&backgroundColor=ffd5dc,b6e3f4,c0aede,d1d4f9,ffdfbf&mood=happy&clothing=shirt&clothingColor=262e33,65c9ff,ff6b6b,4ecdc4,45b7d1&accessoriesProbability=40&facialHairProbability=25&glassesProbability=25&hairColor=0e0e0e,2c1b18,724133,afafaf,ecdcbf,6a4c35,8b4513,a55728,ca8c04,ffdbac,ffd5dc,ecdcbf&skinColor=edb98a,fd9841,fdbcb4,fd9841`;
-                        }}
-                      />
-                    </div>
+                  <div className="w-32 h-32 rounded-full overflow-hidden bg-white shadow-lg">
+                    <img
+                      src={getImagePath(member.name)}
+                      alt={member.name}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                      onError={(e) => {
+                        // Fallback to DiceBear if local image not found
+                        const target = e.target as HTMLImageElement;
+                        target.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${member.name}&backgroundColor=ffd5dc,b6e3f4,c0aede,d1d4f9,ffdfbf&mood=happy&clothing=shirt&clothingColor=262e33,65c9ff,ff6b6b,4ecdc4,45b7d1&accessoriesProbability=40&facialHairProbability=25&glassesProbability=25&hairColor=0e0e0e,2c1b18,724133,afafaf,ecdcbf,6a4c35,8b4513,a55728,ca8c04,ffdbac,ffd5dc,ecdcbf&skinColor=edb98a,fd9841,fdbcb4,fd9841`;
+                      }}
+                    />
                   </div>
                 </div>
                 <div className="flex-1">
@@ -220,6 +216,17 @@ const Team = () => {
           <div className="hidden lg:block">
             {/* Right side content can be added here if needed */}
           </div>
+        </div>
+
+        {/* View All Team Button */}
+        <div className="text-center mt-16 md:mt-20 mb-16">
+          <Button 
+            size="lg"
+            className="bg-gradient-primary hover:shadow-lg text-base font-semibold px-8 py-6 rounded-lg transition-all duration-200 hover:scale-[1.02]"
+            onClick={() => window.location.href = '/team'}
+          >
+            View All Team Members
+          </Button>
         </div>
 
         {/* Company Values */}
