@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -35,6 +36,8 @@ const titleToSlug = (title: string): string => {
 
 const ServicesDetails = () => {
   const navigate = useNavigate();
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
   
   const allServices = [
     {
@@ -262,19 +265,63 @@ const ServicesDetails = () => {
     },
   ];
 
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+
+    cardRefs.current.forEach((card, index) => {
+      if (!card) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setVisibleCards((prev) => new Set([...prev, index]));
+            }
+          });
+        },
+        {
+          threshold: 0.05,
+          rootMargin: "0px",
+        }
+      );
+
+      observer.observe(card);
+      observers.push(observer);
+    });
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+    };
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Navigation />
       {/* Header */}
-      <section className="bg-gradient-hero py-20 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-6xl font-bold text-foreground mb-6">
-            Our Professional Services
-          </h1>
-          <p className="text-2xl text-muted-foreground max-w-3xl mx-auto">
-            Explore our comprehensive range of services designed to help you succeed. 
-            From content creation to virtual assistance, we've got you covered.
-          </p>
+      <section className="bg-gradient-hero py-20 mt-16 relative overflow-hidden">
+        {/* Background Image - Hidden on Mobile */}
+        <div 
+          className="absolute inset-0 z-0 bg-no-repeat bg-center hidden md:block"
+          style={{
+            backgroundImage: 'url(/images/hero/services-page-background.png)',
+            backgroundSize: 'cover',
+            imageRendering: 'auto' as const,
+            willChange: 'transform',
+          } as React.CSSProperties}
+        />
+        
+        {/* Content */}
+        <div className="relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 className="text-6xl font-bold text-foreground mb-6">
+              Our Professional Services
+            </h1>
+            <p className="text-2xl text-muted-foreground max-w-3xl mx-auto">
+              Explore our comprehensive range of services designed to help you succeed. 
+              From content creation to virtual assistance, we've got you covered.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -282,12 +329,59 @@ const ServicesDetails = () => {
       <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {allServices.map((service, index) => (
-              <Card key={index} className="p-8 shadow-card hover:shadow-hover transition-all duration-300 border-0 flex flex-col h-full">
-                <div className="flex flex-col h-full">
+            {allServices.map((service, index) => {
+              // Helper function to get image path from service title
+              const getServiceImagePath = (title: string): string => {
+                const imageMap: { [key: string]: string } = {
+                  "SEO Content Writing": "seo-content-writing",
+                  "Data Entry": "data-entry",
+                  "Research Assistance": "research-assistance",
+                  "Proofreading & Editing": "proofreading-editing",
+                  "Canva Designing": "canva-designing",
+                  "Typing & Formatting": "typing-formatting",
+                  "Assignment Writing": "assignment-writing",
+                  "Literature Review": "literature-review",
+                  "Presentation (PPT) Design": "presentation-ppt-design",
+                  "Resume & Cover Letter Writing": "resume-cover-letter",
+                  "Academic Formatting (APA / MLA / Harvard)": "academic-formatting",
+                  "Virtual Assistance (Small Tasks)": "virtual-assistance",
+                };
+                const fileName = imageMap[title] || title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                return `/images/services/${fileName}-bg.png`;
+              };
+
+              const isVisible = visibleCards.has(index);
+              const animationDelay = index * 100; // Stagger animation
+
+              return (
+                <Card 
+                  key={index} 
+                  ref={(el) => {
+                    cardRefs.current[index] = el;
+                  }}
+                  className={`p-8 shadow-card border-0 flex flex-col h-full relative overflow-hidden group cursor-pointer
+                    transition-opacity duration-300 ease-out
+                    ${isVisible ? 'opacity-100' : 'opacity-0'}
+                    hover:shadow-xl
+                  `}
+                  style={{
+                    transitionDelay: `${Math.min(animationDelay, 200)}ms`,
+                  }}
+                >
+                {/* Background Image - Full Quality */}
+                <div 
+                  className="absolute inset-0 z-0 bg-no-repeat bg-center"
+                  style={{
+                    backgroundImage: `url(${getServiceImagePath(service.title)})`,
+                    backgroundSize: 'cover',
+                    imageRendering: 'auto' as const,
+                  } as React.CSSProperties}
+                />
+                
+                <div className="flex flex-col h-full relative z-10">
                   {/* Header */}
                   <div className="flex items-start gap-4 mb-6">
-                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${service.gradient} flex items-center justify-center flex-shrink-0 p-2`}>
+                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${service.gradient} flex items-center justify-center flex-shrink-0 p-2 shadow-lg`}>
                       {service.title === "SEO Content Writing" ? (
                         <img
                           src="/images/services/seo-content-writing-icon.png"
@@ -305,7 +399,7 @@ const ServicesDetails = () => {
                       <Badge variant="secondary" className="mb-2">
                         {service.category}
                       </Badge>
-                      <h3 className="text-2xl font-bold text-foreground">
+                      <h3 className="text-2xl font-bold text-foreground transition-colors duration-200 group-hover:text-primary">
                         {service.title}
                       </h3>
                     </div>
@@ -351,7 +445,7 @@ const ServicesDetails = () => {
                   </div>
 
                   {/* Pricing - Always at bottom */}
-                  <div className="mt-auto pt-6 border-t border-muted/20">
+                  <div className="mt-auto pt-6">
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
                       <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
                         <DollarSign className="w-4 h-4 text-green-600" />
@@ -367,14 +461,18 @@ const ServicesDetails = () => {
                     </div>
                     <Button
                       onClick={() => navigate(`/services/${titleToSlug(service.title)}`)}
-                      className="w-full bg-gradient-primary hover:shadow-hover"
+                      className="w-full bg-gradient-primary hover:shadow-lg transition-shadow duration-200"
                     >
-                      Request This Service <ArrowRight className="ml-2 w-4 h-4" />
+                      <span className="flex items-center justify-center">
+                        Request This Service 
+                        <ArrowRight className="ml-2 w-4 h-4" />
+                      </span>
                     </Button>
                   </div>
                 </div>
               </Card>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

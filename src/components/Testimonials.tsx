@@ -75,6 +75,54 @@ const AnimatedCounter = ({
 
 const Testimonials = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
+  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      sectionObserver.observe(sectionRef.current);
+    }
+
+    const cardObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = cardRefs.current.indexOf(entry.target as HTMLDivElement);
+            if (index !== -1) {
+              setVisibleCards((prev) => new Set([...prev, index]));
+            }
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: "0px 0px -50px 0px" }
+    );
+
+    cardRefs.current.forEach((card) => {
+      if (card) cardObserver.observe(card);
+    });
+
+    return () => {
+      if (sectionRef.current) {
+        sectionObserver.unobserve(sectionRef.current);
+      }
+      cardRefs.current.forEach((card) => {
+        if (card) cardObserver.unobserve(card);
+      });
+    };
+  }, []);
 
   const testimonials = [
     {
@@ -152,10 +200,14 @@ const Testimonials = () => {
   ];
 
   return (
-    <section id="testimonials" className="py-8 bg-gradient-hero">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={sectionRef} id="testimonials" className="py-8 bg-gradient-hero">
+      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out delay-300
+        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+      `}>
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className={`text-center mb-8 transition-all duration-700 ease-out delay-500
+          ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+        `}>
           <h2 className="text-5xl font-bold text-foreground mb-4">
             What Our Clients Say
           </h2>
@@ -167,8 +219,26 @@ const Testimonials = () => {
 
         {/* Stats Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-          {stats.map((stat, index) => (
-            <Card key={index} className="p-6 text-center shadow-card bg-white/90 border-0">
+          {stats.map((stat, index) => {
+            const cardVisible = visibleCards.has(index);
+            const animationDelay = index * 100;
+            
+            return (
+            <Card 
+              key={index}
+              ref={(el) => {
+                cardRefs.current[index] = el;
+              }}
+              className={`p-6 text-center shadow-card bg-white/90 border-0 transform transition-all duration-500 ease-out
+                ${cardVisible 
+                  ? 'opacity-100 translate-y-0 scale-100 hover:scale-105 hover:shadow-xl' 
+                  : 'opacity-0 translate-y-8 scale-95'
+                }
+              `}
+              style={{
+                transitionDelay: `${animationDelay}ms`,
+              }}
+            >
               <div className="text-3xl font-bold text-primary mb-1">
                 {stat.displayValue}
               </div>
@@ -176,12 +246,26 @@ const Testimonials = () => {
                 {stat.label}
               </div>
             </Card>
-          ))}
+            );
+          })}
         </div>
 
         {/* Featured Testimonial */}
         <div className="mb-6">
-          <Card className="p-8 md:p-12 shadow-hover bg-white/95 border-0 relative overflow-hidden">
+          <Card 
+            ref={(el) => {
+              cardRefs.current[4] = el; // Use index 4 for testimonial card
+            }}
+            className={`p-8 md:p-12 shadow-hover bg-white/95 border-0 relative overflow-hidden transform transition-all duration-700 ease-out
+              ${visibleCards.has(4) 
+                ? 'opacity-100 translate-y-0 scale-100 hover:shadow-2xl' 
+                : 'opacity-0 translate-y-12 scale-95'
+              }
+            `}
+            style={{
+              transitionDelay: '400ms',
+            }}
+          >
             <div className="absolute top-6 left-6 text-primary/20">
               <Quote className="w-16 h-16" />
             </div>

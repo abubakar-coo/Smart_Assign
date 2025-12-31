@@ -1,25 +1,57 @@
 import { Button } from "@/components/ui/button";
 import { UserPlus, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 
 const Hero = () => {
   const navigate = useNavigate();
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
 
   return (
-    <section id="home" className="pt-24 pb-8 min-h-screen relative overflow-hidden">
-      {/* Background Image - Hidden on Mobile */}
+    <section ref={sectionRef} id="home" className="pt-24 pb-8 min-h-screen relative overflow-hidden">
+      {/* Background Image - Hidden on Mobile with Scroll Animation */}
       <div 
-        className="absolute inset-0 z-0 bg-cover bg-no-repeat hidden md:block"
+        className={`absolute inset-0 z-0 bg-no-repeat hidden md:block transition-opacity duration-300
+          ${isVisible ? 'opacity-100' : 'opacity-0'}
+        `}
         style={{
           backgroundImage: 'url(/images/hero/hero-background.png)',
           backgroundPosition: 'center center',
-        }}
+          backgroundSize: 'cover',
+          imageRendering: 'auto' as const,
+        } as React.CSSProperties}
       />
       {/* Light overlay for better text readability */}
       <div className="absolute inset-0 z-0 bg-gradient-hero/60" />
       
       {/* Content */}
-      <div className="relative z-10">
+      <div className={`relative z-10 transition-opacity duration-300 delay-100
+        ${isVisible ? 'opacity-100' : 'opacity-0'}
+      `}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="min-h-[70vh] py-12 flex items-center">
             {/* Content */}

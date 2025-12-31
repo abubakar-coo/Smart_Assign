@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Linkedin, Twitter, Mail, Award, Users, Target } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 
 // Helper function to create URL-friendly slug from name
 const nameToSlug = (name: string): string => {
@@ -10,6 +11,55 @@ const nameToSlug = (name: string): string => {
 
 const Team = () => {
   const navigate = useNavigate();
+  const sectionRef = useRef<HTMLElement>(null);
+  const memberRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
+  const [visibleMembers, setVisibleMembers] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      sectionObserver.observe(sectionRef.current);
+    }
+
+    const memberObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = memberRefs.current.indexOf(entry.target as HTMLDivElement);
+            if (index !== -1) {
+              setVisibleMembers((prev) => new Set([...prev, index]));
+            }
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: "0px 0px -50px 0px" }
+    );
+
+    memberRefs.current.forEach((member) => {
+      if (member) memberObserver.observe(member);
+    });
+
+    return () => {
+      if (sectionRef.current) {
+        sectionObserver.unobserve(sectionRef.current);
+      }
+      memberRefs.current.forEach((member) => {
+        if (member) memberObserver.unobserve(member);
+      });
+    };
+  }, []);
+
   // Helper function to get image path from name
   const getImagePath = (name: string): string => {
     // Try to match exact file names in team folder
@@ -119,20 +169,28 @@ const Team = () => {
   ];
 
   return (
-    <section id="team" className="py-8 bg-white relative overflow-hidden">
-      {/* Background Image - Hidden on Mobile */}
+    <section ref={sectionRef} id="team" className="py-8 bg-white relative overflow-hidden">
+      {/* Background Image - Hidden on Mobile with Scroll Animation */}
       <div 
-        className="absolute inset-0 z-0 bg-cover bg-no-repeat bg-center hidden md:block"
+        className={`absolute inset-0 z-0 bg-no-repeat bg-center hidden md:block transition-opacity duration-300
+          ${isVisible ? 'opacity-100' : 'opacity-0'}
+        `}
         style={{
           backgroundImage: 'url(/images/team/team-background.png)',
-        }}
+          backgroundSize: 'cover',
+          imageRendering: 'auto' as const,
+        } as React.CSSProperties}
       />
       
       {/* Content */}
-      <div className="relative z-10">
+      <div className={`relative z-10 transition-all duration-700 ease-out delay-300
+        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+      `}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className={`text-center mb-8 transition-all duration-700 ease-out delay-500
+          ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+        `}>
           <h2 className="text-5xl font-bold text-foreground mb-4">
             Meet Our Team
           </h2>
@@ -148,7 +206,16 @@ const Team = () => {
           <div className="space-y-6">
             {/* CEO */}
             <div
-              className="flex items-center space-x-6 group cursor-pointer"
+              ref={(el) => {
+                memberRefs.current[0] = el;
+              }}
+              className={`flex items-center space-x-6 group cursor-pointer transform transition-all duration-500 ease-out
+                ${visibleMembers.has(0) 
+                  ? 'opacity-100 translate-x-0 scale-100 hover:translate-x-2' 
+                  : 'opacity-0 -translate-x-8 scale-95'
+                }
+              `}
+              style={{ transitionDelay: '0ms' }}
               onClick={() => navigate(`/team/${nameToSlug(ceo.name)}`)}
             >
               <div className="relative flex-shrink-0">
@@ -178,10 +245,24 @@ const Team = () => {
             </div>
 
             {/* 3 Team Members */}
-            {teamMembers.slice(0, 3).map((member, index) => (
+            {teamMembers.slice(0, 3).map((member, index) => {
+              const memberIndex = index + 1; // CEO is 0, so start from 1
+              const memberVisible = visibleMembers.has(memberIndex);
+              const animationDelay = (index + 1) * 100;
+              
+              return (
               <div
                 key={index}
-                className="flex items-center space-x-6 group cursor-pointer"
+                ref={(el) => {
+                  memberRefs.current[memberIndex] = el;
+                }}
+                className={`flex items-center space-x-6 group cursor-pointer transform transition-all duration-500 ease-out
+                  ${memberVisible 
+                    ? 'opacity-100 translate-x-0 scale-100 hover:translate-x-2 hover:scale-[1.02]' 
+                    : 'opacity-0 -translate-x-8 scale-95'
+                  }
+                `}
+                style={{ transitionDelay: `${animationDelay}ms` }}
                 onClick={() => navigate(`/team/${nameToSlug(member.name)}`)}
               >
                 <div className="relative flex-shrink-0">
@@ -209,7 +290,8 @@ const Team = () => {
                   </p>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Right Side - Empty for now or can add content later */}
