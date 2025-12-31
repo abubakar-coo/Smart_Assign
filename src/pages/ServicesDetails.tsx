@@ -366,11 +366,12 @@ const ServicesDetails = () => {
                   `}
                   style={{
                     transitionDelay: `${Math.min(animationDelay, 200)}ms`,
+                    backgroundColor: '#eaf2f2',
                   }}
                 >
-                {/* Background Image - Full Quality */}
+                {/* Background Image - Full Quality - Hidden on Mobile */}
                 <div 
-                  className="absolute inset-0 z-0 bg-no-repeat bg-center"
+                  className="absolute inset-0 z-0 bg-no-repeat bg-center hidden md:block"
                   style={{
                     backgroundImage: `url(${getServiceImagePath(service.title)})`,
                     backgroundSize: 'cover',
