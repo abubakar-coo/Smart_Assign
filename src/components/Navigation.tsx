@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Zap, UserPlus, Sparkles } from "lucide-react";
 import { saveJobApplication } from "../api/jobApplication";
+import { trackStartEarningTodayClick } from "@/lib/analytics";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,7 +64,7 @@ const Navigation = () => {
               )
             ))}
                 <div className="flex items-center space-x-3">
-                  <Link to="/careers" className="relative">
+                  <Link to="/careers" className="relative" onClick={() => trackStartEarningTodayClick('navigation_desktop')}>
                     {/* Hiring Badge */}
                     <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse z-20">
                       HIRING!
@@ -133,7 +134,7 @@ const Navigation = () => {
                 )
               ))}
               <div className="px-4 space-y-3">
-                <Link to="/careers" className="relative">
+                <Link to="/careers" className="relative" onClick={() => trackStartEarningTodayClick('navigation_mobile')}>
                   {/* Hiring Badge */}
                   <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse z-20">
                     HIRING!
