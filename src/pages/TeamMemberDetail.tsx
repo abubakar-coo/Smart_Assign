@@ -376,22 +376,20 @@ const TeamMemberDetail = () => {
             {/* Avatar */}
             <div className="flex justify-center">
               <div className="relative">
-                <div className="w-64 h-64 rounded-3xl bg-gradient-to-br from-primary via-primary/80 to-secondary p-3 shadow-2xl avatar-3d-enhanced avatar-depth">
-                  <div className="w-full h-full rounded-3xl overflow-hidden bg-white relative avatar-inner">
-                    <img
-                      src={getImagePath(member.name)}
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                      decoding="async"
-                      onError={(e) => {
-                        // Fallback to DiceBear if local image not found
-                        const target = e.target as HTMLImageElement;
-                        target.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${member.name}&backgroundColor=ffd5dc,b6e3f4,c0aede,d1d4f9,ffdfbf&mood=happy&clothing=shirt&clothingColor=262e33,65c9ff,ff6b6b,4ecdc4,45b7d1&accessoriesProbability=50&facialHairProbability=30&glassesProbability=30&hairColor=0e0e0e,2c1b18,724133,afafaf,ecdcbf,6a4c35,8b4513,a55728,ca8c04,ffdbac,ffd5dc,ecdcbf&skinColor=edb98a,fd9841,fdbcb4,fd9841`;
-                        target.className = "w-full h-full object-contain scale-110 avatar-glow";
-                      }}
-                    />
-                  </div>
+                <div className="w-64 h-64 rounded-3xl overflow-hidden shadow-2xl">
+                  <img
+                    src={getImagePath(member.name)}
+                    alt={member.name}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    onError={(e) => {
+                      // Fallback to DiceBear if local image not found
+                      const target = e.target as HTMLImageElement;
+                      target.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${member.name}&backgroundColor=ffd5dc,b6e3f4,c0aede,d1d4f9,ffdfbf&mood=happy&clothing=shirt&clothingColor=262e33,65c9ff,ff6b6b,4ecdc4,45b7d1&accessoriesProbability=50&facialHairProbability=30&glassesProbability=30&hairColor=0e0e0e,2c1b18,724133,afafaf,ecdcbf,6a4c35,8b4513,a55728,ca8c04,ffdbac,ffd5dc,ecdcbf&skinColor=edb98a,fd9841,fdbcb4,fd9841`;
+                      target.className = "w-full h-full object-contain scale-110";
+                    }}
+                  />
                 </div>
                 <div className="absolute -top-3 -right-3 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center shadow-lg">
                   <Award className="w-6 h-6 text-white" />

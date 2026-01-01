@@ -195,11 +195,12 @@ const Services = () => {
                 ref={(el) => {
                   cardRefs.current[index] = el;
                 }}
-                className={`p-6 lg:p-8 shadow-sm border border-gray-100 bg-white flex flex-col rounded-xl group cursor-pointer
+                className={`p-6 lg:p-8 shadow-sm border border-gray-100 flex flex-col rounded-xl group cursor-pointer
                   transition-opacity duration-300 hover:shadow-lg
                   ${cardVisible ? 'opacity-100' : 'opacity-0'}
                 `}
                 style={{
+                  backgroundColor: '#eaf1f1',
                   transitionDelay: `${Math.min(animationDelay, 150)}ms`,
                 }}
               >
