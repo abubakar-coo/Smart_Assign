@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -297,6 +298,13 @@ const ServicesDetails = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Professional Digital Services - Content Writing, Design & Tech | Smart Assign</title>
+        <meta name="description" content="Explore our range of services: SEO Content Writing, Website Development, Data Entry, and 24/7 Virtual Support. Affordable rates with premium quality." />
+        <meta name="keywords" content="SEO content writing services Pakistan, virtual assistant agency, data entry experts, professional resume writing services, hire content writers with zero fees, best digital agency for startups, academic formatting and proofreading services" />
+        <meta property="og:title" content="Professional Digital Services - Content Writing, Design & Tech | Smart Assign" />
+        <meta property="og:description" content="Explore our range of services: SEO Content Writing, Website Development, Data Entry, and 24/7 Virtual Support. Affordable rates with premium quality." />
+      </Helmet>
       <Navigation />
       {/* Header */}
       <section className="bg-gradient-hero py-20 mt-16 relative overflow-hidden">
