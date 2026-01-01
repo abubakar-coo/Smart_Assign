@@ -227,7 +227,7 @@ const Team = () => {
                 <div className="w-32 h-32 rounded-full overflow-hidden bg-white shadow-lg">
                   <img
                     src={getImagePath(ceo.name)}
-                    alt={ceo.name}
+                    alt={`${ceo.name} - ${ceo.role} at Smart Assign Digital Agency`}
                     className="w-full h-full object-cover"
                     loading="lazy"
                     decoding="async"
@@ -271,7 +271,7 @@ const Team = () => {
                   <div className="w-32 h-32 rounded-full overflow-hidden bg-white shadow-lg">
                     <img
                       src={getImagePath(member.name)}
-                      alt={member.name}
+                      alt={`${member.name} - Team member at Smart Assign Digital Agency`}
                       className="w-full h-full object-cover"
                       loading="lazy"
                       decoding="async"

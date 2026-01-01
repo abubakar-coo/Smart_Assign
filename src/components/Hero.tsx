@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { UserPlus, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import { trackStartEarningTodayClick } from "@/lib/analytics";
+import { trackStartEarningTodayClick, trackExploreServicesClick, trackViewRoadMapClick } from "@/lib/analytics";
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -76,7 +76,10 @@ const Hero = () => {
               <Button 
                 size="lg" 
                 className="bg-gradient-primary hover:shadow-lg text-base font-semibold px-8 py-6 rounded-lg transition-all duration-200 hover:scale-[1.02]"
-                onClick={() => window.location.href = "/services"}
+                onClick={() => {
+                  trackExploreServicesClick('hero');
+                  window.location.href = "/services";
+                }}
               >
                 Explore Services
               </Button>
@@ -84,7 +87,10 @@ const Hero = () => {
                 variant="outline" 
                 size="lg"
                 className="border-2 border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground text-base font-semibold px-8 py-6 rounded-lg transition-all duration-200 hover:scale-[1.02] hover:border-primary"
-                onClick={() => window.location.href = "/roadmap"}
+                onClick={() => {
+                  trackViewRoadMapClick('hero');
+                  window.location.href = "/roadmap";
+                }}
               >
                        View Road Map
               </Button>

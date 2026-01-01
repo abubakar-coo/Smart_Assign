@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -459,6 +460,13 @@ const Careers = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Careers - Join Our Team | Smart Assign Digital Agency</title>
+        <meta name="description" content="Start earning today with Smart Assign! Join our team as a virtual assistant, content writer, or data entry expert. Zero fee agency with daily payments and flexible work hours." />
+        <meta name="keywords" content="Smart Assign careers, virtual assistant jobs, content writer jobs, data entry jobs, remote work, zero fee agency jobs, work from home" />
+        <meta property="og:title" content="Careers - Join Our Team | Smart Assign Digital Agency" />
+        <meta property="og:description" content="Start earning today with Smart Assign! Join our team as a virtual assistant, content writer, or data entry expert. Zero fee agency with daily payments." />
+      </Helmet>
       <Navigation />
       
       {/* Hero Header */}

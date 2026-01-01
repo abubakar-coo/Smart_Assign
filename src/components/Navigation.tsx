@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Zap, UserPlus, Sparkles } from "lucide-react";
 import { saveJobApplication } from "../api/jobApplication";
-import { trackStartEarningTodayClick } from "@/lib/analytics";
+import { trackStartEarningTodayClick, trackGetStartedClick } from "@/lib/analytics";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,6 +11,7 @@ const Navigation = () => {
   const navigate = useNavigate();
 
   const handleGetStarted = () => {
+    trackGetStartedClick('navigation');
     // Navigate to contact page with smooth transition
     navigate("/contact");
   };
@@ -32,7 +33,7 @@ const Navigation = () => {
             <div className="h-[76px] sm:h-[84px] md:h-[92px] lg:h-[104px]">
               <img
                 src="/images/smart-assign-main-name.png"
-                alt="Smart Assign"
+                alt="Smart Assign - Digital Agency for SEO Content Writing, Virtual Assistant Services and Data Entry"
                 className="h-full w-auto object-contain"
               />
             </div>

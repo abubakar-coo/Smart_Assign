@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { trackLearnMoreClick, trackViewAllServicesClick } from "@/lib/analytics";
 
 // Helper function to convert service title to URL slug
 const titleToSlug = (title: string): string => {
@@ -238,7 +239,10 @@ const Services = () => {
                   variant="outline" 
                   size="sm"
                   className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground transform transition-all duration-300 hover:scale-105"
-                  onClick={() => navigate(`/services/${titleToSlug(service.title)}`)}
+                  onClick={() => {
+                    trackLearnMoreClick('services_section', service.title);
+                    navigate(`/services/${titleToSlug(service.title)}`);
+                  }}
                 >
                   Learn More
                 </Button>
@@ -254,7 +258,10 @@ const Services = () => {
           <Button 
             size="lg"
             className="bg-gradient-primary hover:shadow-lg text-base font-semibold px-8 py-6 rounded-lg transition-all duration-200 hover:scale-[1.02]"
-            onClick={() => window.location.href = '/services'}
+            onClick={() => {
+              trackViewAllServicesClick('services_section');
+              window.location.href = '/services';
+            }}
           >
             View All Services
           </Button>

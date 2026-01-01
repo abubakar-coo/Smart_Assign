@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -137,6 +138,13 @@ const RoadMap = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Road Map - Future Plans & Innovation | Smart Assign Digital Agency</title>
+        <meta name="description" content="Discover Smart Assign's roadmap: 0% commission model, fixed job contracts, AI-powered matching, and global expansion. Join the zero fee agency revolution!" />
+        <meta name="keywords" content="Smart Assign roadmap, zero commission agency, fixed job contracts, AI matching, virtual assistant platform, zero fee agency future" />
+        <meta property="og:title" content="Road Map - Future Plans & Innovation | Smart Assign Digital Agency" />
+        <meta property="og:description" content="Discover Smart Assign's roadmap: 0% commission model, fixed job contracts, AI-powered matching, and global expansion." />
+      </Helmet>
       <Navigation />
       
       {/* Header */}

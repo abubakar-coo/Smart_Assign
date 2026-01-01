@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mail, Phone, MapPin, Linkedin, Facebook, MessageSquare, Instagram, CheckCircle, AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { trackSubscribeClick } from "@/lib/analytics";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -67,6 +68,7 @@ const Footer = () => {
       return;
     }
 
+    trackSubscribeClick('footer');
     setIsLoading(true);
     setMessage(null);
 

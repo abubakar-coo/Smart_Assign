@@ -16,6 +16,7 @@ import {
   ArrowRight, Clock, Package, FileCheck, Star, AlertCircle
 } from "lucide-react";
 import { supabase, STORAGE_CONFIG } from "@/lib/supabase";
+import { trackRequestServiceClick } from "@/lib/analytics";
 
 const ServiceDetail = () => {
   const { serviceName } = useParams();
@@ -633,6 +634,9 @@ const ServiceDetail = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Track form submission
+    trackRequestServiceClick('service_detail_form_submit', currentService.title);
+    
     // Validate country selection
     if (!formData.country || formData.country.trim() === "") {
       setCountryError("Please select your country");
@@ -884,6 +888,7 @@ const ServiceDetail = () => {
 
                   <Button
                     onClick={() => {
+                      trackRequestServiceClick('service_detail_sidebar', currentService.title);
                       const formSection = document.getElementById('request-form');
                       formSection?.scrollIntoView({ behavior: 'smooth' });
                     }}

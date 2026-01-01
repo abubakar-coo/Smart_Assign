@@ -144,6 +144,13 @@ const TeamPage = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Our Team - Expert Professionals | Smart Assign Digital Agency</title>
+        <meta name="description" content="Meet the talented team behind Smart Assign. Expert professionals specializing in SEO content writing, virtual assistant services, and data entry solutions." />
+        <meta name="keywords" content="Smart Assign team, digital agency professionals, SEO experts, virtual assistant team, data entry specialists" />
+        <meta property="og:title" content="Our Team - Expert Professionals | Smart Assign Digital Agency" />
+        <meta property="og:description" content="Meet the talented team behind Smart Assign. Expert professionals specializing in SEO content writing, virtual assistant services, and data entry solutions." />
+      </Helmet>
       <Navigation />
       {/* Header */}
       <section className="bg-gradient-hero py-20 mt-16">
