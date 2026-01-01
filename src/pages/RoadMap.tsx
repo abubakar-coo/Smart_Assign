@@ -175,7 +175,7 @@ const RoadMap = () => {
                     {/* Content Card */}
                     <div className="w-full">
                       <div className="w-full">
-                        <Card className="p-8 shadow-card hover:shadow-hover transition-all duration-300 border-0 h-full relative overflow-hidden">
+                        <Card className="p-8 shadow-card hover:shadow-hover transition-all duration-300 border-0 h-full relative overflow-hidden" style={{ backgroundColor: '#e9f2f2' }}>
                           {/* Background Image - Hidden on Mobile */}
                           <div
                             className="absolute inset-0 z-0 bg-no-repeat bg-center hidden md:block"

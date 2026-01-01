@@ -15,6 +15,7 @@ const Contact = lazy(() => import("./pages/Contact"));
 const ServicesDetails = lazy(() => import("./pages/ServicesDetails"));
 const RoadMap = lazy(() => import("./pages/RoadMap"));
 const TeamPage = lazy(() => import("./pages/Team"));
+const ScheduleConsultation = lazy(() => import("./pages/ScheduleConsultation"));
 const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
 const PortfolioDetail = lazy(() => import("./pages/PortfolioDetail"));
 const Careers = lazy(() => import("./pages/Careers"));
@@ -62,6 +63,7 @@ const App = () => (
             <Route path="/roadmap" element={<RoadMap />} />
             <Route path="/portfolio/:projectId" element={<PortfolioDetail />} />
             <Route path="/team" element={<TeamPage />} />
+            <Route path="/schedule-consultation" element={<ScheduleConsultation />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />

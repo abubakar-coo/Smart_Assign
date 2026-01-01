@@ -350,7 +350,12 @@ const TeamPage = () => {
             Let's discuss how our expert team can help you achieve your business goals.
           </p>
           <div className="flex justify-center">
-            <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white transform hover:scale-105 transition-all duration-300">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="border-primary text-primary hover:bg-primary hover:text-white transform hover:scale-105 transition-all duration-300"
+              onClick={() => navigate("/schedule-consultation")}
+            >
               Schedule Consultation
             </Button>
           </div>
