@@ -83,9 +83,9 @@ const Hero = () => {
                 variant="outline" 
                 size="lg"
                 className="border-2 border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground text-base font-semibold px-8 py-6 rounded-lg transition-all duration-200 hover:scale-[1.02] hover:border-primary"
-                onClick={() => window.location.href = "/portfolio"}
+                onClick={() => window.location.href = "/roadmap"}
               >
-                View Portfolio
+                       View Road Map
               </Button>
             </div>
 

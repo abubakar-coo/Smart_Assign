@@ -7,7 +7,12 @@ import { useNavigate } from "react-router-dom";
 
 // Helper function to create URL-friendly slug from name
 const nameToSlug = (name: string): string => {
-  return name.toLowerCase().replace(/\s+/g, '-');
+  return name
+    .toLowerCase()
+    .replace(/ü/g, 'u') // Replace ü with u
+    .replace(/ö/g, 'o') // Replace ö with o
+    .replace(/ä/g, 'a') // Replace ä with a
+    .replace(/\s+/g, '-');
 };
 
 const TeamPage = () => {
@@ -21,6 +26,12 @@ const TeamPage = () => {
       "Shifa Seher": "Shifa-Seher",
       "Faizan Waqas": "Faizan-Waqas",
       "Emma Collins": "Emma-Collins",
+      "Charlotte Müller": "Charlotte-Müller",
+      "Ethan Johnson": "Ethan-Johnson",
+      "Isabella Rossi": "Isabella-Rossi",
+      "Olivia Smith": "Olivia-Smith",
+      "Sophia Martinez": "Sophia-Martinez",
+      "Lucas Anderson": "Lucas-Anderson",
     };
     
     const fileName = nameMap[name] || nameToSlug(name);
@@ -70,28 +81,28 @@ const TeamPage = () => {
       role: "Project Manager",
       specialty: "Operations & Client Delivery",
       experience: "9+ years",
-      image: "/api/placeholder/200/200",
+      image: getImagePath("Sophia Martinez"),
     },
     {
       name: "Isabella Rossi",
       role: "Content Strategist",
       specialty: "Copywriting & Digital Campaigns",
       experience: "5+ years",
-      image: "/api/placeholder/200/200",
+      image: getImagePath("Isabella Rossi"),
     },
     {
       name: "Charlotte Müller",
       role: "Business Analyst",
       specialty: "Market Research & Process Optimization",
       experience: "8+ years",
-      image: "/api/placeholder/200/200",
+      image: getImagePath("Charlotte Müller"),
     },
     {
       name: "Olivia Smith",
       role: "HR & Recruitment Lead",
       specialty: "Talent Acquisition & Culture Development",
       experience: "10+ years",
-      image: "/api/placeholder/200/200",
+      image: getImagePath("Olivia Smith"),
     },
     // Men Team Members
     {
@@ -99,14 +110,14 @@ const TeamPage = () => {
       role: "Full Stack Developer",
       specialty: "Web Applications & API Development",
       experience: "7+ years",
-      image: "/api/placeholder/200/200",
+      image: getImagePath("Ethan Johnson"),
     },
     {
       name: "Lucas Anderson",
       role: "Data Scientist",
       specialty: "AI & Predictive Analytics",
       experience: "4+ years",
-      image: "/api/placeholder/200/200",
+      image: getImagePath("Lucas Anderson"),
     },
   ];
 
@@ -236,6 +247,7 @@ const TeamPage = () => {
               <Card
                 key={index}
                 className="p-6 shadow-card hover:shadow-hover transition-all duration-300 group cursor-pointer border-0 hover:scale-105"
+                style={{ backgroundColor: '#eaf1f1' }}
                 onClick={() => navigate(`/team/${nameToSlug(member.name)}`)}
               >
                 <div className="text-center space-y-4">

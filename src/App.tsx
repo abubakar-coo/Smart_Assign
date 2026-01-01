@@ -13,8 +13,7 @@ import NotFound from "./pages/NotFound";
 // Lazy load all other pages for code splitting
 const Contact = lazy(() => import("./pages/Contact"));
 const ServicesDetails = lazy(() => import("./pages/ServicesDetails"));
-const Portfolio = lazy(() => import("./pages/Portfolio"));
-const TestimonialsPage = lazy(() => import("./pages/Testimonials"));
+const RoadMap = lazy(() => import("./pages/RoadMap"));
 const TeamPage = lazy(() => import("./pages/Team"));
 const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
 const PortfolioDetail = lazy(() => import("./pages/PortfolioDetail"));
@@ -60,9 +59,8 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/services" element={<ServicesDetails />} />
             <Route path="/services/:serviceName" element={<ServiceDetail />} />
-            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/roadmap" element={<RoadMap />} />
             <Route path="/portfolio/:projectId" element={<PortfolioDetail />} />
-            <Route path="/testimonials" element={<TestimonialsPage />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />

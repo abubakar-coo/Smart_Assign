@@ -6,7 +6,12 @@ import { useState, useEffect, useRef } from "react";
 
 // Helper function to create URL-friendly slug from name
 const nameToSlug = (name: string): string => {
-  return name.toLowerCase().replace(/\s+/g, '-');
+  return name
+    .toLowerCase()
+    .replace(/ü/g, 'u') // Replace ü with u
+    .replace(/ö/g, 'o') // Replace ö with o
+    .replace(/ä/g, 'a') // Replace ä with a
+    .replace(/\s+/g, '-');
 };
 
 const Team = () => {
@@ -68,6 +73,12 @@ const Team = () => {
       "Shifa Seher": "Shifa-Seher",
       "Faizan Waqas": "Faizan-Waqas",
       "Emma Collins": "Emma-Collins",
+      "Charlotte Müller": "Charlotte-Müller",
+      "Ethan Johnson": "Ethan-Johnson",
+      "Isabella Rossi": "Isabella-Rossi",
+      "Olivia Smith": "Olivia-Smith",
+      "Sophia Martinez": "Sophia-Martinez",
+      "Lucas Anderson": "Lucas-Anderson",
     };
     
     const fileName = nameMap[name] || nameToSlug(name);
