@@ -236,7 +236,7 @@ const Footer = () => {
         <div className="border-t border-white/20 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-white/60 text-sm">
-              © {currentYear} Smart Assign. All rights reserved.
+              © {currentYear} <Link to="/" className="hover:text-primary transition-colors"><strong>Smart Assign</strong></Link>. All Rights Reserved.
             </div>
             <div className="flex space-x-6 text-sm">
               <Link to="/privacy-policy" className="text-white/60 hover:text-primary transition-colors">

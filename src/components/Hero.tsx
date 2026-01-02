@@ -59,11 +59,7 @@ const Hero = () => {
             <div className="space-y-8 max-w-3xl">
               <div className="space-y-6">
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-[1.1] tracking-tight">
-                  Professional{" "}
-                  <span className="bg-gradient-primary bg-clip-text text-transparent">
-                    Micro-Services
-                  </span>{" "}
-                  for Growing Businesses
+                  Smart Assign: Professional SEO & Virtual Assistant Services
                 </h1>
                 <p className="text-lg md:text-xl text-foreground/90 leading-relaxed max-w-2xl">
                   We provide specialized, high-quality services that help businesses 
