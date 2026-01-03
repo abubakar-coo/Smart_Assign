@@ -154,7 +154,7 @@ const Services = () => {
   ];
 
   return (
-    <section ref={sectionRef} id="services" className="py-24 md:py-32 bg-gradient-to-b from-white to-gray-50/50 relative overflow-hidden">
+    <section ref={sectionRef} id="micro-services" className="py-24 md:py-32 bg-gradient-to-b from-white to-gray-50/50 relative overflow-hidden">
       {/* Background Image - Hidden on Mobile with Scroll Animation */}
       <div 
         className={`absolute inset-0 z-0 bg-no-repeat bg-center hidden md:block transition-opacity duration-300
@@ -175,10 +175,10 @@ const Services = () => {
         {/* Header - Top Center */}
         <div className="text-center mb-16 md:mb-20">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 tracking-tight">
-            Our Professional Services
+            Micro Services
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Explore our comprehensive range of services designed to help you succeed. 
+            Explore our comprehensive range of micro services designed to help you succeed. 
             From content creation to virtual assistance, we've got you covered.
           </p>
         </div>

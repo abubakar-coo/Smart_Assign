@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import MainServices from "@/components/MainServices";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -308,22 +309,11 @@ const ServicesDetails = () => {
       <Navigation />
       {/* Header */}
       <section className="bg-gradient-hero py-20 mt-16 relative overflow-hidden">
-        {/* Background Image - Hidden on Mobile */}
-        <div 
-          className="absolute inset-0 z-0 bg-no-repeat bg-center hidden md:block"
-          style={{
-            backgroundImage: 'url(/images/hero/services-page-background.png)',
-            backgroundSize: 'cover',
-            imageRendering: 'auto' as const,
-            willChange: 'transform',
-          } as React.CSSProperties}
-        />
-        
         {/* Content */}
         <div className="relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-6xl font-bold text-foreground mb-6">
-              Our Professional Services
+              Our Services
             </h1>
             <p className="text-2xl text-muted-foreground max-w-3xl mx-auto">
               Explore our comprehensive range of services designed to help you succeed. 
@@ -333,9 +323,23 @@ const ServicesDetails = () => {
         </div>
       </section>
 
-      {/* Services Grid */}
+      {/* Main Services Section */}
+      <MainServices showAll={true} />
+
+      {/* Micro Services Section */}
       <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+              Micro Services
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Additional specialized services to support your business needs
+            </p>
+          </div>
+
+          {/* Services Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {allServices.map((service, index) => {
               // Helper function to get image path from service title
