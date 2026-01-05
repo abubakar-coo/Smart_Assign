@@ -164,6 +164,22 @@ const MainServices = ({ showAll = false }: MainServicesProps) => {
     },
   ];
 
+  // Get home page services in specific order
+  const getHomePageServices = () => {
+    const homePageServiceTitles = [
+      "Web Development",
+      "Social Media Marketing (SMM)",
+      "Search Engine Optimization (SEO)",
+      "Content Marketing"
+    ];
+    
+    return homePageServiceTitles
+      .map(title => mainServices.find(service => service.title === title))
+      .filter((service): service is NonNullable<typeof service> => service !== undefined);
+  };
+
+  const homePageServices = getHomePageServices();
+
   return (
     <section ref={sectionRef} id="main-services" className="py-24 md:py-32 bg-gradient-to-b from-white to-gray-50/50 relative overflow-hidden">
       {/* Background Image - Only show on home page (when showAll is false) */}
@@ -267,7 +283,7 @@ const MainServices = ({ showAll = false }: MainServicesProps) => {
           ) : (
             <div className="flex justify-end">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 w-full md:w-1/2">
-                {mainServices.slice(0, 4).map((service, index) => {
+                {homePageServices.map((service, index) => {
               const cardVisible = visibleCards.has(index);
               const animationDelay = index * 100;
               
