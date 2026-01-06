@@ -1,6 +1,4 @@
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -38,7 +36,6 @@ import {
 
 const Careers = () => {
   const { toast } = useToast();
-  const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const portfolioInputRef = useRef<HTMLInputElement>(null);
   const paymentScreenshotRef = useRef<HTMLInputElement>(null);
@@ -360,19 +357,7 @@ const Careers = () => {
 
   const validateStep1 = () => {
     if (!formData.fullName || !formData.email || !formData.phone || !formData.country || !formData.skills || !formData.aboutYou || !cvFile) {
-      toast({ title: "Please fill all required fields", description: "Email, Phone, and all other fields are required", variant: "destructive" });
-      return false;
-    }
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      toast({ title: "Invalid Email", description: "Please enter a valid email address", variant: "destructive" });
-      return false;
-    }
-    // Validate phone (at least 7 digits)
-    const phoneRegex = /[\d\s\+\-\(\)]{7,}/;
-    if (!phoneRegex.test(formData.phone)) {
-      toast({ title: "Invalid Phone", description: "Please enter a valid phone number", variant: "destructive" });
+      toast({ title: "Please fill all required fields", variant: "destructive" });
       return false;
     }
     return true;
@@ -399,7 +384,7 @@ const Careers = () => {
     if (!validateStep3()) return;
     
     setIsSubmitting(true);
-
+    
     try {
       const pkg = getSelectedPackage();
       const selectedCurrency = isPakistan ? "PKR" : "USD";
@@ -452,21 +437,16 @@ const Careers = () => {
       });
       
       if (response.ok) {
-        // Prepare form data for thank you page
-        const thankYouData = {
-          fullName: formData.fullName,
-          email: formData.email,
-          phone: formData.phone,
-          country: formData.country,
-          skills: formData.skills,
-          aboutYou: formData.aboutYou,
-          jobCategory: selectedJob,
-          salaryPackage: `${selectedPackage} (${selectedCurrency} ${joiningFee})`,
-          transactionId: formData.transactionId || undefined
-        };
-        
-        // Navigate to thank you page with form data
-        navigate("/careers/thank-you", { state: thankYouData });
+        toast({ title: "🎉 Application Submitted!", description: "We'll contact you within 24 hours." });
+        // Reset
+        setFormData({ fullName: "", email: "", phone: "", country: "", skills: "", aboutYou: "", jobCategory: "", salaryPackage: "", transactionId: "" });
+        goToStep(1);
+        setSelectedJob("");
+        setSelectedPackage("");
+        setSelectedCountry("");
+        setCvFile(null);
+        setPortfolioFile(null);
+        setPaymentScreenshot(null);
       } else {
         toast({ title: "Error", description: "Failed to submit. Please try again.", variant: "destructive" });
       }
@@ -479,28 +459,11 @@ const Careers = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-        <title>Careers - Join Our Team | Smart Assign Digital Agency</title>
-        <meta name="description" content="Start earning today with Smart Assign! Join our team as a virtual assistant, content writer, or data entry expert. Zero fee agency with daily payments and flexible work hours." />
-        <meta name="keywords" content="Smart Assign careers, virtual assistant jobs, content writer jobs, data entry jobs, remote work, zero fee agency jobs, work from home" />
-        <meta property="og:title" content="Careers - Join Our Team | Smart Assign Digital Agency" />
-        <meta property="og:description" content="Start earning today with Smart Assign! Join our team as a virtual assistant, content writer, or data entry expert. Zero fee agency with daily payments." />
-      </Helmet>
       <Navigation />
       
       {/* Hero Header */}
       <section className="bg-gradient-hero pt-24 pb-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <div className="mb-6">
-            <Button
-              variant="outline"
-              onClick={() => navigate("/how-it-works")}
-              className="border-primary text-primary hover:bg-primary hover:text-white"
-            >
-              <FileText className="mr-2 w-4 h-4" />
-              Learn How It Works - Complete Process Guide
-            </Button>
-          </div>
           <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-6">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -562,17 +525,17 @@ const Careers = () => {
                   <h2 className="text-xl font-bold text-foreground">Your Information</h2>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="md:col-span-2">
+                    <div className="md:col-span-2">
                       <Label>Full Name *</Label>
                       <Input name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder="Your full name" className="mt-1" />
-                      </div>
-                      <div>
+                    </div>
+                    <div>
                       <Label>Email *</Label>
-                      <Input name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="your@email.com" className="mt-1" required />
-                      </div>
-                      <div>
+                      <Input name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="your@email.com" className="mt-1" />
+                    </div>
+                    <div>
                       <Label>Phone *</Label>
-                      <Input name="phone" type="tel" value={formData.phone} onChange={handleInputChange} placeholder="+92 300 1234567" className="mt-1" required />
+                      <Input name="phone" value={formData.phone} onChange={handleInputChange} placeholder="+92 300 1234567" className="mt-1" />
                     </div>
                   </div>
 
@@ -612,9 +575,9 @@ const Careers = () => {
                         <div className="flex items-center gap-2">
                           <FileText className="w-5 h-5 text-primary" />
                           <span className="text-sm">{cvFile.name}</span>
-                            </div>
+                        </div>
                         <button type="button" onClick={() => setCvFile(null)}><X className="w-4 h-4 text-red-500" /></button>
-                              </div>
+                      </div>
                     )}
                   </div>
 
@@ -655,52 +618,31 @@ const Careers = () => {
                     </div>
                   </div>
 
-                  {/* Selected Category Details - Enhanced */}
+                  {/* Selected Category Details */}
                   {selectedJob && getSelectedJob() && (
-                    <div className="bg-gradient-to-br from-primary/10 via-blue-50 to-primary/5 border-2 border-primary/30 rounded-xl p-6 space-y-4 shadow-lg">
-                      <div className="flex items-center gap-3 pb-3 border-b border-primary/20">
-                        <span className="text-4xl">{getSelectedJob()?.icon}</span>
-                        <div className="flex-1">
-                          <h3 className="text-xl font-bold text-foreground mb-1">{getSelectedJob()?.name}</h3>
-                          <p className="text-xs text-muted-foreground">Work Category Selected</p>
-                        </div>
-                        <Badge className="bg-primary text-white border-0 px-3 py-1">✓ Selected</Badge>
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">{getSelectedJob()?.icon}</span>
+                        <h3 className="font-bold text-foreground">{getSelectedJob()?.name}</h3>
+                        <Badge variant="outline" className="ml-auto">Selected</Badge>
                       </div>
                       
-                      <div className="bg-white/80 rounded-lg p-4 border border-primary/10">
-                        <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
-                          <FileText className="w-4 h-4 text-primary" />
-                          About This Work:
-                        </h4>
-                        <p className="text-sm text-muted-foreground leading-relaxed">{getSelectedJob()?.fullDescription}</p>
-                      </div>
+                      <p className="text-sm text-muted-foreground">{getSelectedJob()?.fullDescription}</p>
                       
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="bg-white/80 rounded-lg p-4 border border-primary/10">
-                          <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                            <CheckCircle className="w-4 h-4 text-green-600" />
-                            Requirements:
-                          </h4>
-                          <ul className="space-y-2">
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <p className="font-medium text-foreground mb-1">Requirements:</p>
+                          <ul className="list-disc list-inside text-muted-foreground space-y-1">
                             {getSelectedJob()?.requirements.map((req, i) => (
-                              <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                                <span className="text-primary mt-1">•</span>
-                                <span>{req}</span>
-                              </li>
+                              <li key={i}>{req}</li>
                             ))}
                           </ul>
                         </div>
-                        <div className="bg-white/80 rounded-lg p-4 border border-primary/10">
-                          <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                            <Briefcase className="w-4 h-4 text-primary" />
-                            Daily Tasks:
-                          </h4>
-                          <ul className="space-y-2">
+                        <div>
+                          <p className="font-medium text-foreground mb-1">Daily Tasks:</p>
+                          <ul className="list-disc list-inside text-muted-foreground space-y-1">
                             {getSelectedJob()?.tasks.map((task, i) => (
-                              <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                                <span className="text-primary mt-1">•</span>
-                                <span>{task}</span>
-                              </li>
+                              <li key={i}>{task}</li>
                             ))}
                           </ul>
                         </div>
@@ -724,9 +666,9 @@ const Careers = () => {
                             <button type="button" onClick={() => setPortfolioFile(null)}><X className="w-4 h-4 text-red-500" /></button>
                           </div>
                         )}
-                  </div>
-                </div>
-              )}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Packages - Filtered based on selected category */}
                   <div>
@@ -741,60 +683,60 @@ const Careers = () => {
                         const symbol = isPakistan ? "Rs" : "$";
                         
                         return (
-                        <button
-                          key={pkg.id}
-                          type="button"
-                          onClick={() => handlePackageSelection(pkg.id)}
+                          <button
+                            key={pkg.id}
+                            type="button"
+                            onClick={() => handlePackageSelection(pkg.id)}
                             className={`p-4 border-2 rounded-xl text-center transition-all ${
-                            selectedPackage === pkg.name
+                              selectedPackage === pkg.name 
                                 ? "border-primary bg-primary/5 shadow-lg ring-2 ring-primary/30" 
                                 : "border-muted hover:border-primary/50 hover:bg-muted/50"
-                          }`}
-                        >
-                            <Badge className="bg-primary/10 text-primary border border-primary/20 text-xs mb-2 font-semibold">{pkg.name}</Badge>
+                            }`}
+                          >
+                            <Badge className="bg-primary text-white text-xs mb-2">{pkg.name}</Badge>
                             
                             {/* Joining Fee */}
-                            <div className="bg-orange-50/50 border border-orange-100 rounded-lg p-2 mb-3">
-                              <p className="text-lg font-bold text-orange-700">{symbol}{fee.toLocaleString()}</p>
-                              <p className="text-xs text-orange-600/80 font-medium">One-time Joining Fee</p>
+                            <div className="bg-red-50 rounded-lg p-2 mb-3">
+                              <p className="text-xl font-bold text-red-600">{symbol}{fee.toLocaleString()}</p>
+                              <p className="text-xs text-red-500 font-medium">One-time Joining Fee</p>
                             </div>
                             
                             {/* Earnings Breakdown */}
-                            <div className="bg-primary/5 border border-primary/10 rounded-lg p-2 space-y-1">
-                              <p className="text-xs font-semibold text-primary/80 mb-1">💰 Your Earnings:</p>
+                            <div className="bg-green-50 rounded-lg p-2 space-y-1">
+                              <p className="text-xs font-semibold text-green-700 mb-1">💰 Your Earnings:</p>
                               <div className="flex justify-between text-xs">
                                 <span className="text-muted-foreground">Daily:</span>
-                                <span className="text-primary font-semibold">{symbol}{earnings.daily.toLocaleString()}</span>
+                                <span className="text-green-600 font-bold">{symbol}{earnings.daily.toLocaleString()}</span>
                               </div>
                               <div className="flex justify-between text-xs">
                                 <span className="text-muted-foreground">Weekly:</span>
-                                <span className="text-primary font-semibold">{symbol}{earnings.weekly.toLocaleString()}</span>
+                                <span className="text-green-600 font-bold">{symbol}{earnings.weekly.toLocaleString()}</span>
                               </div>
-                              <div className="flex justify-between text-xs border-t border-primary/20 pt-1 mt-1">
+                              <div className="flex justify-between text-xs border-t border-green-200 pt-1 mt-1">
                                 <span className="text-muted-foreground">Monthly:</span>
-                                <span className="text-primary font-bold">{symbol}{earnings.monthly.toLocaleString()}</span>
+                                <span className="text-green-700 font-bold">{symbol}{earnings.monthly.toLocaleString()}</span>
                               </div>
                             </div>
-                        </button>
+                          </button>
                         );
                       })}
                     </div>
-                    </div>
+                  </div>
 
                   {/* Package Summary - Detailed */}
                   {selectedPackage && getSelectedPackage() && (
                     <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-xl p-5">
                       <h4 className="font-bold text-green-800 mb-3 flex items-center gap-2">
                         ✅ {getSelectedPackage()?.name} Package Selected
-                        </h4>
+                      </h4>
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div className="bg-white rounded-lg p-3 border border-red-200">
                           <p className="text-muted-foreground text-xs">You Pay (Once)</p>
                           <p className="text-xl font-bold text-red-600">
                             {isPakistan ? "Rs" : "$"}{isPakistan ? getSelectedPackage()?.fee.pkr.toLocaleString() : getSelectedPackage()?.fee.usd}
-                            </p>
+                          </p>
                           <p className="text-xs text-muted-foreground">One-time joining fee only</p>
-                          </div>
+                        </div>
                         <div className="bg-white rounded-lg p-3 border border-green-200">
                           <p className="text-muted-foreground text-xs">You Earn (Monthly)</p>
                           <p className="text-xl font-bold text-green-600">
@@ -802,11 +744,11 @@ const Careers = () => {
                           </p>
                           <p className="text-xs text-muted-foreground">
                             ({isPakistan ? "Rs" : "$"}{isPakistan ? getSelectedPackage()?.earnings.pkr.weekly.toLocaleString() : getSelectedPackage()?.earnings.usd.weekly}/week)
-                            </p>
-                          </div>
+                          </p>
                         </div>
                       </div>
-                    )}
+                    </div>
+                  )}
 
                   <div className="flex gap-3">
                     <Button type="button" variant="outline" onClick={() => goToStep(1)} className="flex-1">
@@ -816,7 +758,7 @@ const Careers = () => {
                       Continue <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
                   </div>
-                  </div>
+                </div>
               )}
 
               {/* STEP 3 */}
@@ -830,12 +772,12 @@ const Careers = () => {
                       <p className="text-sm text-red-600 mb-1">Amount to Pay</p>
                       <p className="text-3xl font-bold text-red-600">
                         {isPakistan ? "Rs " : "$"}{isPakistan ? getSelectedPackage()?.fee.pkr.toLocaleString() : getSelectedPackage()?.fee.usd}
-                    </p>
+                      </p>
                     </div>
                   )}
 
                   {/* Payment Accounts */}
-                        <div>
+                  <div>
                     <div className="flex items-center gap-2 mb-3">
                       {isPakistan ? <Building2 className="w-4 h-4" /> : <CreditCard className="w-4 h-4" />}
                       <Label>{isPakistan ? "Send to Bank Account" : "Send to Crypto Wallet"}</Label>
@@ -844,13 +786,13 @@ const Careers = () => {
                     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3 flex items-start gap-2">
                       <AlertCircle className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
                       <p className="text-xs text-yellow-700">Send exact amount to any account below, then upload screenshot</p>
-                        </div>
+                    </div>
 
                     <div className="space-y-2">
                       {isPakistan ? (
                         companyBankAccounts.map((acc, i) => (
                           <div key={i} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                        <div>
+                            <div>
                               <p className="font-medium text-sm">{acc.bankName}</p>
                               <p className="text-xs text-muted-foreground">{acc.accountTitle}</p>
                               <p className="font-mono text-sm">{acc.accountNumber}</p>
@@ -873,11 +815,11 @@ const Careers = () => {
                           </div>
                         ))
                       )}
-                        </div>
-                      </div>
+                    </div>
+                  </div>
 
                   {/* Screenshot Upload */}
-                      <div>
+                  <div>
                     <Label className="flex items-center gap-2"><ImageIcon className="w-4 h-4" /> Payment Screenshot *</Label>
                     <input ref={paymentScreenshotRef} type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setPaymentScreenshot, ['image'])} className="hidden" id="screenshot" />
                     {!paymentScreenshot ? (
@@ -931,7 +873,7 @@ const Careers = () => {
                 <item.icon className="w-8 h-8 mx-auto mb-2 text-primary" />
                 <p className="font-bold text-sm">{item.title}</p>
                 <p className="text-xs text-muted-foreground">{item.desc}</p>
-            </Card>
+              </Card>
             ))}
           </div>
         </div>

@@ -155,9 +155,6 @@ const HowItWorks = () => {
                           <div className="w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center text-white font-bold text-xl shadow-lg">
                             {step.number}
                           </div>
-                          <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                            <Icon className="w-5 h-5 text-primary" />
-                          </div>
                         </div>
                         {index < steps.length - 1 && (
                           <div className="hidden md:block">
