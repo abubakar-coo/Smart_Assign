@@ -976,7 +976,7 @@ const ServiceDetail = () => {
                         {countryError}
                       </p>
                     )}
-                  </div>
+                </div>
                 </div>
             </div>
 

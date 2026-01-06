@@ -17,7 +17,7 @@ const Hero = () => {
             setIsVisible(true);
           }
         });
-      },
+    },
       { threshold: 0.1 }
     );
 
@@ -53,24 +53,24 @@ const Hero = () => {
       <div className={`relative z-10 transition-opacity duration-300 delay-100
         ${isVisible ? 'opacity-100' : 'opacity-0'}
       `}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="min-h-[70vh] py-12 flex items-center">
             {/* Content */}
             <div className="space-y-8 max-w-3xl">
-              <div className="space-y-6">
+          <div className="space-y-6">
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-[1.1] tracking-tight">
-                  Professional{" "}
-                  <span className="bg-gradient-primary bg-clip-text text-transparent">
-                    Micro-Services
-                  </span>{" "}
-                  for Growing Businesses
-                </h1>
+                Professional{" "}
+                <span className="bg-gradient-primary bg-clip-text text-transparent">
+                  Micro-Services
+                </span>{" "}
+                for Growing Businesses
+              </h1>
                 <p className="text-lg md:text-xl text-foreground/90 leading-relaxed max-w-2xl">
-                  We provide specialized, high-quality services that help businesses 
-                  streamline operations and accelerate growth. From content creation 
-                  to data management, we've got you covered.
-                </p>
-              </div>
+                We provide specialized, high-quality services that help businesses 
+                streamline operations and accelerate growth. From content creation 
+                to data management, we've got you covered.
+              </p>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
@@ -130,7 +130,7 @@ const Hero = () => {
                 </div>
               </div>
             </div>
-            </div>
+          </div>
           </div>
         </div>
       </div>

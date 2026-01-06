@@ -20,6 +20,8 @@ const ScheduleConsultation = lazy(() => import("./pages/ScheduleConsultation"));
 const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
 const PortfolioDetail = lazy(() => import("./pages/PortfolioDetail"));
 const Careers = lazy(() => import("./pages/Careers"));
+const CareerThankYou = lazy(() => import("./pages/CareerThankYou"));
+const HowItWorks = lazy(() => import("./pages/HowItWorks"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
@@ -67,6 +69,8 @@ const App = () => (
             <Route path="/team" element={<TeamPage />} />
             <Route path="/schedule-consultation" element={<ScheduleConsultation />} />
             <Route path="/careers" element={<Careers />} />
+            <Route path="/careers/thank-you" element={<CareerThankYou />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />

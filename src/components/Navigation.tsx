@@ -31,8 +31,8 @@ const Navigation = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center hover:scale-105 transition-transform duration-300 group opacity-100 hover:opacity-100">
             <div className="h-[76px] sm:h-[84px] md:h-[92px] lg:h-[104px]">
-              <img
-                src="/images/smart-assign-main-name.png"
+              <img 
+                src="/images/smart-assign-main-name.png" 
                 alt="Smart Assign - Digital Agency for SEO Content Writing, Virtual Assistant Services and Data Entry"
                 className="h-full w-auto object-contain"
               />

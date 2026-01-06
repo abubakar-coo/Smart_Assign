@@ -63,7 +63,7 @@ const Services = () => {
       cardRefs.current.forEach((card) => {
         if (card) cardObserver.unobserve(card);
       });
-    };
+  };
   }, []);
 
   const allServices = [
@@ -171,7 +171,7 @@ const Services = () => {
       <div className={`relative z-10 transition-opacity duration-300 delay-100
         ${isVisible ? 'opacity-100' : 'opacity-0'}
       `}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header - Top Center */}
         <div className="text-center mb-16 md:mb-20">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 tracking-tight">
@@ -191,8 +191,8 @@ const Services = () => {
               const animationDelay = index * 100;
               
               return (
-              <Card 
-                key={index}
+                <Card 
+                  key={index} 
                 ref={(el) => {
                   cardRefs.current[index] = el;
                 }}
@@ -209,64 +209,64 @@ const Services = () => {
               <div className="flex flex-col flex-1">
                 {/* Title */}
                 <h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
-                  {service.title}
-                </h3>
+                        {service.title}
+                      </h3>
                 
                 {/* Description */}
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3">
-                  {service.description}
-                </p>
-                
-                {/* Features */}
+                        {service.description}
+                      </p>
+                      
+                      {/* Features */}
                 <div className="space-y-1.5 mb-4">
                   {service.features.slice(0, 3).map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-center space-x-2">
+                          <div key={featureIndex} className="flex items-center space-x-2">
                       <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${service.gradient} flex-shrink-0`}></div>
                       <span className="text-xs text-muted-foreground line-clamp-1">{feature}</span>
-                    </div>
-                  ))}
+                          </div>
+                        ))}
                   {service.features.length > 3 && (
                     <div className="text-xs text-primary font-medium">
                       +{service.features.length - 3} more
                     </div>
                   )}
-                </div>
-              </div>
+                      </div>
+                    </div>
 
               {/* CTA Button - Pushed to bottom with mt-auto */}
               <div className="mt-auto pt-4 border-t border-muted/20">
-                <Button 
-                  variant="outline" 
+                      <Button 
+                        variant="outline" 
                   size="sm"
                   className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground transform transition-all duration-300 hover:scale-105"
                   onClick={() => {
                     trackLearnMoreClick('services_section', service.title);
                     navigate(`/services/${titleToSlug(service.title)}`);
                   }}
-                >
-                  Learn More
-                </Button>
-              </div>
-            </Card>
+                      >
+                        Learn More
+                      </Button>
+                  </div>
+                </Card>
             );
             })}
+            </div>
           </div>
-        </div>
 
         {/* View All Services CTA */}
         <div className="text-center mt-16 md:mt-20">
-          <Button 
+                  <Button 
             size="lg"
             className="bg-gradient-primary hover:shadow-lg text-base font-semibold px-8 py-6 rounded-lg transition-all duration-200 hover:scale-[1.02]"
             onClick={() => {
               trackViewAllServicesClick('services_section');
               window.location.href = '/services';
             }}
-          >
+                  >
             View All Services
-          </Button>
-        </div>
-      </div>
+                  </Button>
+                </div>
+              </div>
       </div>
     </section>
   );
