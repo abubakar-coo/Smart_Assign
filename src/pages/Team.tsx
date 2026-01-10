@@ -1,8 +1,9 @@
+import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Linkedin, Twitter, Mail, Award, Users, Target, ArrowRight } from "lucide-react";
+import { Linkedin, Twitter, Mail, Award, Users, Target, ArrowRight, Globe, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 // Helper function to create URL-friendly slug from name
@@ -41,6 +42,7 @@ const TeamPage = () => {
   const ceo = {
     name: "Abubakar Arif",
     role: "CEO & Founder",
+    location: "Pakistan",
     bio: "Visionary entrepreneur with over 10 years of experience in digital transformation and business automation. Abubakar founded Smart Assign to revolutionize how businesses access high-quality professional services through innovative micro-service solutions.",
     achievements: [
       "Led 1000+ successful digital projects",
@@ -59,6 +61,7 @@ const TeamPage = () => {
       role: "COO - Chief Operating Officer",
       specialty: "Operations & Strategic Planning",
       experience: "8+ years",
+      location: "Pakistan",
       image: getImagePath("Shifa Seher"),
     },
     {
@@ -66,6 +69,7 @@ const TeamPage = () => {
       role: "General Manager",
       specialty: "Project Management & Operations",
       experience: "2+ years",
+      location: "Pakistan",
       image: getImagePath("Faizan Waqas"),
     },
     // Women Team Members
@@ -74,6 +78,7 @@ const TeamPage = () => {
       role: "Senior Designer",
       specialty: "UI/UX & Brand Identity",
       experience: "6+ years",
+      location: "United Kingdom",
       image: getImagePath("Emma Collins"),
     },
     {
@@ -81,6 +86,7 @@ const TeamPage = () => {
       role: "Project Manager",
       specialty: "Operations & Client Delivery",
       experience: "9+ years",
+      location: "Spain",
       image: getImagePath("Sophia Martinez"),
     },
     {
@@ -88,6 +94,7 @@ const TeamPage = () => {
       role: "Content Strategist",
       specialty: "Copywriting & Digital Campaigns",
       experience: "5+ years",
+      location: "Italy",
       image: getImagePath("Isabella Rossi"),
     },
     {
@@ -95,6 +102,7 @@ const TeamPage = () => {
       role: "Business Analyst",
       specialty: "Market Research & Process Optimization",
       experience: "8+ years",
+      location: "Germany",
       image: getImagePath("Charlotte Müller"),
     },
     {
@@ -102,6 +110,7 @@ const TeamPage = () => {
       role: "HR & Recruitment Lead",
       specialty: "Talent Acquisition & Culture Development",
       experience: "10+ years",
+      location: "United States",
       image: getImagePath("Olivia Smith"),
     },
     // Men Team Members
@@ -110,6 +119,7 @@ const TeamPage = () => {
       role: "Full Stack Developer",
       specialty: "Web Applications & API Development",
       experience: "7+ years",
+      location: "United States",
       image: getImagePath("Ethan Johnson"),
     },
     {
@@ -117,6 +127,7 @@ const TeamPage = () => {
       role: "Data Scientist",
       specialty: "AI & Predictive Analytics",
       experience: "4+ years",
+      location: "Sweden",
       image: getImagePath("Lucas Anderson"),
     },
   ];
@@ -158,10 +169,43 @@ const TeamPage = () => {
           <h1 className="text-6xl font-bold text-foreground mb-6">
             Meet Our Team
           </h1>
-          <p className="text-2xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-2xl text-muted-foreground max-w-3xl mx-auto mb-8">
             A passionate group of professionals dedicated to delivering
             exceptional micro-services that drive your business forward.
           </p>
+          
+          {/* Global Team Highlight */}
+          <Card className="max-w-4xl mx-auto p-6 bg-white/10 backdrop-blur-sm border-2 border-primary/20">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Globe className="w-6 h-6 text-primary" />
+                </div>
+                <div className="text-left">
+                  <h3 className="text-xl font-bold text-foreground mb-1">Global Team</h3>
+                  <p className="text-muted-foreground">
+                    Our team spans across <strong>Pakistan</strong> and <strong>International</strong> locations
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-6 text-sm">
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-primary" />
+                  <span className="text-foreground font-semibold">Pakistan:</span>
+                  <span className="text-muted-foreground">3 Members</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Globe className="w-4 h-4 text-primary" />
+                  <span className="text-foreground font-semibold">International:</span>
+                  <span className="text-muted-foreground">7 Members</span>
+                </div>
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground mt-4 text-center">
+              From <strong>Pakistan, United States, United Kingdom, Germany, Italy, Spain, and Sweden</strong> - 
+              we bring diverse expertise and global perspectives to every project.
+            </p>
+          </Card>
         </div>
       </section>
 
@@ -175,9 +219,13 @@ const TeamPage = () => {
                   <h3 className="text-4xl font-bold text-foreground mb-2">
                     {ceo.name}
                   </h3>
-                  <p className="text-2xl text-primary font-semibold mb-4">
+                  <p className="text-2xl text-primary font-semibold mb-2">
                     {ceo.role}
                   </p>
+                  <div className="flex items-center gap-2 mb-4">
+                    <MapPin className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-base text-muted-foreground font-medium">{ceo.location}</span>
+                  </div>
                   <p className="text-lg text-muted-foreground leading-relaxed">
                     {ceo.bio}
                   </p>
@@ -290,6 +338,10 @@ const TeamPage = () => {
                     <p className="text-primary font-medium text-base mb-1">
                       {member.role}
                     </p>
+                    <div className="flex items-center justify-center gap-1 mb-1">
+                      <MapPin className="w-3 h-3 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground font-medium">{member.location}</span>
+                    </div>
                     <p className="text-muted-foreground text-base">
                       {member.specialty}
                     </p>

@@ -30,11 +30,11 @@ export const trackCTAClick = (
 };
 
 /**
- * Track "Start Earning Today" button click specifically
+ * Track "Registration" button click specifically
  * @param location - Where the button is located (e.g., "navigation_desktop", "navigation_mobile", "hero_mobile")
  */
 export const trackStartEarningTodayClick = (location: string) => {
-  trackCTAClick('start_earning_today', location, 'Start Earning Today!');
+  trackCTAClick('registration', location, 'Registration');
 };
 
 /**
