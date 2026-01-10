@@ -170,21 +170,6 @@ const HowItWorks = () => {
             <p className="text-lg text-muted-foreground mb-6">
               Follow these steps from registration to payment
             </p>
-            {/* Important Note about 20 Candidates */}
-            <div className="max-w-3xl mx-auto mb-8">
-              <Card className="p-6 bg-yellow-50 border-2 border-yellow-200">
-                <div className="flex items-start gap-4">
-                  <Info className="w-6 h-6 text-yellow-600 mt-0.5 flex-shrink-0" />
-                  <div className="text-left">
-                    <h3 className="font-bold text-foreground mb-2">📋 Important: Test Schedule</h3>
-                    <p className="text-foreground">
-                      <strong>When 20 candidates complete their registration,</strong> we will conduct tests for all registered candidates. 
-                      Make sure to complete your registration early to be part of the first test batch!
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            </div>
           </div>
 
           <div className="space-y-8">
@@ -373,6 +358,26 @@ const HowItWorks = () => {
               })}
             </div>
           </Card>
+        </div>
+      </section>
+
+      {/* Important Note about 20 Candidates - Moved Down */}
+      <section className="py-20 bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto">
+            <Card className="p-6 bg-yellow-50 border-2 border-yellow-200">
+              <div className="flex items-start gap-4">
+                <Info className="w-6 h-6 text-yellow-600 mt-0.5 flex-shrink-0" />
+                <div className="text-left">
+                  <h3 className="font-bold text-foreground mb-2 text-xl">📋 Important: Test Schedule</h3>
+                  <p className="text-foreground">
+                    <strong>When 20 candidates complete their registration,</strong> we will conduct tests for all registered candidates. 
+                    Make sure to complete your registration early to be part of the first test batch!
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </div>
         </div>
       </section>
 

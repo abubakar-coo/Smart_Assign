@@ -358,7 +358,17 @@ const Careers = () => {
   };
 
   const validateStep1 = () => {
-    if (!formData.fullName || !formData.email || !formData.phone || !formData.country || !formData.skills || !formData.aboutYou || !cvFile) {
+    // Email validation
+    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      toast({ title: "Please enter a valid email address", variant: "destructive" });
+      return false;
+    }
+    // Phone validation (minimum 7 digits)
+    if (!formData.phone || formData.phone.replace(/\D/g, '').length < 7) {
+      toast({ title: "Please enter a valid phone number (minimum 7 digits)", variant: "destructive" });
+      return false;
+    }
+    if (!formData.fullName || !formData.country || !formData.skills || !formData.aboutYou) {
       toast({ title: "Please fill all required fields", variant: "destructive" });
       return false;
     }
@@ -386,7 +396,7 @@ const Careers = () => {
     if (!validateStep3()) return;
     
     setIsSubmitting(true);
-    
+
     try {
       const pkg = getSelectedPackage();
       const selectedCurrency = isPakistan ? "PKR" : "USD";
@@ -439,16 +449,24 @@ const Careers = () => {
       });
       
       if (response.ok) {
-        toast({ title: "🎉 Application Submitted!", description: "We'll contact you within 24 hours." });
-        // Reset
-        setFormData({ fullName: "", email: "", phone: "", country: "", skills: "", aboutYou: "", jobCategory: "", salaryPackage: "", transactionId: "" });
-        goToStep(1);
-        setSelectedJob("");
-        setSelectedPackage("");
-        setSelectedCountry("");
-        setCvFile(null);
-        setPortfolioFile(null);
-        setPaymentScreenshot(null);
+        // Generate registration code
+        const generateRegistrationCode = (): string => {
+          const timestamp = Date.now().toString(36).toUpperCase();
+          const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+          return `SA-${timestamp}-${random}`;
+        };
+        
+        const registrationCode = generateRegistrationCode();
+        
+        // Navigate to thank you page with form data and registration code
+        navigate("/careers/thank-you", {
+          state: {
+            ...formData,
+            jobCategory: selectedJob,
+            salaryPackage: selectedPackage,
+            registrationCode: registrationCode
+          }
+        });
       } else {
         toast({ title: "Error", description: "Failed to submit. Please try again.", variant: "destructive" });
       }
@@ -529,15 +547,15 @@ const Careers = () => {
                   <h2 className="text-xl font-bold text-foreground">Your Information</h2>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="md:col-span-2">
+                      <div className="md:col-span-2">
                       <Label>Full Name *</Label>
                       <Input name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder="Your full name" className="mt-1" />
-                    </div>
-                    <div>
+                      </div>
+                      <div>
                       <Label>Email *</Label>
                       <Input name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="your@email.com" className="mt-1" />
-                    </div>
-                    <div>
+                      </div>
+                      <div>
                       <Label>Phone *</Label>
                       <Input name="phone" value={formData.phone} onChange={handleInputChange} placeholder="+92 300 1234567" className="mt-1" />
                     </div>
@@ -563,25 +581,25 @@ const Careers = () => {
                   {/* Skills */}
                   <div>
                     <Label className="flex items-center gap-2"><Star className="w-4 h-4" /> Skills *</Label>
-                    <Textarea name="skills" value={formData.skills} onChange={handleInputChange} placeholder="Your skills (e.g., WordPress, Python, Design...)" className="mt-1" rows={2} />
+                    <Textarea name="skills" value={formData.skills} onChange={handleInputChange} placeholder="Your skills (e.g., SEO Content Writing, Data Entry, Canva Designing, Proofreading, Research Assistance...)" className="mt-1" rows={2} />
                   </div>
 
                   {/* CV Upload */}
                   <div>
-                    <Label className="flex items-center gap-2"><FileUp className="w-4 h-4" /> Upload CV *</Label>
+                    <Label className="flex items-center gap-2"><FileUp className="w-4 h-4" /> Upload CV (Optional)</Label>
                     <input ref={fileInputRef} type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleFileUpload(e, setCvFile, ['pdf', 'doc', 'word'])} className="hidden" id="cv" />
                     {!cvFile ? (
                       <label htmlFor="cv" className="mt-1 flex items-center justify-center h-20 border-2 border-dashed rounded-lg cursor-pointer hover:border-primary/50">
-                        <span className="text-muted-foreground text-sm">Click to upload (PDF, DOC)</span>
+                        <span className="text-muted-foreground text-sm">Click to upload (PDF, DOC) - Optional</span>
                       </label>
                     ) : (
                       <div className="mt-1 flex items-center justify-between p-3 border rounded-lg bg-primary/5">
                         <div className="flex items-center gap-2">
                           <FileText className="w-5 h-5 text-primary" />
                           <span className="text-sm">{cvFile.name}</span>
-                        </div>
+                            </div>
                         <button type="button" onClick={() => setCvFile(null)}><X className="w-4 h-4 text-red-500" /></button>
-                      </div>
+                              </div>
                     )}
                   </div>
 
@@ -622,31 +640,52 @@ const Careers = () => {
                     </div>
                   </div>
 
-                  {/* Selected Category Details */}
+                  {/* Selected Category Details - Enhanced */}
                   {selectedJob && getSelectedJob() && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-3">
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl">{getSelectedJob()?.icon}</span>
-                        <h3 className="font-bold text-foreground">{getSelectedJob()?.name}</h3>
-                        <Badge variant="outline" className="ml-auto">Selected</Badge>
+                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-xl p-6 space-y-4 shadow-lg">
+                      <div className="flex items-center gap-3 pb-3 border-b border-blue-200">
+                        <span className="text-3xl">{getSelectedJob()?.icon}</span>
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold text-foreground">{getSelectedJob()?.name}</h3>
+                          <p className="text-xs text-muted-foreground mt-1">{getSelectedJob()?.shortDesc}</p>
+                        </div>
+                        <Badge className="bg-primary text-white px-3 py-1">Selected</Badge>
                       </div>
                       
-                      <p className="text-sm text-muted-foreground">{getSelectedJob()?.fullDescription}</p>
+                      <div className="bg-white/70 rounded-lg p-4 border border-blue-200">
+                        <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                          <Briefcase className="w-4 h-4 text-primary" />
+                          About This Service
+                        </h4>
+                        <p className="text-sm text-foreground leading-relaxed">{getSelectedJob()?.fullDescription}</p>
+                      </div>
                       
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                          <p className="font-medium text-foreground mb-1">Requirements:</p>
-                          <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="bg-white/70 rounded-lg p-4 border border-blue-200">
+                          <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-green-600" />
+                            Requirements:
+                          </h4>
+                          <ul className="space-y-2 text-sm">
                             {getSelectedJob()?.requirements.map((req, i) => (
-                              <li key={i}>{req}</li>
+                              <li key={i} className="flex items-start gap-2">
+                                <span className="text-green-600 mt-1">✓</span>
+                                <span className="text-foreground">{req}</span>
+                              </li>
                             ))}
                           </ul>
                         </div>
-                        <div>
-                          <p className="font-medium text-foreground mb-1">Daily Tasks:</p>
-                          <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                        <div className="bg-white/70 rounded-lg p-4 border border-blue-200">
+                          <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                            <Clock className="w-4 h-4 text-primary" />
+                            Daily Tasks:
+                          </h4>
+                          <ul className="space-y-2 text-sm">
                             {getSelectedJob()?.tasks.map((task, i) => (
-                              <li key={i}>{task}</li>
+                              <li key={i} className="flex items-start gap-2">
+                                <span className="text-primary mt-1">•</span>
+                                <span className="text-foreground">{task}</span>
+                              </li>
                             ))}
                           </ul>
                         </div>
@@ -670,9 +709,9 @@ const Careers = () => {
                             <button type="button" onClick={() => setPortfolioFile(null)}><X className="w-4 h-4 text-red-500" /></button>
                           </div>
                         )}
-                      </div>
-                    </div>
-                  )}
+                  </div>
+                </div>
+              )}
 
                   {/* Packages - Filtered based on selected category */}
                   <div>
@@ -687,12 +726,12 @@ const Careers = () => {
                         const symbol = isPakistan ? "Rs" : "$";
                         
                         return (
-                          <button
-                            key={pkg.id}
-                            type="button"
-                            onClick={() => handlePackageSelection(pkg.id)}
+                        <button
+                          key={pkg.id}
+                          type="button"
+                          onClick={() => handlePackageSelection(pkg.id)}
                             className={`p-4 border-2 rounded-xl text-center transition-all ${
-                              selectedPackage === pkg.name 
+                            selectedPackage === pkg.name
                                 ? "border-primary bg-primary/5 shadow-lg ring-2 ring-primary/30" 
                                 : "border-muted hover:border-primary/50 hover:bg-muted/50"
                             }`}
@@ -721,18 +760,18 @@ const Careers = () => {
                                 <span className="text-green-700 font-bold">{symbol}{earnings.monthly.toLocaleString()}</span>
                               </div>
                             </div>
-                          </button>
+                        </button>
                         );
                       })}
                     </div>
-                  </div>
+                    </div>
 
                   {/* Package Summary - Detailed */}
                   {selectedPackage && getSelectedPackage() && (
                     <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-xl p-5">
                       <h4 className="font-bold text-green-800 mb-3 flex items-center gap-2">
                         ✅ {getSelectedPackage()?.name} Package Selected
-                      </h4>
+                        </h4>
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div className="bg-white rounded-lg p-3 border border-red-200">
                           <p className="text-muted-foreground text-xs">You Pay (Once)</p>
@@ -740,7 +779,7 @@ const Careers = () => {
                             {isPakistan ? "Rs" : "$"}{isPakistan ? getSelectedPackage()?.fee.pkr.toLocaleString() : getSelectedPackage()?.fee.usd}
                           </p>
                           <p className="text-xs text-muted-foreground">One-time joining fee only</p>
-                        </div>
+                          </div>
                         <div className="bg-white rounded-lg p-3 border border-green-200">
                           <p className="text-muted-foreground text-xs">You Earn (Monthly)</p>
                           <p className="text-xl font-bold text-green-600">
@@ -748,11 +787,11 @@ const Careers = () => {
                           </p>
                           <p className="text-xs text-muted-foreground">
                             ({isPakistan ? "Rs" : "$"}{isPakistan ? getSelectedPackage()?.earnings.pkr.weekly.toLocaleString() : getSelectedPackage()?.earnings.usd.weekly}/week)
-                          </p>
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
                   <div className="flex gap-3">
                     <Button type="button" variant="outline" onClick={() => goToStep(1)} className="flex-1">
@@ -762,7 +801,7 @@ const Careers = () => {
                       Continue <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
                   </div>
-                </div>
+                  </div>
               )}
 
               {/* STEP 3 */}
@@ -781,7 +820,7 @@ const Careers = () => {
                   )}
 
                   {/* Payment Accounts */}
-                  <div>
+                        <div>
                     <div className="flex items-center gap-2 mb-3">
                       {isPakistan ? <Building2 className="w-4 h-4" /> : <CreditCard className="w-4 h-4" />}
                       <Label>{isPakistan ? "Send to Bank Account" : "Send to Crypto Wallet"}</Label>
@@ -790,13 +829,13 @@ const Careers = () => {
                     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3 flex items-start gap-2">
                       <AlertCircle className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
                       <p className="text-xs text-yellow-700">Send exact amount to any account below, then upload screenshot</p>
-                    </div>
+                        </div>
 
                     <div className="space-y-2">
                       {isPakistan ? (
                         companyBankAccounts.map((acc, i) => (
                           <div key={i} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                            <div>
+                        <div>
                               <p className="font-medium text-sm">{acc.bankName}</p>
                               <p className="text-xs text-muted-foreground">{acc.accountTitle}</p>
                               <p className="font-mono text-sm">{acc.accountNumber}</p>
@@ -819,8 +858,8 @@ const Careers = () => {
                           </div>
                         ))
                       )}
-                    </div>
-                  </div>
+                        </div>
+                      </div>
 
                   {/* Screenshot Upload */}
                   <div>
@@ -877,7 +916,7 @@ const Careers = () => {
                 <item.icon className="w-8 h-8 mx-auto mb-2 text-primary" />
                 <p className="font-bold text-sm">{item.title}</p>
                 <p className="text-xs text-muted-foreground">{item.desc}</p>
-              </Card>
+            </Card>
             ))}
           </div>
         </div>

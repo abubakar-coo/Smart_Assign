@@ -34,14 +34,8 @@ interface FormData {
   jobCategory: string;
   salaryPackage: string;
   transactionId?: string;
+  registrationCode?: string;
 }
-
-// Generate unique registration code
-const generateRegistrationCode = (): string => {
-  const timestamp = Date.now().toString(36).toUpperCase();
-  const random = Math.random().toString(36).substring(2, 8).toUpperCase();
-  return `SA-${timestamp}-${random}`;
-};
 
 const CareerThankYou = () => {
   const navigate = useNavigate();
@@ -51,8 +45,16 @@ const CareerThankYou = () => {
   // Get form data from location state
   const formData = location.state as FormData | null;
   
-  // Generate registration code once
-  const [registrationCode] = useState<string>(() => generateRegistrationCode());
+  // Get registration code from state or generate new one
+  const [registrationCode] = useState<string>(() => {
+    if (formData?.registrationCode) {
+      return formData.registrationCode;
+    }
+    // Fallback: generate new code if not provided
+    const timestamp = Date.now().toString(36).toUpperCase();
+    const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+    return `SA-${timestamp}-${random}`;
+  });
 
   useEffect(() => {
     // If no form data, redirect to careers page

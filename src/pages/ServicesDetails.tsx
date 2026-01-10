@@ -323,9 +323,6 @@ const ServicesDetails = () => {
         </div>
       </section>
 
-      {/* Main Services Section */}
-      <MainServices showAll={true} />
-
       {/* Micro Services Section */}
       <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -489,6 +486,9 @@ const ServicesDetails = () => {
           </div>
         </div>
       </section>
+
+      {/* Main Services Section */}
+      <MainServices showAll={true} />
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-primary/10 to-primary-glow/10">
