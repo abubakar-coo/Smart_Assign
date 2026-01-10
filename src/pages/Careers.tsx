@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -36,6 +37,7 @@ import {
 
 const Careers = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const portfolioInputRef = useRef<HTMLInputElement>(null);
   const paymentScreenshotRef = useRef<HTMLInputElement>(null);
@@ -464,12 +466,14 @@ const Careers = () => {
       {/* Hero Header */}
       <section className="bg-gradient-hero pt-24 pb-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-6">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            <span className="text-sm font-medium text-primary">Now Accepting Applications</span>
+          <div className="mb-6">
+            <Button
+              onClick={() => navigate("/how-it-works")}
+              className="bg-primary hover:bg-primary/90 text-white px-6 py-3 text-base font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg transform"
+            >
+              <FileText className="mr-2 w-4 h-4" />
+              How It Works
+            </Button>
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">

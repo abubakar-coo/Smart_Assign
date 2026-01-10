@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -25,6 +26,35 @@ import { useNavigate } from "react-router-dom";
 
 const HowItWorks = () => {
   const navigate = useNavigate();
+  const [visibleSections, setVisibleSections] = useState<Set<number>>(new Set());
+  // Total sections: 5 steps + 3 policies + 5 timeline items = 13
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>(new Array(13).fill(null));
+
+  useEffect(() => {
+    const observers: (IntersectionObserver | null)[] = [];
+    
+    sectionRefs.current.forEach((ref, index) => {
+      if (!ref) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setVisibleSections((prev) => new Set(prev).add(index));
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+      );
+
+      observer.observe(ref);
+      observers.push(observer);
+    });
+
+    return () => {
+      observers.forEach((observer) => observer?.disconnect());
+    };
+  }, []);
 
   const steps = [
     {
@@ -144,45 +174,57 @@ const HowItWorks = () => {
 
           <div className="space-y-8">
             {steps.map((step, index) => {
-              const Icon = step.icon;
+              const isVisible = visibleSections.has(index);
               return (
-                <Card key={step.number} className="p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow">
-                  <div className="flex flex-col md:flex-row gap-6">
-                    {/* Step Number & Icon */}
-                    <div className="flex-shrink-0">
-                      <div className="flex items-center gap-4">
-                        <div className="relative">
-                          <div className="w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                <div
+                  key={step.number}
+                  ref={(el) => (sectionRefs.current[index] = el)}
+                  className={`transition-all duration-700 ease-out ${
+                    isVisible
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-8"
+                  }`}
+                  style={{ transitionDelay: `${index * 100}ms` }}
+                >
+                  <Card className="p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border-primary/10">
+                    <div className="flex flex-col md:flex-row gap-6">
+                      {/* Step Number */}
+                      <div className="flex-shrink-0">
+                        <div className="flex items-center gap-4">
+                          <div className="w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center text-white font-bold text-xl shadow-lg transition-transform duration-300 hover:scale-110">
                             {step.number}
                           </div>
+                          {index < steps.length - 1 && (
+                            <div className="hidden md:block animate-pulse">
+                              <ArrowRight className="w-8 h-8 text-primary/50" />
+                            </div>
+                          )}
                         </div>
-                        {index < steps.length - 1 && (
-                          <div className="hidden md:block">
-                            <ArrowRight className="w-8 h-8 text-primary/50" />
-                          </div>
-                        )}
+                      </div>
+
+                      {/* Step Content */}
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-bold text-foreground mb-2 transition-colors duration-300 hover:text-primary">
+                          {step.title}
+                        </h3>
+                        <p className="text-lg text-muted-foreground mb-4">
+                          {step.description}
+                        </p>
+                        <ul className="space-y-2">
+                          {step.details.map((detail, idx) => (
+                            <li 
+                              key={idx} 
+                              className="flex items-start gap-2 transition-all duration-300 hover:translate-x-2"
+                            >
+                              <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                              <span className="text-foreground">{detail}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     </div>
-
-                    {/* Step Content */}
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-foreground mb-2">
-                        {step.title}
-                      </h3>
-                      <p className="text-lg text-muted-foreground mb-4">
-                        {step.description}
-                      </p>
-                      <ul className="space-y-2">
-                        {step.details.map((detail, idx) => (
-                          <li key={idx} className="flex items-start gap-2">
-                            <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                            <span className="text-foreground">{detail}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </Card>
+                  </Card>
+                </div>
               );
             })}
           </div>
@@ -204,27 +246,40 @@ const HowItWorks = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {policies.map((policy, index) => {
               const Icon = policy.icon;
+              const policyIndex = steps.length + index;
+              const isVisible = visibleSections.has(policyIndex);
               return (
-                <Card key={index} className="p-6 shadow-lg">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className={`p-3 rounded-lg bg-muted ${policy.color}`}>
-                      <Icon className="w-6 h-6" />
+                <div
+                  key={index}
+                  ref={(el) => (sectionRefs.current[policyIndex] = el)}
+                  className={`transition-all duration-700 ease-out ${
+                    isVisible
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-8"
+                  }`}
+                  style={{ transitionDelay: `${(steps.length + index) * 100}ms` }}
+                >
+                  <Card className="p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] border-primary/10">
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className={`p-3 rounded-lg bg-muted ${policy.color} transition-transform duration-300 hover:scale-110`}>
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-foreground mb-2 transition-colors duration-300 hover:text-primary">
+                          {policy.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          {policy.description}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-foreground mb-2">
-                        {policy.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        {policy.description}
+                    <div className="bg-primary/10 p-4 rounded-lg transition-all duration-300 hover:bg-primary/20">
+                      <p className="font-semibold text-foreground">
+                        {policy.refund}
                       </p>
                     </div>
-                  </div>
-                  <div className="bg-primary/10 p-4 rounded-lg">
-                    <p className="font-semibold text-foreground">
-                      {policy.refund}
-                    </p>
-                  </div>
-                </Card>
+                  </Card>
+                </div>
               );
             })}
           </div>
@@ -269,46 +324,38 @@ const HowItWorks = () => {
               Quick Timeline
             </h2>
             <div className="space-y-4">
-              <div className="flex items-center gap-4 p-4 bg-white/50 rounded-lg">
-                <Clock className="w-6 h-6 text-primary" />
-                <div className="flex-1">
-                  <p className="font-semibold text-foreground">Form Submission</p>
-                  <p className="text-sm text-muted-foreground">Submit your application form</p>
-                </div>
-                <Badge variant="outline">Immediate</Badge>
-              </div>
-              <div className="flex items-center gap-4 p-4 bg-white/50 rounded-lg">
-                <Phone className="w-6 h-6 text-primary" />
-                <div className="flex-1">
-                  <p className="font-semibold text-foreground">Contact & Verification</p>
-                  <p className="text-sm text-muted-foreground">We'll contact you for verification</p>
-                </div>
-                <Badge variant="outline" className="bg-green-100">Within 24 Hours</Badge>
-              </div>
-              <div className="flex items-center gap-4 p-4 bg-white/50 rounded-lg">
-                <Briefcase className="w-6 h-6 text-primary" />
-                <div className="flex-1">
-                  <p className="font-semibold text-foreground">Work Assignment</p>
-                  <p className="text-sm text-muted-foreground">Receive work details on your phone</p>
-                </div>
-                <Badge variant="outline" className="bg-blue-100">After Contact</Badge>
-              </div>
-              <div className="flex items-center gap-4 p-4 bg-white/50 rounded-lg">
-                <Upload className="w-6 h-6 text-primary" />
-                <div className="flex-1">
-                  <p className="font-semibold text-foreground">Work Submission</p>
-                  <p className="text-sm text-muted-foreground">Submit your completed work</p>
-                </div>
-                <Badge variant="outline">As Per Deadline</Badge>
-              </div>
-              <div className="flex items-center gap-4 p-4 bg-white/50 rounded-lg">
-                <Wallet className="w-6 h-6 text-primary" />
-                <div className="flex-1">
-                  <p className="font-semibold text-foreground">Payment Received</p>
-                  <p className="text-sm text-muted-foreground">Payment sent to your phone number</p>
-                </div>
-                <Badge variant="outline" className="bg-green-100">Within 12 Hours</Badge>
-              </div>
+              {[
+                { icon: Clock, title: "Form Submission", desc: "Submit your application form", badge: "Immediate", color: "" },
+                { icon: Phone, title: "Contact & Verification", desc: "We'll contact you for verification", badge: "Within 24 Hours", color: "bg-green-100" },
+                { icon: Briefcase, title: "Work Assignment", desc: "Receive work details on your phone", badge: "After Contact", color: "bg-blue-100" },
+                { icon: Upload, title: "Work Submission", desc: "Submit your completed work", badge: "As Per Deadline", color: "" },
+                { icon: Wallet, title: "Payment Received", desc: "Payment sent to your phone number", badge: "Within 12 Hours", color: "bg-green-100" }
+              ].map((item, idx) => {
+                const Icon = item.icon;
+                const timelineIndex = steps.length + policies.length + idx;
+                const isVisible = visibleSections.has(timelineIndex);
+                return (
+                  <div
+                    key={idx}
+                    ref={(el) => (sectionRefs.current[timelineIndex] = el)}
+                    className={`transition-all duration-700 ease-out ${
+                      isVisible
+                        ? "opacity-100 translate-x-0"
+                        : "opacity-0 -translate-x-8"
+                    }`}
+                    style={{ transitionDelay: `${timelineIndex * 100}ms` }}
+                  >
+                    <div className="flex items-center gap-4 p-4 bg-white/50 rounded-lg hover:bg-white/70 transition-all duration-300 hover:scale-[1.02] cursor-default">
+                      <Icon className="w-6 h-6 text-primary transition-transform duration-300" />
+                      <div className="flex-1">
+                        <p className="font-semibold text-foreground">{item.title}</p>
+                        <p className="text-sm text-muted-foreground">{item.desc}</p>
+                      </div>
+                      <Badge variant="outline" className={item.color}>{item.badge}</Badge>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </Card>
         </div>
@@ -326,10 +373,10 @@ const HowItWorks = () => {
           <Button 
             size="lg" 
             onClick={() => navigate("/careers")}
-            className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-lg"
+            className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg transform group"
           >
             Apply Now
-            <ArrowRight className="ml-2 w-5 h-5" />
+            <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Button>
         </div>
       </section>
