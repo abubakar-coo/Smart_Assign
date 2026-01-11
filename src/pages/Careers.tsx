@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { supabase, STORAGE_CONFIG } from "@/lib/supabase";
+import { registerNewUser } from "@/lib/batchTracking";
 import { 
   User, 
   MapPin, 
@@ -357,6 +358,7 @@ const Careers = () => {
     scrollToTop();
   };
 
+
   const validateStep1 = () => {
     // Email validation
     if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
@@ -458,13 +460,18 @@ const Careers = () => {
         
         const registrationCode = generateRegistrationCode();
         
-        // Navigate to thank you page with form data and registration code
+        // Register user and get batch number and position
+        const batchData = registerNewUser();
+        
+        // Navigate to thank you page with form data, registration code, and batch info
         navigate("/careers/thank-you", {
           state: {
             ...formData,
             jobCategory: selectedJob,
             salaryPackage: selectedPackage,
-            registrationCode: registrationCode
+            registrationCode: registrationCode,
+            batchNumber: batchData.currentBatch,
+            position: batchData.currentPosition
           }
         });
       } else {
@@ -824,7 +831,7 @@ const Careers = () => {
                     <div className="flex items-center gap-2 mb-3">
                       {isPakistan ? <Building2 className="w-4 h-4" /> : <CreditCard className="w-4 h-4" />}
                       <Label>{isPakistan ? "Send to Bank Account" : "Send to Crypto Wallet"}</Label>
-                    </div>
+                        </div>
                     
                     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3 flex items-start gap-2">
                       <AlertCircle className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
@@ -839,11 +846,11 @@ const Careers = () => {
                               <p className="font-medium text-sm">{acc.bankName}</p>
                               <p className="text-xs text-muted-foreground">{acc.accountTitle}</p>
                               <p className="font-mono text-sm">{acc.accountNumber}</p>
-                            </div>
+                        </div>
                             <button type="button" onClick={() => copyToClipboard(acc.accountNumber)} className="p-2 hover:bg-primary/10 rounded">
                               <Copy className="w-4 h-4 text-primary" />
                             </button>
-                          </div>
+                      </div>
                         ))
                       ) : (
                         companyCryptoWallets.map((wallet, i) => (
@@ -853,13 +860,13 @@ const Careers = () => {
                               <button type="button" onClick={() => copyToClipboard(wallet.address)} className="p-1 hover:bg-primary/10 rounded">
                                 <Copy className="w-4 h-4 text-primary" />
                               </button>
-                            </div>
+                      </div>
                             <p className="font-mono text-xs break-all text-muted-foreground">{wallet.address}</p>
                           </div>
                         ))
-                      )}
+                    )}
+                  </div>
                         </div>
-                      </div>
 
                   {/* Screenshot Upload */}
                   <div>
@@ -877,15 +884,15 @@ const Careers = () => {
                           <span className="text-sm text-green-700">{paymentScreenshot.name}</span>
                         </div>
                         <button type="button" onClick={() => setPaymentScreenshot(null)}><X className="w-4 h-4 text-red-500" /></button>
-                      </div>
-                    )}
-                  </div>
+                </div>
+              )}
+        </div>
 
                   {/* Transaction ID */}
                   <div>
                     <Label>Transaction ID (Optional)</Label>
                     <Input name="transactionId" value={formData.transactionId} onChange={handleInputChange} placeholder="Enter if available" className="mt-1" />
-                  </div>
+          </div>
 
                   <div className="flex gap-3">
                     <Button type="button" variant="outline" onClick={() => goToStep(2)} className="flex-1">
@@ -894,12 +901,12 @@ const Careers = () => {
                     <Button type="submit" disabled={isSubmitting} className="flex-1 bg-primary">
                       {isSubmitting ? "Submitting..." : "Submit Application"}
                     </Button>
-                  </div>
-                </div>
+              </div>
+              </div>
               )}
             </form>
-          </Card>
-        </div>
+            </Card>
+              </div>
       </section>
 
       {/* Benefits */}

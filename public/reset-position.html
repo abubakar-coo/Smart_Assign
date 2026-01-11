@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Position Number - Smart Assign</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196F3;
+        }
+        .current-data {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button.danger {
+            background: #f44336;
+        }
+        button.danger:hover {
+            background: #da190b;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Reset Position Number</h1>
+        
+        <div class="info">
+            <strong>ℹ️ Instructions:</strong><br>
+            This tool resets the position number in the batch tracking system. 
+            The batch number will remain the same, only the position will be reset to 0.
+        </div>
+
+        <div class="current-data" id="currentData">
+            <strong>Current Status:</strong><br>
+            <span id="status">Loading...</span>
+        </div>
+
+        <div>
+            <button onclick="resetPosition()">Reset Position to 0</button>
+            <button class="danger" onclick="resetAll()">Reset Batch & Position (Start Fresh)</button>
+        </div>
+
+        <div id="message"></div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'smart_assign_batch_data';
+
+        function loadCurrentData() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    document.getElementById('status').innerHTML = 
+                        `Batch: <strong>#${data.batch}</strong><br>Position: <strong>#${data.position}</strong>`;
+                } else {
+                    document.getElementById('status').innerHTML = 
+                        'No data found. Will start with Batch #7, Position 0';
+                }
+            } catch (error) {
+                document.getElementById('status').innerHTML = 
+                    'Error reading data: ' + error.message;
+            }
+        }
+
+        function showMessage(text, isError = false) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.className = isError ? 'error' : 'success';
+            messageDiv.innerHTML = text;
+            setTimeout(() => {
+                messageDiv.innerHTML = '';
+                messageDiv.className = '';
+            }, 5000);
+        }
+
+        function resetPosition() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    const resetData = {
+                        batch: data.batch || 7,
+                        position: 0
+                    };
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(resetData));
+                    showMessage(`✅ Position reset to 0 for Batch #${resetData.batch}`);
+                    loadCurrentData();
+                } else {
+                    const resetData = { batch: 7, position: 0 };
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(resetData));
+                    showMessage('✅ Reset to Batch #7, Position 0');
+                    loadCurrentData();
+                }
+            } catch (error) {
+                showMessage('❌ Error: ' + error.message, true);
+            }
+        }
+
+        function resetAll() {
+            if (confirm('Are you sure you want to reset both batch and position? This will start from Batch #7, Position 0.')) {
+                try {
+                    const resetData = { batch: 7, position: 0 };
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(resetData));
+                    showMessage('✅ Reset complete! Batch #7, Position 0');
+                    loadCurrentData();
+                } catch (error) {
+                    showMessage('❌ Error: ' + error.message, true);
+                }
+            }
+        }
+
+        // Load current data on page load
+        loadCurrentData();
+    </script>
+</body>
+</html>
+

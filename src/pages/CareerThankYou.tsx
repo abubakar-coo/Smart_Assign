@@ -21,7 +21,9 @@ import {
   Copy,
   MessageCircle,
   AlertCircle,
-  Key
+  Key,
+  Users,
+  Award
 } from "lucide-react";
 
 interface FormData {
@@ -35,6 +37,8 @@ interface FormData {
   salaryPackage: string;
   transactionId?: string;
   registrationCode?: string;
+  batchNumber?: number;
+  position?: number;
 }
 
 const CareerThankYou = () => {
@@ -103,6 +107,42 @@ const CareerThankYou = () => {
           </div>
         </div>
       </section>
+
+      {/* Batch Information Section */}
+      {formData.batchNumber && formData.position && (
+        <section className="py-8 -mt-4">
+          <div className="max-w-4xl mx-auto px-4">
+            <Card className="p-6 md:p-8 shadow-lg border-2 border-blue-300 bg-gradient-to-br from-blue-50 to-indigo-50">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-4">
+                  <Award className="w-8 h-8 text-blue-600" />
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  🎉 Registration Successful!
+                </h2>
+                <div className="space-y-3">
+                  <div className="bg-white rounded-lg p-4 border-2 border-blue-200">
+                    <p className="text-lg text-muted-foreground mb-2">You have registered in</p>
+                    <p className="text-3xl font-bold text-blue-600">
+                      Batch #{formData.batchNumber}
+                    </p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 border-2 border-blue-200">
+                    <p className="text-lg text-muted-foreground mb-2">Your position in Batch #{formData.batchNumber}</p>
+                    <p className="text-3xl font-bold text-blue-600">
+                      #{formData.position}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground mt-4">
+                    <Users className="w-4 h-4" />
+                    <span>Each batch contains 20 registrations</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </section>
+      )}
 
       {/* Registration Code Section */}
       <section className="py-8 -mt-4">

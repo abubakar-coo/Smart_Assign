@@ -75,7 +75,7 @@ const Navigation = () => {
                     >
                       <div className="flex items-center space-x-2 relative z-10">
                         <UserPlus className="w-5 h-5 animate-pulse" />
-                        <span className="text-lg">Start Registration</span>
+                        <span className="text-lg">Apply Now</span>
                         <Sparkles className="w-4 h-4 sparkle-icon" />
                       </div>
                       {/* Animated background effect */}
@@ -135,21 +135,6 @@ const Navigation = () => {
                 )
               ))}
               <div className="px-4 space-y-3">
-                <Link to="/careers" className="relative" onClick={() => trackStartEarningTodayClick('navigation_mobile')}>
-                  {/* Hiring Badge */}
-                  <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse z-20">
-                    HIRING!
-                  </div>
-                  <Button className="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 hover:from-purple-700 hover:via-pink-700 hover:to-red-700 text-white font-bold py-4 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 relative overflow-hidden group attractive-button bounce-in">
-                    <div className="flex items-center justify-center space-x-2 relative z-10">
-                      <UserPlus className="w-5 h-5 animate-pulse" />
-                      <span className="text-lg">Join Our Team!</span>
-                      <Sparkles className="w-4 h-4 sparkle-icon" />
-                    </div>
-                    {/* Animated background effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                  </Button>
-                </Link>
                 <Button 
                   onClick={handleGetStarted}
                   className="w-full bg-gradient-primary transform hover:scale-105 transition-all duration-300"

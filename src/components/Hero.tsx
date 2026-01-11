@@ -108,7 +108,7 @@ const Hero = () => {
               >
                     <div className="flex items-center justify-center space-x-2 relative z-10">
                       <UserPlus className="w-5 h-5 animate-pulse" />
-                      <span className="text-lg">Start Registration</span>
+                      <span className="text-lg">Apply Now</span>
                       <Sparkles className="w-4 h-4 sparkle-icon" />
                     </div>
                 {/* Animated background effect */}
