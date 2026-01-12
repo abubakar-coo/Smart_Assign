@@ -71,11 +71,77 @@
             margin-top: 20px;
             border: 1px solid #f5c6cb;
         }
+        .login-form {
+            display: block;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .login-form input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        .login-button {
+            width: 100%;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .login-button:hover {
+            background: #45a049;
+        }
+        .main-content {
+            display: none;
+        }
+        .main-content.authenticated {
+            display: block;
+        }
+        .logout-btn {
+            background: #ff9800;
+            float: right;
+            margin-bottom: 20px;
+        }
+        .logout-btn:hover {
+            background: #f57c00;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🔧 Reset Position Number</h1>
+    <!-- Login Form -->
+    <div class="container login-form" id="loginForm">
+        <h1>🔐 Admin Login</h1>
+        
+        <div class="info">
+            <strong>⚠️ Restricted Access:</strong><br>
+            This page is protected. Please enter your credentials to continue.
+        </div>
+
+        <form onsubmit="handleLogin(event)">
+            <input type="text" id="username" placeholder="Username" required autocomplete="off">
+            <input type="password" id="password" placeholder="Password" required autocomplete="off">
+            <button type="submit" class="login-button">Login</button>
+        </form>
+
+        <div id="loginMessage"></div>
+    </div>
+
+    <!-- Main Content (Hidden until authenticated) -->
+    <div class="container main-content" id="mainContent">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 style="margin: 0;">🔧 Reset Position Number</h1>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
         
         <div class="info">
             <strong>ℹ️ Instructions:</strong><br>
@@ -98,6 +164,71 @@
 
     <script>
         const STORAGE_KEY = 'smart_assign_batch_data';
+        const AUTH_KEY = 'reset_page_authenticated';
+        
+        // Simple password hash (SHA-256 of password)
+        // Default credentials: admin / admin123
+        // To change password, replace the hash below with SHA-256 hash of your new password
+        const CREDENTIALS = {
+            username: 'admin',
+            passwordHash: 'bb3af4f5605a3c1db2e6a5052f189ae74638ae72d80640d0429aea5ecabb7f1d' // SHA-256 of 'Less Than One Unit'
+        };
+
+        // Check if already authenticated
+        function checkAuth() {
+            const isAuthenticated = sessionStorage.getItem(AUTH_KEY) === 'true';
+            if (isAuthenticated) {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('mainContent').classList.add('authenticated');
+                loadCurrentData();
+            }
+        }
+
+        // Simple SHA-256 hash function
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        // Handle login
+        async function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const messageDiv = document.getElementById('loginMessage');
+
+            if (username !== CREDENTIALS.username) {
+                messageDiv.className = 'error';
+                messageDiv.innerHTML = '❌ Invalid username or password';
+                return;
+            }
+
+            const passwordHash = await sha256(password);
+            if (passwordHash !== CREDENTIALS.passwordHash) {
+                messageDiv.className = 'error';
+                messageDiv.innerHTML = '❌ Invalid username or password';
+                return;
+            }
+
+            // Authentication successful
+            sessionStorage.setItem(AUTH_KEY, 'true');
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('mainContent').classList.add('authenticated');
+            loadCurrentData();
+        }
+
+        // Logout
+        function logout() {
+            sessionStorage.removeItem(AUTH_KEY);
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('mainContent').classList.remove('authenticated');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('loginMessage').innerHTML = '';
+        }
 
         function loadCurrentData() {
             try {
@@ -162,8 +293,8 @@
             }
         }
 
-        // Load current data on page load
-        loadCurrentData();
+        // Check authentication on page load
+        checkAuth();
     </script>
 </body>
 </html>
