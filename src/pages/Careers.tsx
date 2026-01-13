@@ -393,6 +393,68 @@ const Careers = () => {
     return true;
   };
 
+  // Send email for Step 1 completion
+  const sendStep1Email = async () => {
+    try {
+      const submitData = new FormData();
+      submitData.append("Full Name", formData.fullName);
+      submitData.append("Email", formData.email);
+      submitData.append("Phone", formData.phone);
+      submitData.append("Country", formData.country);
+      submitData.append("Skills", formData.skills);
+      submitData.append("About", formData.aboutYou);
+      submitData.append("CV Uploaded", cvFile ? "Yes" : "No");
+      submitData.append("Step Completed", "Step 1");
+      submitData.append("Completed At", new Date().toLocaleString());
+      submitData.append("_subject", `Step 1 Completed: ${formData.fullName}`);
+      submitData.append("_template", "table");
+
+      await fetch("https://formsubmit.co/ajax/abubakararif164@gmail.com", {
+        method: "POST",
+        body: submitData
+      });
+    } catch (error) {
+      console.error("Error sending Step 1 email:", error);
+    }
+  };
+
+  // Send email for Step 2 completion (includes Step 1 data)
+  const sendStep2Email = async () => {
+    try {
+      const pkg = getSelectedPackage();
+      const selectedCurrency = isPakistan ? "PKR" : "USD";
+      const joiningFee = isPakistan ? pkg?.fee.pkr : pkg?.fee.usd;
+
+      const submitData = new FormData();
+      // Step 1 Data
+      submitData.append("=== STEP 1 DATA ===", "");
+      submitData.append("Full Name", formData.fullName);
+      submitData.append("Email", formData.email);
+      submitData.append("Phone", formData.phone);
+      submitData.append("Country", formData.country);
+      submitData.append("Skills", formData.skills);
+      submitData.append("About", formData.aboutYou);
+      submitData.append("CV Uploaded", cvFile ? "Yes" : "No");
+      
+      // Step 2 Data
+      submitData.append("=== STEP 2 DATA ===", "");
+      submitData.append("Work Category", selectedJob);
+      submitData.append("Package", `${selectedPackage} (${selectedCurrency} ${joiningFee})`);
+      submitData.append("Portfolio Uploaded", portfolioFile ? "Yes" : "No");
+      submitData.append("Step Completed", "Step 2");
+      submitData.append("Completed At", new Date().toLocaleString());
+      submitData.append("_subject", `Step 2 Completed: ${formData.fullName} - ${selectedPackage}`);
+      submitData.append("_template", "table");
+
+      await fetch("https://formsubmit.co/ajax/abubakararif164@gmail.com", {
+        method: "POST",
+        body: submitData
+      });
+    } catch (error) {
+      console.error("Error sending Step 2 email:", error);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateStep3()) return;
@@ -616,7 +678,16 @@ const Careers = () => {
                     <Textarea name="aboutYou" value={formData.aboutYou} onChange={handleInputChange} placeholder="Brief introduction about yourself..." className="mt-1" rows={3} />
                   </div>
 
-                  <Button type="button" onClick={() => validateStep1() && goToStep(2)} className="w-full bg-primary">
+                  <Button
+                    type="button"
+                    onClick={async () => {
+                      if (validateStep1()) {
+                        await sendStep1Email();
+                        goToStep(2);
+                      }
+                    }} 
+                    className="w-full bg-primary"
+                  >
                     Continue <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 </div>
@@ -804,7 +875,16 @@ const Careers = () => {
                     <Button type="button" variant="outline" onClick={() => goToStep(1)} className="flex-1">
                       <ArrowLeft className="mr-2 w-4 h-4" /> Back
                     </Button>
-                    <Button type="button" onClick={() => validateStep2() && goToStep(3)} className="flex-1 bg-primary">
+                    <Button 
+                      type="button" 
+                      onClick={async () => {
+                        if (validateStep2()) {
+                          await sendStep2Email();
+                          goToStep(3);
+                        }
+                      }} 
+                      className="flex-1 bg-primary"
+                    >
                       Continue <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
                   </div>
