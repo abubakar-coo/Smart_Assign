@@ -94,7 +94,7 @@ const TermsOfService = () => {
                 <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4 ml-4">
                   <li>All services require a 50% advance payment before work begins</li>
                   <li>Remaining balance is due upon project completion and delivery</li>
-                  <li>Payment methods accepted: JazzCash, Easypaisa, Meezan Bank (Pakistan), TRC20 USDT (International)</li>
+                  <li>Payment methods accepted: JazzCash, Easypaisa, Meezan Bank (Pakistan), Payoneer (International)</li>
                   <li>All prices are in USD unless otherwise specified (Pakistan: PKR)</li>
                 </ul>
 

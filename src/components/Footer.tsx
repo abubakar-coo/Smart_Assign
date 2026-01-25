@@ -13,7 +13,8 @@ const Footer = () => {
 
   const quickLinks = [
     { name: "About Us", href: "/#team" },
-    { name: "Services", href: "/services" },
+    { name: "Main Services", href: "/main-services" },
+    { name: "Micro Services", href: "/micro-services" },
     { name: "Road Map", href: "/roadmap" },
     { name: "Contact", href: "/contact" },
   ];
@@ -80,7 +81,7 @@ const Footer = () => {
       submitData.append("_subject", "New Newsletter Subscription");
       submitData.append("_template", "table");
 
-      const response = await fetch("https://formsubmit.co/ajax/abubakararif164@gmail.com", {
+      const response = await fetch("https://formsubmit.co/ajax/abubakararif159@gmail.com", {
         method: "POST",
         body: submitData
       });

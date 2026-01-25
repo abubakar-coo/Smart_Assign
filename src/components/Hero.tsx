@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { UserPlus, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import { trackStartEarningTodayClick, trackExploreServicesClick, trackViewRoadMapClick } from "@/lib/analytics";
+import { trackExploreServicesClick, trackViewRoadMapClick } from "@/lib/analytics";
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -96,25 +95,6 @@ const Hero = () => {
               </Button>
             </div>
 
-            {/* Mobile Join Our Team Button - Visible only on mobile */}
-            <div className="md:hidden mt-6">
-              <Button
-                size="lg"
-                className="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 hover:from-purple-700 hover:via-pink-700 hover:to-red-700 text-white font-bold py-6 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 relative overflow-hidden group"
-                onClick={() => {
-                  trackStartEarningTodayClick('hero_mobile');
-                  navigate("/careers");
-                }}
-              >
-                    <div className="flex items-center justify-center space-x-2 relative z-10">
-                      <UserPlus className="w-5 h-5 animate-pulse" />
-                      <span className="text-lg">Apply Now</span>
-                      <Sparkles className="w-4 h-4 sparkle-icon" />
-                    </div>
-                {/* Animated background effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-              </Button>
-            </div>
 
             <div className="pt-8">
               <p className="text-base text-muted-foreground mb-4">Trusted by industry leaders</p>

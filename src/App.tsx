@@ -22,6 +22,8 @@ const PortfolioDetail = lazy(() => import("./pages/PortfolioDetail"));
 const Careers = lazy(() => import("./pages/Careers"));
 const CareerThankYou = lazy(() => import("./pages/CareerThankYou"));
 const HowItWorks = lazy(() => import("./pages/HowItWorks"));
+const MainServicesPage = lazy(() => import("./pages/MainServicesPage"));
+const MicroServicesPage = lazy(() => import("./pages/MicroServicesPage"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
@@ -64,6 +66,8 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/services" element={<ServicesDetails />} />
             <Route path="/services/:serviceName" element={<ServiceDetail />} />
+            <Route path="/main-services" element={<MainServicesPage />} />
+            <Route path="/micro-services" element={<MicroServicesPage />} />
             <Route path="/roadmap" element={<RoadMap />} />
             <Route path="/portfolio/:projectId" element={<PortfolioDetail />} />
             <Route path="/team" element={<TeamPage />} />

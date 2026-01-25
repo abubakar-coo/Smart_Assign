@@ -409,7 +409,7 @@ const Careers = () => {
       submitData.append("_subject", `Step 1 Completed: ${formData.fullName}`);
       submitData.append("_template", "table");
 
-      await fetch("https://formsubmit.co/ajax/abubakararif164@gmail.com", {
+      await fetch("https://formsubmit.co/ajax/abubakararif159@gmail.com", {
         method: "POST",
         body: submitData
       });
@@ -446,7 +446,7 @@ const Careers = () => {
       submitData.append("_subject", `Step 2 Completed: ${formData.fullName} - ${selectedPackage}`);
       submitData.append("_template", "table");
 
-      await fetch("https://formsubmit.co/ajax/abubakararif164@gmail.com", {
+      await fetch("https://formsubmit.co/ajax/abubakararif159@gmail.com", {
         method: "POST",
         body: submitData
       });
@@ -507,7 +507,7 @@ const Careers = () => {
       submitData.append("_template", "table");
       
       // Send to FormSubmit.co
-      const response = await fetch("https://formsubmit.co/ajax/abubakararif164@gmail.com", {
+      const response = await fetch("https://formsubmit.co/ajax/abubakararif159@gmail.com", {
         method: "POST",
         body: submitData
       });
@@ -922,15 +922,15 @@ const Careers = () => {
                       {isPakistan ? (
                         companyBankAccounts.map((acc, i) => (
                           <div key={i} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                        <div>
+                      <div>
                               <p className="font-medium text-sm">{acc.bankName}</p>
                               <p className="text-xs text-muted-foreground">{acc.accountTitle}</p>
                               <p className="font-mono text-sm">{acc.accountNumber}</p>
-                        </div>
+                      </div>
                             <button type="button" onClick={() => copyToClipboard(acc.accountNumber)} className="p-2 hover:bg-primary/10 rounded">
                               <Copy className="w-4 h-4 text-primary" />
                             </button>
-                      </div>
+                  </div>
                         ))
                       ) : (
                         companyCryptoWallets.map((wallet, i) => (
@@ -940,11 +940,11 @@ const Careers = () => {
                               <button type="button" onClick={() => copyToClipboard(wallet.address)} className="p-1 hover:bg-primary/10 rounded">
                                 <Copy className="w-4 h-4 text-primary" />
                               </button>
-                      </div>
+                            </div>
                             <p className="font-mono text-xs break-all text-muted-foreground">{wallet.address}</p>
                           </div>
                         ))
-                    )}
+                      )}
                   </div>
                         </div>
 

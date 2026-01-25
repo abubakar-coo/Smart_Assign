@@ -110,7 +110,7 @@ const HowItWorks = () => {
       details: [
         "Payment will be sent to your provided phone number",
         "Withdrawal processed within 12 hours after work submission",
-        "Payment method: Same as your registration (JazzCash/Easypaisa/Bank/Crypto)"
+        "Payment method: Same as your registration (JazzCash/Easypaisa/Bank/Payoneer)"
       ]
     }
   ];

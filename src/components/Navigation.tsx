@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Zap, UserPlus, Sparkles } from "lucide-react";
-import { saveJobApplication } from "../api/jobApplication";
-import { trackStartEarningTodayClick, trackGetStartedClick } from "@/lib/analytics";
+import { Menu, X, Zap } from "lucide-react";
+import { trackGetStartedClick } from "@/lib/analytics";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +17,8 @@ const Navigation = () => {
 
   const navItems = [
     { name: "Home", href: "/" },
-    { name: "Services", href: "/services" },
+    { name: "Main Services", href: "/main-services" },
+    { name: "Micro Services", href: "/micro-services" },
     { name: "Road Map", href: "/roadmap" },
     { name: "Team", href: "/team" },
     { name: "Careers", href: "/careers" },
@@ -65,23 +65,6 @@ const Navigation = () => {
               )
             ))}
                 <div className="flex items-center space-x-3">
-                  <Link to="/careers" className="relative" onClick={() => trackStartEarningTodayClick('navigation_desktop')}>
-                    {/* Hiring Badge */}
-                    <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse z-20">
-                      HIRING!
-                    </div>
-                    <Button
-                      className="bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 hover:from-purple-700 hover:via-pink-700 hover:to-red-700 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden group attractive-button bounce-in"
-                    >
-                      <div className="flex items-center space-x-2 relative z-10">
-                        <UserPlus className="w-5 h-5 animate-pulse" />
-                        <span className="text-lg">Apply Now</span>
-                        <Sparkles className="w-4 h-4 sparkle-icon" />
-                      </div>
-                      {/* Animated background effect */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                    </Button>
-                  </Link>
                   <Button
                     onClick={handleGetStarted}
                     variant="default"

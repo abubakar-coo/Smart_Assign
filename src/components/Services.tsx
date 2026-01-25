@@ -15,7 +15,11 @@ const titleToSlug = (title: string): string => {
     .replace(/-+/g, '-');
 };
 
-const Services = () => {
+interface ServicesProps {
+  showViewAllCta?: boolean;
+}
+
+const Services = ({ showViewAllCta = true }: ServicesProps) => {
   const navigate = useNavigate();
   const sectionRef = useRef<HTMLElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -254,18 +258,20 @@ const Services = () => {
           </div>
 
         {/* View All Services CTA */}
-        <div className="text-center mt-16 md:mt-20">
-                  <Button 
-            size="lg"
-            className="bg-gradient-primary hover:shadow-lg text-base font-semibold px-8 py-6 rounded-lg transition-all duration-200 hover:scale-[1.02]"
-            onClick={() => {
-              trackViewAllServicesClick('services_section');
-              window.location.href = '/services';
-            }}
-                  >
-            View All Services
-                  </Button>
-                </div>
+        {showViewAllCta && (
+          <div className="text-center mt-16 md:mt-20">
+            <Button 
+              size="lg"
+              className="bg-gradient-primary hover:shadow-lg text-base font-semibold px-8 py-6 rounded-lg transition-all duration-200 hover:scale-[1.02]"
+              onClick={() => {
+                trackViewAllServicesClick('services_section');
+                window.location.href = '/services';
+              }}
+            >
+              View All Services
+            </Button>
+          </div>
+        )}
               </div>
       </div>
     </section>

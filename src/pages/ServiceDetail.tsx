@@ -515,6 +515,7 @@ const ServiceDetail = () => {
   });
   const [selectedCountry, setSelectedCountry] = useState("");
   const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null);
+  const [paymentInputKey, setPaymentInputKey] = useState(0);
   const [projectFiles, setProjectFiles] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [budgetError, setBudgetError] = useState<string>("");
@@ -603,14 +604,14 @@ const ServiceDetail = () => {
 
   const handleCountryChange = (country: string) => {
     setSelectedCountry(country);
-    setFormData(prev => ({ ...prev, country }));
+    // Reset payment-related fields whenever country changes so stale payment doesn't remain
+    setFormData(prev => ({ ...prev, country, budget: "" }));
+    setPaymentScreenshot(null);
+    setBudgetError("");
+    setPaymentInputKey((k) => k + 1);
     // Clear country error when country is selected
     if (country) {
       setCountryError("");
-    }
-    // Re-validate budget when country changes (different limits)
-    if (formData.budget) {
-      validateBudget(formData.budget);
     }
   };
 
@@ -705,7 +706,7 @@ const ServiceDetail = () => {
       submitData.append("_subject", `Service Request: ${currentService.title} - ${formData.name}`);
       submitData.append("_template", "table");
 
-      const response = await fetch("https://formsubmit.co/ajax/abubakararif164@gmail.com", {
+      const response = await fetch("https://formsubmit.co/ajax/abubakararif159@gmail.com", {
         method: "POST",
         body: submitData
       });
@@ -1159,6 +1160,7 @@ const ServiceDetail = () => {
                     <div className="mt-2">
                       <Input
                         id="paymentScreenshot"
+                        key={paymentInputKey}
                         type="file"
                         accept="image/*"
                         onChange={handleFileChange}

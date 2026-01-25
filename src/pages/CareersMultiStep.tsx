@@ -225,8 +225,8 @@ const CareersMultiStep = () => {
       }
       if (!formData.coin) {
         toast({ 
-          title: "🪙 Coin Required", 
-          description: "Please select the cryptocurrency", 
+          title: "Payment Method Required", 
+          description: "Please select the payment method", 
           variant: "destructive" 
         });
         return false;
@@ -959,7 +959,7 @@ const CareersMultiStep = () => {
                               onChange={handleInputChange}
                               className="text-primary"
                             />
-                            <span className="text-sm font-medium">Crypto Wallet</span>
+                            <span className="text-sm font-medium">Payoneer</span>
                           </label>
                         </div>
                       </div>
@@ -1000,16 +1000,14 @@ const CareersMultiStep = () => {
                               className="mt-2 w-full px-3 py-2 border border-input bg-background rounded-md"
                             >
                               <option value="">Select Network</option>
-                              <option value="TRC20">TRC20 (Tron)</option>
-                              <option value="BSC">BSC (Binance Smart Chain)</option>
-                              <option value="Ethereum">Ethereum</option>
+                              <option value="Payoneer">Payoneer</option>
                               <option value="Polygon">Polygon</option>
                               <option value="Solana">Solana</option>
                             </select>
                           </div>
                           <div>
                             <Label htmlFor="coin" className="text-base font-medium">
-                              Cryptocurrency *
+                              Payoneer Email *
                             </Label>
                             <select
                               id="coin"
@@ -1020,9 +1018,7 @@ const CareersMultiStep = () => {
                               className="mt-2 w-full px-3 py-2 border border-input bg-background rounded-md"
                             >
                               <option value="">Select Coin</option>
-                              <option value="USDT">USDT (Tether)</option>
-                              <option value="BTC">BTC (Bitcoin)</option>
-                              <option value="ETH">ETH (Ethereum)</option>
+                              <option value="abubakararif159@gmail.com">abubakararif159@gmail.com</option>
                               <option value="SOL">SOL (Solana)</option>
                               <option value="BNB">BNB (Binance Coin)</option>
                             </select>
