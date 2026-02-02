@@ -69,7 +69,7 @@ const ServicesDetails = () => {
         "PDF to Excel/Word"
       ],
       pricing: [
-        "$5 – $10 per hour",
+        "$30+ per hour",
         "$15 – $30 per project (basic)"
       ],
       color: "text-primary",
@@ -88,8 +88,8 @@ const ServicesDetails = () => {
         "Data collection"
       ],
       pricing: [
-        "$10 – $20 per task",
-        "$5 – $8 per hour"
+        "$30+ per hour",
+        "$10 – $20 per task"
       ],
       color: "text-primary",
       gradient: "from-primary to-primary-glow",
@@ -106,7 +106,7 @@ const ServicesDetails = () => {
         "Academic & business editing"
       ],
       pricing: [
-        "$5 – $10 per 1,000 words",
+        "$20+ per 1,000 words",
         "$15 – $25 for detailed editing"
       ],
       color: "text-primary",
@@ -125,7 +125,7 @@ const ServicesDetails = () => {
         "CVs & resumes"
       ],
       pricing: [
-        "$5 – $10 per design",
+        "$15+ per design",
         "$25 – $50 for bulk designs"
       ],
       color: "text-primary",
@@ -143,7 +143,7 @@ const ServicesDetails = () => {
         "Reports & assignments"
       ],
       pricing: [
-        "$5 – $8 per document",
+        "$20+ per document (up to 12 pages)",
         "$10 – $20 for complex formatting"
       ],
       color: "text-primary",
@@ -199,7 +199,7 @@ const ServicesDetails = () => {
         "Clean layouts"
       ],
       pricing: [
-        "$5 – $10 per design",
+        "$20+ per presentation",
         "$25 – $50 for bulk designs"
       ],
       color: "text-primary",
@@ -254,7 +254,7 @@ const ServicesDetails = () => {
         "Admin support"
       ],
       pricing: [
-        "$5 – $10 per hour",
+        "$10+ per hour",
         "$15 – $30 per project"
       ],
       color: "text-primary",
