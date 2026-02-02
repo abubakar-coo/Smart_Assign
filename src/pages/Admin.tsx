@@ -647,7 +647,7 @@ const Admin = () => {
                       <div className="bg-muted/50 p-4 rounded-lg">
                         <h4 className="font-medium text-foreground mb-2">Payment Method</h4>
                         <p className="text-sm text-muted-foreground">
-                          {selectedApplication.paymentMethod === 'wallet' ? '🔗 Crypto Wallet' : 
+                          {selectedApplication.paymentMethod === 'wallet' ? 'Payoneer' : 
                            selectedApplication.paymentMethod === 'meezanbank' ? '🏦 Meezan Bank' :
                            selectedApplication.paymentMethod === 'easypaisa' ? '📱 EasyPaisa' :
                            selectedApplication.paymentMethod === 'jazzcash' ? '📱 JazzCash' :

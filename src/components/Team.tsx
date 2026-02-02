@@ -1,20 +1,93 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Linkedin, Twitter, Mail, Award, Users, Target } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+
+// Helper function to create URL-friendly slug from name
+const nameToSlug = (name: string): string => {
+  return name
+    .toLowerCase()
+    .replace(/ü/g, 'u') // Replace ü with u
+    .replace(/ö/g, 'o') // Replace ö with o
+    .replace(/ä/g, 'a') // Replace ä with a
+    .replace(/\s+/g, '-');
+};
 
 const Team = () => {
+  const navigate = useNavigate();
+  const sectionRef = useRef<HTMLElement>(null);
+  const memberRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
+  const [visibleMembers, setVisibleMembers] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      sectionObserver.observe(sectionRef.current);
+    }
+
+    const memberObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = memberRefs.current.indexOf(entry.target as HTMLDivElement);
+            if (index !== -1) {
+              setVisibleMembers((prev) => new Set([...prev, index]));
+            }
+          }
+        });
+      },
+      { threshold: 0.05, rootMargin: "0px" }
+    );
+
+    memberRefs.current.forEach((member) => {
+      if (member) memberObserver.observe(member);
+    });
+
+    return () => {
+      if (sectionRef.current) {
+        sectionObserver.unobserve(sectionRef.current);
+      }
+      memberRefs.current.forEach((member) => {
+        if (member) memberObserver.unobserve(member);
+      });
+    };
+  }, []);
+
+  // Helper function to get image path from name
+  const getImagePath = (name: string): string => {
+    // Try to match exact file names in team folder
+    const nameMap: { [key: string]: string } = {
+      "Abubakar Arif": "abubakar-arif",
+      "Shifa Seher": "Shifa-Seher",
+      "Faizan Waqas": "Faizan-Waqas",
+      "Emma Collins": "Emma-Collins",
+      "Charlotte Müller": "Charlotte-Müller",
+      "Ethan Johnson": "Ethan-Johnson",
+      "Isabella Rossi": "Isabella-Rossi",
+      "Olivia Smith": "Olivia-Smith",
+      "Sophia Martinez": "Sophia-Martinez",
+      "Lucas Anderson": "Lucas-Anderson",
+    };
+    
+    const fileName = nameMap[name] || nameToSlug(name);
+    return `/images/team/${fileName}.png`;
+  };
+
   const ceo = {
     name: "Abubakar Arif",
     role: "CEO & Founder",
-    bio: "Visionary entrepreneur with over 10 years of experience in digital transformation and business automation. Abubakar founded Smart Assign to revolutionize how businesses access high-quality professional services through innovative micro-service solutions.",
-    achievements: [
-      "Led 1000+ successful digital projects",
-      "Expert in Business Process Automation",
-      "Specialized in AI-Driven Solutions",
-      "International Business Development",
-      "Featured Technology Leader",
-      "Certified in Advanced Project Management",
-    ],
   };
 
   const teamMembers = [
@@ -107,8 +180,24 @@ const Team = () => {
   ];
 
   return (
-    <section id="team" className="py-8 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={sectionRef} id="team" className="py-8 bg-white relative overflow-hidden">
+      {/* Background Image - Hidden on Mobile with Scroll Animation */}
+      <div 
+        className={`absolute inset-0 z-0 bg-no-repeat bg-center hidden md:block transition-opacity duration-300
+          ${isVisible ? 'opacity-100' : 'opacity-0'}
+        `}
+        style={{
+          backgroundImage: 'url(/images/team/team-background.png)',
+          backgroundSize: 'cover',
+          imageRendering: 'auto' as const,
+        } as React.CSSProperties}
+      />
+      
+      {/* Content */}
+      <div className={`relative z-10 transition-opacity duration-300 delay-100
+        ${isVisible ? 'opacity-100' : 'opacity-0'}
+      `}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8">
           <h2 className="text-5xl font-bold text-foreground mb-4">
@@ -120,209 +209,112 @@ const Team = () => {
           </p>
         </div>
 
-        {/* CEO Section */}
-        <div className="mb-8">
-          <Card className="p-8 shadow-hover bg-gradient-hero border-0 group">
-            <div className="grid lg:grid-cols-2 gap-8 items-center">
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-4xl font-bold text-foreground mb-2">
-                    {ceo.name}
-                  </h3>
-                  <p className="text-2xl text-primary font-semibold mb-4">
-                    {ceo.role}
-                  </p>
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    {ceo.bio}
-                  </p>
-                </div>
-
-                <div className="space-y-3">
-                  <h4 className="font-semibold text-foreground">
-                    Key Achievements:
-                  </h4>
-                  {ceo.achievements.map((achievement, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <div className="w-2 h-2 rounded-full bg-gradient-primary"></div>
-                      <span className="text-base text-muted-foreground">
-                        {achievement}
-                      </span>
-                    </div>
-                  ))}
+        {/* Team Members - CEO + 3 Members - Vertical Layout on Left */}
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          {/* Left Side - Vertical Team List */}
+          <div className="space-y-6">
+            {/* CEO */}
+            <div
+              ref={(el) => {
+                memberRefs.current[0] = el;
+              }}
+              className={`flex items-center space-x-6 group cursor-pointer transition-opacity duration-300
+                ${visibleMembers.has(0) ? 'opacity-100' : 'opacity-0'}
+              `}
+              onClick={() => navigate(`/team/${nameToSlug(ceo.name)}`)}
+            >
+              <div className="relative flex-shrink-0">
+                <div className="w-32 h-32 rounded-full overflow-hidden bg-white shadow-lg">
+                  <img
+                    src={getImagePath(ceo.name)}
+                    alt={`${ceo.name} - ${ceo.role} at Smart Assign Digital Agency`}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    onError={(e) => {
+                      // Fallback to DiceBear if local image not found
+                      const target = e.target as HTMLImageElement;
+                      target.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${ceo.name}&backgroundColor=ffd5dc,b6e3f4,c0aede,d1d4f9,ffdfbf&mood=happy&clothing=shirt&clothingColor=262e33,65c9ff,ff6b6b,4ecdc4,45b7d1&accessoriesProbability=50&facialHairProbability=30&glassesProbability=30&hairColor=0e0e0e,2c1b18,724133,afafaf,ecdcbf,6a4c35,8b4513,a55728,ca8c04,ffdbac,ffd5dc,ecdcbf&skinColor=edb98a,fd9841,fdbcb4,fd9841`;
+                    }}
+                  />
                 </div>
               </div>
-
-              <div className="flex justify-center">
-                <div className="relative">
-                  {/* CEO 3D Avatar Container with enhanced depth */}
-                  <div className="w-64 h-64 rounded-3xl bg-gradient-to-br from-primary via-primary/80 to-secondary p-3 shadow-2xl group-hover:rotate-6 transition-all duration-500 group-hover:shadow-3d group-hover:scale-105 avatar-3d-enhanced avatar-depth" 
-                       style={{
-                         background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 50%, hsl(var(--secondary)) 100%)',
-                         boxShadow: '0 20px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
-                         transform: 'perspective(1000px) rotateX(5deg) rotateY(5deg)'
-                       }}>
-                    <div className="w-full h-full rounded-3xl overflow-hidden bg-white relative avatar-inner" 
-                         style={{
-                           boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)',
-                           background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)'
-                         }}>
-                      {/* CEO 3D Avatar using DiceBear API */}
-                      <img
-                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${ceo.name}&backgroundColor=ffd5dc,b6e3f4,c0aede,d1d4f9,ffdfbf&mood=happy&clothing=shirt&clothingColor=262e33,65c9ff,ff6b6b,4ecdc4,45b7d1&accessoriesProbability=50&facialHairProbability=30&glassesProbability=30&hairColor=0e0e0e,2c1b18,724133,afafaf,ecdcbf,6a4c35,8b4513,a55728,ca8c04,ffdbac,ffd5dc,ecdcbf&skinColor=edb98a,fd9841,fdbcb4,fd9841`}
-                        alt={ceo.name}
-                        className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-all duration-500 avatar-glow"
-                        loading="lazy"
-                        style={{
-                          filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
-                          transform: 'translateZ(10px)'
-                        }}
-                        onError={(e) => {
-                          // Fallback to initials if avatar fails to load
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                          const parent = target.parentElement;
-                          if (parent) {
-                            parent.innerHTML = `
-                              <div class="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-                                <div class="text-center text-slate-600">
-                                  <div class="w-20 h-20 bg-slate-300 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <svg class="w-10 h-10 text-slate-600" fill="currentColor" viewBox="0 0 20 20">
-                                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                                    </svg>
-                                  </div>
-                                  <h4 class="text-2xl font-bold">${ceo.name}</h4>
-                                  <p class="text-lg opacity-90">${ceo.role}</p>
-                                </div>
-                              </div>
-                            `;
-                          }
-                        }}
-                      />
-                    </div>
-                  </div>
-                  
-                  {/* Enhanced 3D decorative elements for CEO */}
-                  <div className="absolute -top-3 -right-3 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center shadow-lg group-hover:animate-bounce group-hover:scale-110 transition-all duration-300"
-                       style={{
-                         boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)',
-                         background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)'
-                       }}>
-                    <Award className="w-6 h-6 text-white" />
-                  </div>
-                  
-                  <div className="absolute -bottom-3 -left-3 w-8 h-8 bg-gradient-to-br from-slate-600 to-slate-800 rounded-full shadow-lg group-hover:animate-pulse group-hover:scale-110 transition-all duration-300"
-                       style={{
-                         boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-                         background: 'linear-gradient(135deg, #475569 0%, #334155 100%)'
-                       }}>
-                    <span className="text-xs text-white">👑</span>
-                  </div>
-                  
-                  {/* Additional 3D glow effect for CEO */}
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
-                </div>
+              <div className="flex-1">
+                <h3 className="text-2xl font-semibold text-foreground group-hover:text-primary transition-colors">
+                  {ceo.name}
+                </h3>
+                <p className="text-lg text-primary font-medium">
+                  {ceo.role}
+                </p>
               </div>
             </div>
-          </Card>
-        </div>
 
-        {/* Team Members */}
-        <div className="mb-6">
-          <h3 className="text-3xl font-semibold text-foreground text-center mb-12">
-            Our Expert Team
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {teamMembers.map((member, index) => (
-              <Card
+            {/* 3 Team Members */}
+            {teamMembers.slice(0, 3).map((member, index) => {
+              const memberIndex = index + 1; // CEO is 0, so start from 1
+              const memberVisible = visibleMembers.has(memberIndex);
+              const animationDelay = (index + 1) * 100;
+              
+              return (
+              <div
                 key={index}
-                className="p-6 shadow-card hover:shadow-hover transition-all duration-300 group cursor-pointer border-0 hover:scale-105 hover:-translate-y-2"
+                ref={(el) => {
+                  memberRefs.current[memberIndex] = el;
+                }}
+                className={`flex items-center space-x-6 group cursor-pointer transition-opacity duration-300
+                  ${memberVisible ? 'opacity-100' : 'opacity-0'}
+                `}
+                style={{ transitionDelay: `${Math.min(animationDelay, 150)}ms` }}
+                onClick={() => navigate(`/team/${nameToSlug(member.name)}`)}
               >
-                <div className="text-center space-y-4">
-                  <div className="relative mx-auto w-32 h-32">
-                    {/* 3D Avatar Container with enhanced depth */}
-                    <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary via-primary/80 to-secondary p-2 shadow-2xl group-hover:rotate-6 transition-all duration-500 group-hover:shadow-3d group-hover:scale-105 avatar-3d-enhanced avatar-depth" 
-                         style={{
-                           background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 50%, hsl(var(--secondary)) 100%)',
-                           boxShadow: '0 20px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
-                           transform: 'perspective(1000px) rotateX(5deg) rotateY(5deg)'
-                         }}>
-                      <div className="w-full h-full rounded-full overflow-hidden bg-white relative avatar-inner" 
-                           style={{
-                             boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)',
-                             background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)'
-                           }}>
-                        <img
-                          src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${member.name}&backgroundColor=ffd5dc,b6e3f4,c0aede,d1d4f9,ffdfbf&mood=happy&clothing=shirt&clothingColor=262e33,65c9ff,ff6b6b,4ecdc4,45b7d1&accessoriesProbability=40&facialHairProbability=25&glassesProbability=25&hairColor=0e0e0e,2c1b18,724133,afafaf,ecdcbf,6a4c35,8b4513,a55728,ca8c04,ffdbac,ffd5dc,ecdcbf&skinColor=edb98a,fd9841,fdbcb4,fd9841`}
-                          alt={member.name}
-                          className="w-full h-full object-contain scale-110 group-hover:scale-125 transition-all duration-500 avatar-glow"
-                          loading="lazy"
-                          style={{
-                            filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
-                            transform: 'translateZ(10px)'
-                          }}
-                          onError={(e) => {
-                            // Fallback to initials if avatar fails to load
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = 'none';
-                            const parent = target.parentElement;
-                            if (parent) {
-                              parent.innerHTML = `
-                                <div class="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-                                  <span class="text-3xl font-bold text-slate-600">
-                                    ${member.name.split(" ").map((n) => n[0]).join("")}
-                                  </span>
-                                </div>
-                              `;
-                            }
-                          }}
-                        />
-                      </div>
-                    </div>
-                    
-                    {/* Enhanced 3D decorative elements */}
-                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center shadow-lg group-hover:animate-bounce group-hover:scale-110 transition-all duration-300"
-                         style={{
-                           boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)',
-                           background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)'
-                         }}>
-                      <span className="text-sm text-white">💼</span>
-                    </div>
-                    
-                    <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-800 rounded-full shadow-lg group-hover:animate-pulse group-hover:scale-110 transition-all duration-300"
-                         style={{
-                           boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-                           background: 'linear-gradient(135deg, #475569 0%, #334155 100%)'
-                         }}></div>
-                    
-                    {/* Additional 3D glow effect */}
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
-                  </div>
-
-                  <div>
-                    <h4 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
-                      {member.name}
-                    </h4>
-                    <p className="text-primary font-medium text-base mb-1">
-                      {member.role}
-                    </p>
-                    <p className="text-muted-foreground text-base">
-                      {member.specialty}
-                    </p>
-                  </div>
-
-                  <div className="bg-muted px-3 py-1 rounded-full inline-block">
-                    <span className="text-sm font-medium text-muted-foreground">
-                      {member.experience}
-                    </span>
+                <div className="relative flex-shrink-0">
+                  <div className="w-32 h-32 rounded-full overflow-hidden bg-white shadow-lg">
+                    <img
+                      src={getImagePath(member.name)}
+                      alt={`${member.name} - Team member at Smart Assign Digital Agency`}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                      onError={(e) => {
+                        // Fallback to DiceBear if local image not found
+                        const target = e.target as HTMLImageElement;
+                        target.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${member.name}&backgroundColor=ffd5dc,b6e3f4,c0aede,d1d4f9,ffdfbf&mood=happy&clothing=shirt&clothingColor=262e33,65c9ff,ff6b6b,4ecdc4,45b7d1&accessoriesProbability=40&facialHairProbability=25&glassesProbability=25&hairColor=0e0e0e,2c1b18,724133,afafaf,ecdcbf,6a4c35,8b4513,a55728,ca8c04,ffdbac,ffd5dc,ecdcbf&skinColor=edb98a,fd9841,fdbcb4,fd9841`;
+                      }}
+                    />
                   </div>
                 </div>
-              </Card>
-            ))}
+                <div className="flex-1">
+                  <h4 className="text-2xl font-semibold text-foreground group-hover:text-primary transition-colors">
+                    {member.name}
+                  </h4>
+                  <p className="text-lg text-primary font-medium">
+                    {member.role}
+                  </p>
+                </div>
+              </div>
+              );
+            })}
+          </div>
+
+          {/* Right Side - Empty for now or can add content later */}
+          <div className="hidden lg:block">
+            {/* Right side content can be added here if needed */}
           </div>
         </div>
 
+        {/* View All Team Button */}
+        <div className="text-center mt-16 md:mt-20 mb-16">
+          <Button 
+            size="lg"
+            className="bg-gradient-primary hover:shadow-lg text-base font-semibold px-8 py-6 rounded-lg transition-all duration-200 hover:scale-[1.02]"
+            onClick={() => window.location.href = '/team'}
+          >
+            View All Team Members
+          </Button>
+        </div>
+
         {/* Company Values */}
-        <div className="bg-gradient-hero p-8 rounded-3xl">
+        <div className="bg-gradient-hero p-8 rounded-3xl mt-16 md:mt-20">
           <h3 className="text-3xl font-semibold text-foreground text-center mb-12">
             Our Core Values
           </h3>
@@ -344,6 +336,7 @@ const Team = () => {
             ))}
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

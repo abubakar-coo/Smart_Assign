@@ -41,6 +41,7 @@ const AnimatedCounter = ({
 
     let startTime: number;
     let animationFrame: number;
+    let rafId: number;
 
     const animate = (currentTime: number) => {
       if (!startTime) startTime = currentTime;
@@ -52,13 +53,17 @@ const AnimatedCounter = ({
       setCount(decimals > 0 ? parseFloat(currentValue.toFixed(decimals)) : Math.floor(currentValue));
 
       if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate);
+        rafId = requestAnimationFrame(animate);
+      } else {
+        setCount(end);
       }
     };
 
-    animationFrame = requestAnimationFrame(animate);
+    rafId = requestAnimationFrame(animate);
 
-    return () => cancelAnimationFrame(animationFrame);
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, [isVisible, end, duration, decimals]);
 
   return (
@@ -70,6 +75,54 @@ const AnimatedCounter = ({
 
 const Testimonials = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
+  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      sectionObserver.observe(sectionRef.current);
+    }
+
+    const cardObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = cardRefs.current.indexOf(entry.target as HTMLDivElement);
+            if (index !== -1) {
+              setVisibleCards((prev) => new Set([...prev, index]));
+            }
+          }
+        });
+      },
+      { threshold: 0.05, rootMargin: "0px" }
+    );
+
+    cardRefs.current.forEach((card) => {
+      if (card) cardObserver.observe(card);
+    });
+
+    return () => {
+      if (sectionRef.current) {
+        sectionObserver.unobserve(sectionRef.current);
+      }
+      cardRefs.current.forEach((card) => {
+        if (card) cardObserver.unobserve(card);
+      });
+    };
+  }, []);
 
   const testimonials = [
     {
@@ -128,12 +181,15 @@ const Testimonials = () => {
     }
   ];
 
+  // Only show first 2 testimonials on home page
+  const homePageTestimonials = testimonials.slice(0, 2);
+
   const nextTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    setCurrentTestimonial((prev) => (prev + 1) % homePageTestimonials.length);
   };
 
   const prevTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    setCurrentTestimonial((prev) => (prev - 1 + homePageTestimonials.length) % homePageTestimonials.length);
   };
 
   const stats = [
@@ -144,8 +200,10 @@ const Testimonials = () => {
   ];
 
   return (
-    <section id="testimonials" className="py-8 bg-gradient-hero">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={sectionRef} id="testimonials" className="py-8 bg-gradient-hero">
+      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-opacity duration-300 delay-100
+        ${isVisible ? 'opacity-100' : 'opacity-0'}
+      `}>
         {/* Header */}
         <div className="text-center mb-8">
           <h2 className="text-5xl font-bold text-foreground mb-4">
@@ -159,8 +217,23 @@ const Testimonials = () => {
 
         {/* Stats Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-          {stats.map((stat, index) => (
-            <Card key={index} className="p-6 text-center shadow-card bg-white/80 backdrop-blur-sm border-0">
+          {stats.map((stat, index) => {
+            const cardVisible = visibleCards.has(index);
+            const animationDelay = index * 100;
+            
+            return (
+            <Card 
+              key={index}
+              ref={(el) => {
+                cardRefs.current[index] = el;
+              }}
+              className={`p-6 text-center shadow-card bg-white/90 border-0 transition-opacity duration-300 hover:shadow-lg
+                ${cardVisible ? 'opacity-100' : 'opacity-0'}
+              `}
+              style={{
+                transitionDelay: `${Math.min(animationDelay, 150)}ms`,
+              }}
+            >
               <div className="text-3xl font-bold text-primary mb-1">
                 {stat.displayValue}
               </div>
@@ -168,12 +241,23 @@ const Testimonials = () => {
                 {stat.label}
               </div>
             </Card>
-          ))}
+            );
+          })}
         </div>
 
         {/* Featured Testimonial */}
         <div className="mb-6">
-          <Card className="p-8 md:p-12 shadow-hover bg-white/90 backdrop-blur-sm border-0 relative overflow-hidden">
+          <Card 
+            ref={(el) => {
+              cardRefs.current[4] = el; // Use index 4 for testimonial card
+            }}
+            className={`p-8 md:p-12 shadow-hover bg-white/95 border-0 relative overflow-hidden transition-opacity duration-300 hover:shadow-xl
+              ${visibleCards.has(4) ? 'opacity-100' : 'opacity-0'}
+            `}
+            style={{
+              transitionDelay: '200ms',
+            }}
+          >
             <div className="absolute top-6 left-6 text-primary/20">
               <Quote className="w-16 h-16" />
             </div>
@@ -188,32 +272,32 @@ const Testimonials = () => {
                   </div>
                   
                   <blockquote className="text-2xl text-foreground leading-relaxed">
-                    "{testimonials[currentTestimonial].text}"
+                    "{homePageTestimonials[currentTestimonial].text}"
                   </blockquote>
                   
                   <div className="bg-muted px-4 py-2 rounded-full inline-block">
                     <span className="text-base font-medium text-muted-foreground">
-                      Service: {testimonials[currentTestimonial].service}
+                      Service: {homePageTestimonials[currentTestimonial].service}
                     </span>
                   </div>
                 </div>
 
-                <div className="text-center lg:text-right space-y-4">
-                  <div className="w-20 h-20 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto lg:ml-auto">
+                <div className="text-center space-y-4">
+                  <div className="w-20 h-20 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto">
                     <span className="text-3xl font-bold text-white">
-                      {testimonials[currentTestimonial].avatar}
+                      {homePageTestimonials[currentTestimonial].avatar}
                     </span>
                   </div>
                   
-                  <div>
+                  <div className="space-y-1">
                     <div className="font-semibold text-foreground text-xl">
-                      {testimonials[currentTestimonial].name}
+                      {homePageTestimonials[currentTestimonial].name}
                     </div>
                     <div className="text-primary font-medium">
-                      {testimonials[currentTestimonial].role}
+                      {homePageTestimonials[currentTestimonial].role}
                     </div>
                     <div className="text-muted-foreground text-base">
-                      {testimonials[currentTestimonial].company}
+                      {homePageTestimonials[currentTestimonial].company}
                     </div>
                   </div>
                 </div>
@@ -231,7 +315,7 @@ const Testimonials = () => {
                 </Button>
                 
                 <div className="flex space-x-2">
-                  {testimonials.map((_, index) => (
+                  {homePageTestimonials.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentTestimonial(index)}
@@ -257,15 +341,15 @@ const Testimonials = () => {
           </Card>
         </div>
 
-        {/* All Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {testimonials.slice(0, 6).map((testimonial, index) => (
+        {/* All Testimonials Grid - Only 2 Testimonials on Home Page */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          {testimonials.slice(0, 2).map((testimonial, index) => (
             <Card 
               key={index} 
-              className={`p-6 shadow-card hover:shadow-hover transition-all duration-300 cursor-pointer border-0 ${
+              className={`p-6 shadow-card hover:shadow-hover transition-all duration-200 cursor-pointer border-0 ${
                 index === currentTestimonial 
                   ? 'bg-white ring-2 ring-primary' 
-                  : 'bg-white/80 backdrop-blur-sm'
+                  : 'bg-white/90'
               }`}
               onClick={() => setCurrentTestimonial(index)}
             >

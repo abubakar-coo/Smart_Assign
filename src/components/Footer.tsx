@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mail, Phone, MapPin, Linkedin, Facebook, MessageSquare, Instagram, CheckCircle, AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { trackSubscribeClick } from "@/lib/analytics";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -12,8 +13,9 @@ const Footer = () => {
 
   const quickLinks = [
     { name: "About Us", href: "/#team" },
-    { name: "Services", href: "/services" },
-    { name: "Portfolio", href: "/portfolio" },
+    { name: "Main Services", href: "/main-services" },
+    { name: "Micro Services", href: "/micro-services" },
+    { name: "Road Map", href: "/roadmap" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -46,7 +48,7 @@ const Footer = () => {
   ];
 
   const contactInfo = [
-    { icon: Mail, text: "admin@smartassign.info", href: "mailto:admin@smartassign.info" },
+    { icon: Mail, text: "smartassignmentofficial@gmail.com", href: "mailto:smartassignmentofficial@gmail.com" },
     { icon: Phone, text: "+92 3098091819", href: "tel:+923098091819" },
     { icon: MapPin, text: "Remote", href: "#" },
   ];
@@ -67,6 +69,7 @@ const Footer = () => {
       return;
     }
 
+    trackSubscribeClick('footer');
     setIsLoading(true);
     setMessage(null);
 
@@ -78,7 +81,7 @@ const Footer = () => {
       submitData.append("_subject", "New Newsletter Subscription");
       submitData.append("_template", "table");
 
-      const response = await fetch("https://formsubmit.co/ajax/abubakararif164@gmail.com", {
+      const response = await fetch("https://formsubmit.co/ajax/abubakararif159@gmail.com", {
         method: "POST",
         body: submitData
       });
@@ -234,18 +237,18 @@ const Footer = () => {
         <div className="border-t border-white/20 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-white/60 text-sm">
-              © {currentYear} Smart Assign. All rights reserved.
+              © {currentYear} <Link to="/" className="hover:text-primary transition-colors"><strong>Smart Assign</strong></Link>. All Rights Reserved.
             </div>
             <div className="flex space-x-6 text-sm">
-              <a href="#" className="text-white/60 hover:text-primary transition-colors">
+              <Link to="/privacy-policy" className="text-white/60 hover:text-primary transition-colors">
                 Privacy Policy
-              </a>
-              <a href="#" className="text-white/60 hover:text-primary transition-colors">
+              </Link>
+              <Link to="/terms-of-service" className="text-white/60 hover:text-primary transition-colors">
                 Terms of Service
-              </a>
-              <a href="#" className="text-white/60 hover:text-primary transition-colors">
+              </Link>
+              <Link to="/cookie-policy" className="text-white/60 hover:text-primary transition-colors">
                 Cookie Policy
-              </a>
+              </Link>
             </div>
           </div>
         </div>

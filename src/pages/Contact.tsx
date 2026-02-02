@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { Mail, Phone, MapPin, Linkedin, Instagram, Facebook, MessageSquare } from "lucide-react";
+import { trackContactUsClick } from "@/lib/analytics";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +24,7 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    trackContactUsClick('contact_page_form');
     setIsSubmitting(true);
 
     try {
@@ -38,7 +41,7 @@ const Contact = () => {
       submitData.append("_template", "table");
 
       // Send to FormSubmit.co
-      const response = await fetch("https://formsubmit.co/ajax/abubakararif164@gmail.com", {
+      const response = await fetch("https://formsubmit.co/ajax/abubakararif159@gmail.com", {
         method: "POST",
         body: submitData
       });
@@ -78,6 +81,13 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Contact Us - Get Professional SEO & Virtual Assistant Services | Smart Assign</title>
+        <meta name="description" content="Contact Smart Assign for SEO content writing, virtual assistant services, and data entry solutions. Zero fee agency with professional consultation. Get in touch today!" />
+        <meta name="keywords" content="contact Smart Assign, SEO content writing contact, virtual assistant services, data entry experts, zero fee agency contact" />
+        <meta property="og:title" content="Contact Us - Get Professional SEO & Virtual Assistant Services | Smart Assign" />
+        <meta property="og:description" content="Contact Smart Assign for SEO content writing, virtual assistant services, and data entry solutions. Zero fee agency with professional consultation." />
+      </Helmet>
       <Navigation />
       {/* Header */}
       <section className="bg-gradient-hero py-20 mt-16">
@@ -201,7 +211,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground">Email</h3>
-                      <p className="text-muted-foreground">admin@smartassign.info</p>
+                      <p className="text-muted-foreground">smartassignmentofficial@gmail.com</p>
                     </div>
                   </div>
                 </Card>

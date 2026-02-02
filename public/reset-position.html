@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Position Number - Smart Assign</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196F3;
+        }
+        .current-data {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button.danger {
+            background: #f44336;
+        }
+        button.danger:hover {
+            background: #da190b;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border: 1px solid #f5c6cb;
+        }
+        .login-form {
+            display: block;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .login-form input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        .login-button {
+            width: 100%;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .login-button:hover {
+            background: #45a049;
+        }
+        .main-content {
+            display: none;
+        }
+        .main-content.authenticated {
+            display: block;
+        }
+        .logout-btn {
+            background: #ff9800;
+            float: right;
+            margin-bottom: 20px;
+        }
+        .logout-btn:hover {
+            background: #f57c00;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div class="container login-form" id="loginForm">
+        <h1>🔐 Admin Login</h1>
+        
+        <div class="info">
+            <strong>⚠️ Restricted Access:</strong><br>
+            This page is protected. Please enter your credentials to continue.
+        </div>
+
+        <form onsubmit="handleLogin(event)">
+            <input type="text" id="username" placeholder="Username" required autocomplete="off">
+            <input type="password" id="password" placeholder="Password" required autocomplete="off">
+            <button type="submit" class="login-button">Login</button>
+        </form>
+
+        <div id="loginMessage"></div>
+    </div>
+
+    <!-- Main Content (Hidden until authenticated) -->
+    <div class="container main-content" id="mainContent">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 style="margin: 0;">🔧 Reset Position Number</h1>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+        
+        <div class="info">
+            <strong>ℹ️ Instructions:</strong><br>
+            This tool resets the position number in the batch tracking system. 
+            The batch number will remain the same, only the position will be reset to 0.
+        </div>
+
+        <div class="current-data" id="currentData">
+            <strong>Current Status:</strong><br>
+            <span id="status">Loading...</span>
+        </div>
+
+        <div>
+            <button onclick="resetPosition()">Reset Position to 0</button>
+            <button class="danger" onclick="resetAll()">Reset Batch & Position (Start Fresh)</button>
+        </div>
+
+        <div id="message"></div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'smart_assign_batch_data';
+        const AUTH_KEY = 'reset_page_authenticated';
+        
+        // Simple password hash (SHA-256 of password)
+        // Default credentials: admin / admin123
+        // To change password, replace the hash below with SHA-256 hash of your new password
+        const CREDENTIALS = {
+            username: 'admin',
+            passwordHash: 'bb3af4f5605a3c1db2e6a5052f189ae74638ae72d80640d0429aea5ecabb7f1d' // SHA-256 of 'Less Than One Unit'
+        };
+
+        // Check if already authenticated
+        function checkAuth() {
+            const isAuthenticated = sessionStorage.getItem(AUTH_KEY) === 'true';
+            if (isAuthenticated) {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('mainContent').classList.add('authenticated');
+                loadCurrentData();
+            }
+        }
+
+        // Simple SHA-256 hash function
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        // Handle login
+        async function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const messageDiv = document.getElementById('loginMessage');
+
+            if (username !== CREDENTIALS.username) {
+                messageDiv.className = 'error';
+                messageDiv.innerHTML = '❌ Invalid username or password';
+                return;
+            }
+
+            const passwordHash = await sha256(password);
+            if (passwordHash !== CREDENTIALS.passwordHash) {
+                messageDiv.className = 'error';
+                messageDiv.innerHTML = '❌ Invalid username or password';
+                return;
+            }
+
+            // Authentication successful
+            sessionStorage.setItem(AUTH_KEY, 'true');
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('mainContent').classList.add('authenticated');
+            loadCurrentData();
+        }
+
+        // Logout
+        function logout() {
+            sessionStorage.removeItem(AUTH_KEY);
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('mainContent').classList.remove('authenticated');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('loginMessage').innerHTML = '';
+        }
+
+        function loadCurrentData() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    document.getElementById('status').innerHTML = 
+                        `Batch: <strong>#${data.batch}</strong><br>Position: <strong>#${data.position}</strong>`;
+                } else {
+                    document.getElementById('status').innerHTML = 
+                        'No data found. Will start with Batch #7, Position 0';
+                }
+            } catch (error) {
+                document.getElementById('status').innerHTML = 
+                    'Error reading data: ' + error.message;
+            }
+        }
+
+        function showMessage(text, isError = false) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.className = isError ? 'error' : 'success';
+            messageDiv.innerHTML = text;
+            setTimeout(() => {
+                messageDiv.innerHTML = '';
+                messageDiv.className = '';
+            }, 5000);
+        }
+
+        function resetPosition() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    const resetData = {
+                        batch: data.batch || 7,
+                        position: 0
+                    };
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(resetData));
+                    showMessage(`✅ Position reset to 0 for Batch #${resetData.batch}`);
+                    loadCurrentData();
+                } else {
+                    const resetData = { batch: 7, position: 0 };
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(resetData));
+                    showMessage('✅ Reset to Batch #7, Position 0');
+                    loadCurrentData();
+                }
+            } catch (error) {
+                showMessage('❌ Error: ' + error.message, true);
+            }
+        }
+
+        function resetAll() {
+            if (confirm('Are you sure you want to reset both batch and position? This will start from Batch #7, Position 0.')) {
+                try {
+                    const resetData = { batch: 7, position: 0 };
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(resetData));
+                    showMessage('✅ Reset complete! Batch #7, Position 0');
+                    loadCurrentData();
+                } catch (error) {
+                    showMessage('❌ Error: ' + error.message, true);
+                }
+            }
+        }
+
+        // Check authentication on page load
+        checkAuth();
+    </script>
+</body>
+</html>
+

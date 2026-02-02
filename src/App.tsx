@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import ScrollToTop from "./components/ScrollToTop";
 
 // Immediate imports for critical pages
@@ -13,12 +14,20 @@ import NotFound from "./pages/NotFound";
 // Lazy load all other pages for code splitting
 const Contact = lazy(() => import("./pages/Contact"));
 const ServicesDetails = lazy(() => import("./pages/ServicesDetails"));
-const Portfolio = lazy(() => import("./pages/Portfolio"));
-const TestimonialsPage = lazy(() => import("./pages/Testimonials"));
+const RoadMap = lazy(() => import("./pages/RoadMap"));
 const TeamPage = lazy(() => import("./pages/Team"));
+const ScheduleConsultation = lazy(() => import("./pages/ScheduleConsultation"));
 const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
 const PortfolioDetail = lazy(() => import("./pages/PortfolioDetail"));
 const Careers = lazy(() => import("./pages/Careers"));
+const CareerThankYou = lazy(() => import("./pages/CareerThankYou"));
+const HowItWorks = lazy(() => import("./pages/HowItWorks"));
+const MainServicesPage = lazy(() => import("./pages/MainServicesPage"));
+const MicroServicesPage = lazy(() => import("./pages/MicroServicesPage"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
+const TeamMemberDetail = lazy(() => import("./pages/TeamMemberDetail"));
 
 // Loading component
 const PageLoader = () => (
@@ -31,32 +40,45 @@ const PageLoader = () => (
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000, // 1 minute
-      gcTime: 5 * 60 * 1000, // 5 minutes (garbage collection time, previously cacheTime)
+      staleTime: 5 * 60 * 1000, // 5 minutes (increased from 1 minute)
+      gcTime: 10 * 60 * 1000, // 10 minutes (increased from 5 minutes)
       refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
       retry: 1,
+      // Network mode for better performance
+      networkMode: 'online',
     },
   },
 });
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <ScrollToTop />
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
+  <HelmetProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <ScrollToTop />
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/services" element={<ServicesDetails />} />
             <Route path="/services/:serviceName" element={<ServiceDetail />} />
-            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/main-services" element={<MainServicesPage />} />
+            <Route path="/micro-services" element={<MicroServicesPage />} />
+            <Route path="/roadmap" element={<RoadMap />} />
             <Route path="/portfolio/:projectId" element={<PortfolioDetail />} />
-            <Route path="/testimonials" element={<TestimonialsPage />} />
             <Route path="/team" element={<TeamPage />} />
+            <Route path="/schedule-consultation" element={<ScheduleConsultation />} />
             <Route path="/careers" element={<Careers />} />
+            <Route path="/careers/thank-you" element={<CareerThankYou />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
+            <Route path="/team/:memberName" element={<TeamMemberDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
@@ -64,6 +86,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
+  </HelmetProvider>
 );
 
 export default App;

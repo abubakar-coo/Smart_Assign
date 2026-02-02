@@ -26,11 +26,15 @@ export default defineConfig(({ mode }) => ({
         manualChunks: (id) => {
           // Vendor chunks
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom')) {
+            // Core React - must be in its own chunk and load first
+            if (id.includes('/react-dom/') || id.includes('/react/')) {
               return 'vendor-react';
             }
-            if (id.includes('react-router')) {
-              return 'vendor-router';
+            // React ecosystem that depends on React context
+            if (id.includes('react-router') || 
+                id.includes('next-themes') || 
+                id.includes('@tanstack')) {
+              return 'vendor-react-ecosystem';
             }
             if (id.includes('lucide-react')) {
               return 'vendor-icons';
@@ -41,11 +45,7 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('@supabase')) {
               return 'vendor-supabase';
             }
-            if (id.includes('@tanstack')) {
-              return 'vendor-query';
-            }
-            // Other node_modules
-            return 'vendor-other';
+            // Other node_modules - no catch-all to avoid issues
           }
         }
       }
@@ -56,6 +56,12 @@ export default defineConfig(({ mode }) => ({
     sourcemap: false,
     // Optimize asset handling
     assetsInlineLimit: 4096,
+    // Target modern browsers for smaller bundles
+    target: 'esnext',
+    // CSS code splitting
+    cssCodeSplit: true,
+    // Report compressed size
+    reportCompressedSize: false,
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
