@@ -170,11 +170,6 @@ const Portfolio = () => {
                 >
                   {/* Service Icon Header */}
                   <div className="h-48 bg-gradient-hero flex items-center justify-center relative overflow-hidden">
-<<<<<<< HEAD
-                    <div className="w-20 h-20 bg-gradient-primary rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
-                      <ServiceIcon className="w-10 h-10 text-white" />
-                    </div>
-=======
                     {service.title === "SEO Content Writing" ? (
                       <div className="w-24 h-24 bg-gradient-primary rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 p-2">
                         <img
@@ -191,7 +186,6 @@ const Portfolio = () => {
                         <ServiceIcon className="w-10 h-10 text-white" />
                       </div>
                     )}
->>>>>>> 8e4a769326a82360bf3768334c3c85e2ef763552
                   </div>
 
                   <div className="p-6 flex-1 flex flex-col">
