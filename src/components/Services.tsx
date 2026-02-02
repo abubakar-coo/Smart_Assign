@@ -235,6 +235,13 @@ const Services = ({ showViewAllCta = true }: ServicesProps) => {
                     </div>
                   )}
                       </div>
+
+                      {/* Pricing Info */}
+                      <div className="mb-4 pt-2 border-t border-muted/20">
+                        <p className="text-xs text-muted-foreground italic text-center">
+                          Pricing discussed after requirements
+                        </p>
+                      </div>
                     </div>
 
               {/* CTA Button - Pushed to bottom with mt-auto */}

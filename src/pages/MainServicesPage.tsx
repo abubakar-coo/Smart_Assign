@@ -10,7 +10,7 @@ const MainServicesPage = () => {
         <title>Main Services | Smart Assign</title>
         <meta
           name="description"
-          content="Explore Smart Assign main services including web development, social media marketing, SEO, content marketing, and more."
+          content="Explore Smart Assign main services including social media marketing, SEO, content marketing, paid advertising, and more."
         />
         <meta property="og:title" content="Main Services | Smart Assign" />
       </Helmet>

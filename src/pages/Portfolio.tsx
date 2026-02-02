@@ -8,7 +8,7 @@ import {
   Search, Database, BookOpen, CheckCircle, 
   Palette, FileText, GraduationCap, FileCheck,
   Presentation, Briefcase, FileEdit, Users,
-  ArrowRight, Sparkles, Clock, DollarSign
+  ArrowRight, Sparkles
 } from "lucide-react";
 
 const Portfolio = () => {
@@ -22,8 +22,6 @@ const Portfolio = () => {
       description: "High-quality, SEO-optimized content that helps websites rank better on search engines. Well-researched, plagiarism-free, and tailored to your target audience.",
       icon: Search,
       services: ["Blog posts", "Website content", "Articles", "Keyword optimization"],
-      pricing: "$10 – $20 per 500 words",
-      deliveryTime: "2-7 days",
       features: ["SEO optimization", "Plagiarism-free", "Keyword research", "Fast delivery"]
     },
     {
@@ -33,8 +31,6 @@ const Portfolio = () => {
       description: "Accurate and fast data entry services for businesses and individuals. We ensure confidentiality, precision, and timely delivery.",
       icon: Database,
       services: ["Excel / Google Sheets", "CRM data entry", "Copy-paste tasks", "PDF to Excel/Word"],
-      pricing: "$30+ per hour",
-      deliveryTime: "1-3 days",
       features: ["99.9% accuracy", "Confidential handling", "Multiple formats", "Quality check"]
     },
     {
@@ -44,8 +40,6 @@ const Portfolio = () => {
       description: "Reliable research support with authentic sources, helping clients save time and make informed decisions.",
       icon: BookOpen,
       services: ["Academic research", "Market research", "Online research", "Data collection"],
-      pricing: "$30+ per hour",
-      deliveryTime: "2-5 days",
       features: ["Credible sources", "Comprehensive reports", "Data analysis", "Source verification"]
     },
     {
@@ -55,8 +49,6 @@ const Portfolio = () => {
       description: "We improve clarity, grammar, and structure while maintaining your original tone and meaning.",
       icon: CheckCircle,
       services: ["Grammar correction", "Sentence improvement", "Academic & business editing"],
-      pricing: "$20+ per 1,000 words",
-      deliveryTime: "1-3 days",
       features: ["Grammar check", "Style consistency", "Track changes", "Professional polish"]
     },
     {
@@ -66,8 +58,6 @@ const Portfolio = () => {
       description: "Eye-catching and professional designs created using Canva for digital and print use.",
       icon: Palette,
       services: ["Social media posts", "Presentations", "Flyers & posters", "CVs & resumes"],
-      pricing: "$15+ per design",
-      deliveryTime: "1-3 days",
       features: ["High-resolution files", "Multiple formats", "Unlimited revisions", "Source file"]
     },
     {
@@ -77,8 +67,6 @@ const Portfolio = () => {
       description: "Clean, professional typing and formatting according to academic or business standards.",
       icon: FileText,
       services: ["PDF to Word", "Formatting documents", "Reports & assignments"],
-      pricing: "$20+ per document (up to 12 pages)",
-      deliveryTime: "1-2 days",
       features: ["Accurate typing", "Professional formatting", "Error-free output", "Format consistency"]
     },
     {
@@ -88,8 +76,6 @@ const Portfolio = () => {
       description: "Custom-written assignments with proper structure, references, and plagiarism-free content.",
       icon: GraduationCap,
       services: ["Essays", "Case studies", "Reports", "Coursework"],
-      pricing: "$10 – $20 per 500 words",
-      deliveryTime: "3-7 days",
       features: ["Plagiarism-free", "Proper references", "Academic structure", "Quality assurance"]
     },
     {
@@ -99,8 +85,6 @@ const Portfolio = () => {
       description: "In-depth literature reviews using credible academic sources, written in a clear and structured manner.",
       icon: FileCheck,
       services: ["Systematic reviews", "Thematic reviews", "APA / Harvard referencing"],
-      pricing: "$30 – $60 (1,500–2,000 words)",
-      deliveryTime: "5-10 days",
       features: ["Academic sources", "Critical analysis", "Proper referencing", "Structured format"]
     },
     {
@@ -110,8 +94,6 @@ const Portfolio = () => {
       description: "Professionally designed PowerPoint or Google Slides presentations that are visually appealing and easy to understand.",
       icon: Presentation,
       services: ["Academic presentations", "Business & pitch decks", "Charts, icons & visuals", "Clean layouts"],
-      pricing: "$20+ per presentation",
-      deliveryTime: "2-5 days",
       features: ["Custom graphics", "Professional layouts", "Visual elements", "Source file"]
     },
     {
@@ -121,8 +103,6 @@ const Portfolio = () => {
       description: "ATS-friendly resumes and persuasive cover letters that help clients stand out in job applications.",
       icon: Briefcase,
       services: ["Modern CV design", "Keyword optimization", "Job-specific cover letters"],
-      pricing: "$15 – $30 per resume",
-      deliveryTime: "2-4 days",
       features: ["ATS-optimized", "Professional formatting", "Keyword optimization", "Job-specific"]
     },
     {
@@ -132,8 +112,6 @@ const Portfolio = () => {
       description: "We format documents according to international academic standards with proper citations and references.",
       icon: FileEdit,
       services: ["In-text citations", "Reference lists", "Proper margins & headings"],
-      pricing: "$5 – $10 per document",
-      deliveryTime: "1-3 days",
       features: ["APA/MLA/Harvard", "Proper citations", "Style guide adherence", "Format consistency"]
     },
     {
@@ -143,8 +121,6 @@ const Portfolio = () => {
       description: "Reliable virtual assistance for small business and professional daily tasks.",
       icon: Users,
       services: ["Email handling", "Data management", "Online research", "Admin support"],
-      pricing: "$10+ per hour",
-      deliveryTime: "1-3 days",
       features: ["Task completion", "Regular updates", "Professional service", "Organized results"]
     }
   ];
@@ -257,17 +233,10 @@ const Portfolio = () => {
 
                     {/* Bottom Section */}
                     <div className="mt-auto pt-4 border-t border-border">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-4 text-sm">
-                          <div className="flex items-center gap-1 text-muted-foreground">
-                            <DollarSign className="w-4 h-4" />
-                            <span className="font-semibold text-foreground">{service.pricing}</span>
-                          </div>
-                          <div className="flex items-center gap-1 text-muted-foreground">
-                            <Clock className="w-4 h-4" />
-                            <span>{service.deliveryTime}</span>
-                          </div>
-                        </div>
+                      <div className="mb-3">
+                        <p className="text-xs text-muted-foreground italic text-center">
+                          Pricing will be discussed after understanding your requirements
+                        </p>
                       </div>
                       <Button 
                         className="w-full bg-gradient-primary hover:shadow-hover"

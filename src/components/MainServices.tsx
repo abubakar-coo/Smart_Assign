@@ -149,13 +149,6 @@ const MainServices = ({ showAll = false }: MainServicesProps) => {
       gradient: "from-primary to-primary-glow",
     },
     {
-      title: "Web Development",
-      description: "Build fast, responsive, and SEO-friendly websites that convert. From landing pages to full e-commerce platforms, we create digital experiences.",
-      features: ["Website design", "Responsive development", "SEO-friendly", "Performance optimization"],
-      color: "text-primary",
-      gradient: "from-primary to-primary-glow",
-    },
-    {
       title: "Growth Marketing",
       description: "Scale your business with data-driven growth strategies. We combine multiple marketing channels to accelerate your growth and maximize results.",
       features: ["Growth strategy", "Multi-channel campaigns", "Experimentation", "Scalable systems"],
@@ -167,10 +160,10 @@ const MainServices = ({ showAll = false }: MainServicesProps) => {
   // Get home page services in specific order
   const getHomePageServices = () => {
     const homePageServiceTitles = [
-      "Web Development",
       "Social Media Marketing (SMM)",
       "Search Engine Optimization (SEO)",
-      "Content Marketing"
+      "Content Marketing",
+      "Paid Advertising (PPC)"
     ];
     
     return homePageServiceTitles
@@ -260,6 +253,13 @@ const MainServices = ({ showAll = false }: MainServicesProps) => {
                           </div>
                         )}
                       </div>
+
+                      {/* Pricing Info */}
+                      <div className="mb-4 pt-3 border-t border-muted/20">
+                        <p className="text-xs text-muted-foreground italic text-center">
+                          Pricing will be discussed after understanding your requirements
+                        </p>
+                      </div>
                     </div>
 
                     {/* CTA Button */}
@@ -327,6 +327,13 @@ const MainServices = ({ showAll = false }: MainServicesProps) => {
                           +{service.features.length - 3} more
                         </div>
                       )}
+                    </div>
+
+                    {/* Pricing Info */}
+                    <div className="mb-4 pt-2 border-t border-muted/20">
+                      <p className="text-xs text-muted-foreground italic text-center">
+                        Pricing discussed after requirements
+                      </p>
                     </div>
                   </div>
 

@@ -8,14 +8,12 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { 
   ArrowLeft, CheckCircle, DollarSign, MapPin, 
   User, Mail, Phone, FileText, Upload, CreditCard,
-  ArrowRight, Clock, Package, FileCheck, Star, AlertCircle
+  ArrowRight, Package, FileCheck, Star, AlertCircle
 } from "lucide-react";
-import { supabase, STORAGE_CONFIG } from "@/lib/supabase";
 import { trackRequestServiceClick } from "@/lib/analytics";
 
 const ServiceDetail = () => {
@@ -53,8 +51,6 @@ const ServiceDetail = () => {
         "Content outline/structure",
         "Revision support"
       ],
-      timeline: "2-7 days",
-      maxDeliveryTime: "7 days",
       pricingRange: { min: 10, max: 60 },
       pricingDetails: "$10 – $20 per 500 words | $30 – $60 per 1,000 words",
       requirements: "Topic, target keywords (optional), word count, tone of voice, any specific requirements"
@@ -92,8 +88,6 @@ const ServiceDetail = () => {
         "Revision support",
         "Data accuracy report"
       ],
-      timeline: "1-3 days",
-      maxDeliveryTime: "3 days",
       pricingRange: { min: 30, max: 100 },
       pricingDetails: "$30+ per hour | $15 – $30 per project (basic) - Hourly rate includes: data entry, formatting, validation, and quality check. For bulk projects, pricing is project-based.",
       requirements: "Source files/documents, target format, data structure requirements, deadline, expected volume"
@@ -132,8 +126,6 @@ const ServiceDetail = () => {
         "Research methodology",
         "Key insights summary"
       ],
-      timeline: "2-5 days",
-      maxDeliveryTime: "5 days",
       pricingRange: { min: 30, max: 150 },
       pricingDetails: "$30+ per hour | $10 – $20 per task - Hourly rate includes: comprehensive research, source verification, data analysis, and formatted report. For specific tasks, pricing is task-based.",
       requirements: "Research topic, scope, preferred sources, report format, deadline, research depth required"
@@ -172,8 +164,6 @@ const ServiceDetail = () => {
         "Editing summary",
         "Before/after comparison"
       ],
-      timeline: "1-3 days",
-      maxDeliveryTime: "3 days",
       pricingRange: { min: 20, max: 100 },
       pricingDetails: "$20+ per 1,000 words | $15 – $25 for detailed editing - Price includes: grammar check, spelling correction, sentence improvement, style consistency, and track changes. Detailed editing includes structural improvements.",
       requirements: "Document to edit, word count, style preference (APA/MLA/etc.), deadline, editing depth required"
@@ -212,8 +202,6 @@ const ServiceDetail = () => {
         "Design variations",
         "Print-ready files"
       ],
-      timeline: "1-3 days",
-      maxDeliveryTime: "3 days",
       pricingRange: { min: 15, max: 100 },
       pricingDetails: "$15+ per design | $25 – $50 for bulk designs - Price includes: professional design, high-resolution files, source file, unlimited revisions (within scope), and multiple format delivery. Bulk orders get discounted rates.",
       requirements: "Design type, content/text, images/brand assets, color preferences, dimensions, deadline, number of designs needed"
@@ -251,8 +239,6 @@ const ServiceDetail = () => {
         "Formatted PDF version",
         "Formatting checklist"
       ],
-      timeline: "1-2 days",
-      maxDeliveryTime: "2 days",
       pricingRange: { min: 20, max: 100 },
       pricingDetails: "$20+ per document (up to 12 pages) | $10 – $20 for complex formatting - Price includes: accurate typing, professional formatting, proper structure, error-free output, and format consistency. For documents over 12 pages, additional charges apply.",
       requirements: "Source document, target format, formatting style, page count, deadline, specific formatting requirements"
@@ -285,8 +271,6 @@ const ServiceDetail = () => {
         "Citation format (APA/MLA/Harvard)",
         "Revision support"
       ],
-      timeline: "3-7 days",
-      maxDeliveryTime: "7 days",
       pricingRange: { min: 10, max: 80 },
       pricingDetails: "$10 – $20 per 500 words | $40 – $80 for full assignments",
       requirements: "Assignment topic, word count, academic level, citation style, deadline, instructions"
@@ -319,8 +303,6 @@ const ServiceDetail = () => {
         "Research summary",
         "Revision support"
       ],
-      timeline: "5-10 days",
-      maxDeliveryTime: "10 days",
       pricingRange: { min: 30, max: 150 },
       pricingDetails: "$30 – $60 (1,500–2,000 words) | $80 – $150 for advanced research",
       requirements: "Research topic, word count, citation style, scope, sources preference, deadline"
@@ -359,8 +341,6 @@ const ServiceDetail = () => {
         "Multiple format options",
         "Design guide"
       ],
-      timeline: "2-5 days",
-      maxDeliveryTime: "5 days",
       pricingRange: { min: 20, max: 200 },
       pricingDetails: "$20+ per presentation | $25 – $50 for bulk designs - Price includes: professional slide design, custom graphics, clean layouts, visual elements, source file, and unlimited revisions (within scope). Price varies based on number of slides.",
       requirements: "Number of slides, content/text, design style, brand colors, charts/data, deadline, animation requirements"
@@ -393,8 +373,6 @@ const ServiceDetail = () => {
         "Design template",
         "Revision support"
       ],
-      timeline: "2-4 days",
-      maxDeliveryTime: "4 days",
       pricingRange: { min: 15, max: 30 },
       pricingDetails: "$15 – $30 per resume | $10 – $20 per cover letter",
       requirements: "Job description, work experience, skills, education, target industry, deadline"
@@ -427,8 +405,6 @@ const ServiceDetail = () => {
         "Original file backup",
         "Revision support"
         ],
-        timeline: "1-3 days",
-      maxDeliveryTime: "3 days",
       pricingRange: { min: 5, max: 25 },
       pricingDetails: "$5 – $10 per document | $15 – $25 for complex formatting",
       requirements: "Document to format, citation style (APA/MLA/Harvard), page count, deadline"
@@ -466,8 +442,6 @@ const ServiceDetail = () => {
         "Task documentation",
         "Follow-up support"
       ],
-      timeline: "1-3 days",
-      maxDeliveryTime: "3 days",
       pricingRange: { min: 10, max: 50 },
       pricingDetails: "$10+ per hour | $15 – $30 per project - Hourly rate includes: task completion, regular updates, professional service, and organized deliverables. For specific projects, pricing is project-based.",
       requirements: "Task description, scope, deadline, access/permissions needed, expected hours, priority level"
@@ -477,159 +451,20 @@ const ServiceDetail = () => {
   // Find current service
   const currentService = allServices.find(s => s.slug === serviceName) || allServices[0];
 
-  // Countries
-  const countries = [
-    { name: "Pakistan", currency: "PKR", flag: "🇵🇰" },
-    { name: "United States", currency: "USD", flag: "🇺🇸" },
-    { name: "United Kingdom", currency: "USD", flag: "🇬🇧" },
-    { name: "Canada", currency: "USD", flag: "🇨🇦" },
-    { name: "Australia", currency: "USD", flag: "🇦🇺" },
-    { name: "Germany", currency: "USD", flag: "🇩🇪" },
-    { name: "UAE", currency: "USD", flag: "🇦🇪" },
-    { name: "Saudi Arabia", currency: "USD", flag: "🇸🇦" },
-    { name: "India", currency: "USD", flag: "🇮🇳" },
-    { name: "Other", currency: "USD", flag: "🌍" }
-  ];
-
-  // Payment accounts
-  const companyBankAccounts = [
-    { bankName: "JazzCash", accountTitle: "Sheikh Muhammad Abubakar", accountNumber: "03278528854" },
-    { bankName: "Easypaisa", accountTitle: "Sheikh Muhammad Abubakar", accountNumber: "03278528854" },
-    { bankName: "Meezan Bank", accountTitle: "Sheikh Muhammad Abubakar", accountNumber: "04370110432421" }
-  ];
-
-  const companyCryptoWallets = [
-    { network: "TRC20", coin: "USDT", address: "TUPF6NxuG7NrpixvA7YBexj33u8Y9XYwjp" }
-  ];
 
   // Form state
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    country: "",
-    projectDetails: "",
     requirements: "",
-    budget: "",
     deadline: ""
   });
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null);
-  const [paymentInputKey, setPaymentInputKey] = useState(0);
-  const [projectFiles, setProjectFiles] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [budgetError, setBudgetError] = useState<string>("");
-  const [countryError, setCountryError] = useState<string>("");
-
-  const isPakistan = formData.country === "Pakistan";
-
-  // Budget limits
-  const BUDGET_LIMITS = {
-    USD: { min: 20, max: 5000 },
-    PKR: { min: 3000, max: 1500000 }
-  };
-
-  const currentLimits = isPakistan ? BUDGET_LIMITS.PKR : BUDGET_LIMITS.USD;
-
-  // Validate budget amount
-  const validateBudget = (amount: string) => {
-    if (!amount) {
-      setBudgetError("");
-      return true;
-    }
-    const budget = parseFloat(amount);
-    if (isNaN(budget)) {
-      setBudgetError("Please enter a valid number");
-      return false;
-    }
-    if (budget < currentLimits.min) {
-      setBudgetError(`Minimum amount is ${isPakistan ? 'Rs' : '$'}${currentLimits.min.toLocaleString()}`);
-      return false;
-    }
-    // No error if exceeds max - will be clamped in handleInputChange
-    setBudgetError("");
-    return true;
-  };
-
-  // Calculate 50% payment
-  const calculatePayment = () => {
-    if (!formData.budget) return 0;
-    const budget = parseFloat(formData.budget);
-    if (isNaN(budget)) return 0;
-    return budget * 0.5;
-  };
-
-  const paymentAmount = calculatePayment();
-
-  // File upload helper
-  const uploadFileToStorage = async (file: File, folder: string) => {
-    const filePath = `${STORAGE_CONFIG.folder}/${folder}/${Date.now()}_${file.name}`;
-    const { data, error } = await supabase.storage
-      .from(STORAGE_CONFIG.bucket)
-      .upload(filePath, file, {
-        cacheControl: '3600',
-        upsert: false
-      });
-
-    if (error) {
-      console.error(`Error uploading ${folder} file:`, error);
-      return null;
-    }
-    
-    const { data: publicUrlData } = supabase.storage
-      .from(STORAGE_CONFIG.bucket)
-      .getPublicUrl(filePath);
-
-    return publicUrlData.publicUrl;
-  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    
-    // For budget field, clamp to max if exceeds
-    if (name === "budget") {
-      const budget = parseFloat(value);
-      if (!isNaN(budget) && budget > currentLimits.max) {
-        // Clamp to maximum value
-        setFormData(prev => ({ ...prev, [name]: currentLimits.max.toString() }));
-        validateBudget(currentLimits.max.toString());
-      } else {
-        setFormData(prev => ({ ...prev, [name]: value }));
-        validateBudget(value);
-      }
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
-    }
-  };
-
-  const handleCountryChange = (country: string) => {
-    setSelectedCountry(country);
-    // Reset payment-related fields whenever country changes so stale payment doesn't remain
-    setFormData(prev => ({ ...prev, country, budget: "" }));
-    setPaymentScreenshot(null);
-    setBudgetError("");
-    setPaymentInputKey((k) => k + 1);
-    // Clear country error when country is selected
-    if (country) {
-      setCountryError("");
-    }
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setPaymentScreenshot(e.target.files[0]);
-    }
-  };
-
-  const handleProjectFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const filesArray = Array.from(e.target.files);
-      setProjectFiles(prev => [...prev, ...filesArray]);
-    }
-  };
-
-  const removeProjectFile = (index: number) => {
-    setProjectFiles(prev => prev.filter((_, i) => i !== index));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -637,48 +472,10 @@ const ServiceDetail = () => {
     
     // Track form submission
     trackRequestServiceClick('service_detail_form_submit', currentService.title);
-    
-    // Validate country selection
-    if (!formData.country || formData.country.trim() === "") {
-      setCountryError("Please select your country");
-      toast({
-        title: "Country Required",
-        description: "Please select your country to proceed.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    // Validate budget before submission
-    if (!validateBudget(formData.budget)) {
-      toast({
-        title: "Invalid Budget Amount",
-        description: budgetError,
-        variant: "destructive",
-      });
-      return;
-    }
 
     setIsSubmitting(true);
 
     try {
-      // Upload payment screenshot
-      let screenshotUrl = "Not uploaded";
-      if (paymentScreenshot) {
-        const url = await uploadFileToStorage(paymentScreenshot, "service-payments");
-        screenshotUrl = url || "Upload failed";
-      }
-
-      // Upload project files
-      let projectFileUrls: string[] = [];
-      if (projectFiles.length > 0) {
-        const uploadPromises = projectFiles.map(file => 
-          uploadFileToStorage(file, "project-files")
-        );
-        const urls = await Promise.all(uploadPromises);
-        projectFileUrls = urls.filter((url): url is string => url !== null);
-      }
-
       // Prepare form data for FormSubmit.co
       const submitData = new FormData();
       submitData.append("Service Name", currentService.title);
@@ -686,22 +483,8 @@ const ServiceDetail = () => {
       submitData.append("Client Name", formData.name);
       submitData.append("Email", formData.email);
       submitData.append("Phone", formData.phone);
-      submitData.append("Country", formData.country);
-      submitData.append("Project Details", formData.projectDetails);
       submitData.append("Requirements", formData.requirements);
-      submitData.append("Budget", `${isPakistan ? 'Rs' : '$'}${formData.budget}`);
-      submitData.append("50% Advance Payment", `${isPakistan ? 'Rs' : '$'}${paymentAmount.toFixed(2)}`);
-      submitData.append("Deadline", formData.deadline);
-      
-      // Project files
-      if (projectFileUrls.length > 0) {
-        submitData.append("Project Files", projectFileUrls.join("\n"));
-        submitData.append("Number of Files", projectFileUrls.length.toString());
-      } else {
-        submitData.append("Project Files", "No files uploaded");
-      }
-      
-      submitData.append("Payment Screenshot Link", screenshotUrl);
+      submitData.append("Deadline", formData.deadline || "Not specified");
       submitData.append("Submitted At", new Date().toLocaleString());
       submitData.append("_subject", `Service Request: ${currentService.title} - ${formData.name}`);
       submitData.append("_template", "table");
@@ -714,24 +497,16 @@ const ServiceDetail = () => {
       if (response.ok) {
         toast({
           title: "Request Submitted Successfully!",
-          description: "We'll review your requirements and contact you soon.",
+          description: "We've received your request! Our team will contact you soon to discuss your project details and pricing.",
         });
         // Reset form
         setFormData({
           name: "",
           email: "",
           phone: "",
-          country: "",
-          projectDetails: "",
           requirements: "",
-          budget: "",
           deadline: ""
         });
-        setSelectedCountry("");
-        setPaymentScreenshot(null);
-        setProjectFiles([]);
-        setCountryError("");
-        setBudgetError("");
       } else {
         toast({
           title: "Error",
@@ -859,33 +634,11 @@ const ServiceDetail = () => {
                 <div className="space-y-6">
                       <div>
                     <h3 className="text-xl font-bold text-foreground mb-2">Pricing</h3>
-                    <p className="text-2xl font-bold text-primary">
-                      {isPakistan ? 'Rs' : '$'}{currentService.pricingRange.min} - {isPakistan ? 'Rs' : '$'}{currentService.pricingRange.max}
-                    </p>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      {currentService.pricingDetails}
+                    <p className="text-base text-muted-foreground mt-2 italic">
+                      We'll discuss pricing after understanding your specific requirements and project scope. Contact us to get a customized quote.
                     </p>
                       </div>
 
-                  <div className="border-t pt-4">
-                    <div className="flex items-center gap-3 mb-4">
-                      <Clock className="w-5 h-5 text-primary" />
-                      <div>
-                        <div className="font-semibold text-foreground">Delivery Time</div>
-                        <div className="text-sm text-muted-foreground">{currentService.timeline}</div>
-                    </div>
-                    </div>
-                  </div>
-
-                  <div className="border-t pt-4">
-                    <div className="flex items-center gap-3 mb-4">
-                      <FileCheck className="w-5 h-5 text-primary" />
-                      <div>
-                        <div className="font-semibold text-foreground">Max Delivery</div>
-                        <div className="text-sm text-muted-foreground">{currentService.maxDeliveryTime}</div>
-                      </div>
-                    </div>
-                  </div>
 
                   <Button
                     onClick={() => {
@@ -911,7 +664,7 @@ const ServiceDetail = () => {
               <Card className="p-8 shadow-card border-0">
             <h2 className="text-3xl font-bold text-foreground mb-6">Request This Service</h2>
             <p className="text-muted-foreground mb-8">
-              Fill out the form below with your project requirements. We'll review and get back to you within 24 hours.
+              Fill out the form below with your requirements and deadline. Our team will review your request and contact you soon to discuss pricing and project details.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -932,7 +685,7 @@ const ServiceDetail = () => {
                       required
                       placeholder="Your full name"
                     />
-                    </div>
+                  </div>
                   <div>
                     <Label htmlFor="email">Email *</Label>
                     <Input
@@ -957,225 +710,51 @@ const ServiceDetail = () => {
                       placeholder="+92 300 1234567"
                     />
                   </div>
-                  <div>
-                    <Label className="flex items-center gap-2"><MapPin className="w-4 h-4" /> Country *</Label>
-                    <Select onValueChange={handleCountryChange} value={formData.country} required>
-                      <SelectTrigger className={countryError ? "border-red-500" : ""}>
-                        <SelectValue placeholder="Select your country" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {countries.map((c) => (
-                          <SelectItem key={c.name} value={c.name}>
-                            <span className="text-lg mr-2">{c.flag}</span> {c.name} ({c.currency})
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {countryError && (
-                      <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {countryError}
-                      </p>
-                    )}
                 </div>
-                </div>
-            </div>
+              </div>
 
-              {/* Project Details */}
+              {/* Project Requirements */}
               <div>
                 <h3 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
                   <FileText className="w-5 h-5 text-primary" />
-                  Project Details
+                  Project Requirements
                 </h3>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="projectDetails">Project Description *</Label>
-                    <Textarea
-                      id="projectDetails"
-                      name="projectDetails"
-                      value={formData.projectDetails}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="Tell us about your project..."
-                      className="min-h-[100px]"
-                    />
-                </div>
-                  <div>
-                    <Label htmlFor="requirements">Specific Requirements *</Label>
+                    <Label htmlFor="requirements">Requirements & Details *</Label>
                     <Textarea
                       id="requirements"
                       name="requirements"
                       value={formData.requirements}
                       onChange={handleInputChange}
                       required
-                      placeholder="What specific requirements do you have? (e.g., word count, pages, format, style)..."
-                      className="min-h-[100px]"
+                      placeholder="Please describe your project requirements, what you need, and any specific details (e.g., word count, pages, format, style, etc.)..."
+                      className="min-h-[120px]"
                     />
                   </div>
-                  
-                  {/* Project Files Upload */}
                   <div>
-                    <Label htmlFor="projectFiles">
-                      <Upload className="w-4 h-4 inline mr-2" />
-                      Upload Project Files (Optional)
-                    </Label>
-                    <p className="text-xs text-muted-foreground mb-2">
-                      Upload any documents, images, or reference files related to your project
-                    </p>
+                    <Label htmlFor="deadline">Your Deadline (Optional)</Label>
                     <Input
-                      id="projectFiles"
-                      type="file"
-                      multiple
-                      onChange={handleProjectFilesChange}
-                      className="cursor-pointer"
-                      accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.zip,.rar"
+                      id="deadline"
+                      name="deadline"
+                      type="date"
+                      value={formData.deadline}
+                      onChange={handleInputChange}
+                      min={new Date().toISOString().split('T')[0]}
                     />
-                    {projectFiles.length > 0 && (
-                      <div className="mt-4 space-y-2">
-                        <p className="text-sm font-medium text-foreground">Selected Files:</p>
-                        {projectFiles.map((file, index) => (
-                          <div key={index} className="flex items-center justify-between p-2 bg-muted rounded-md">
-                            <div className="flex items-center gap-2 flex-1 min-w-0">
-                              <FileText className="w-4 h-4 text-primary flex-shrink-0" />
-                              <span className="text-sm text-muted-foreground truncate" title={file.name}>
-                                {file.name}
-                              </span>
-                              <span className="text-xs text-muted-foreground flex-shrink-0">
-                                ({(file.size / 1024).toFixed(2)} KB)
-                              </span>
-                            </div>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => removeProjectFile(index)}
-                              className="ml-2 h-8 w-8 p-0"
-                            >
-                              ×
-                            </Button>
-                    </div>
-                  ))}
-                </div>
-                    )}
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="budget">
-                        Estimated Budget ({isPakistan ? 'PKR' : 'USD'}) *
-                      </Label>
-                      <Input
-                        id="budget"
-                        name="budget"
-                        type="number"
-                        value={formData.budget}
-                        onChange={handleInputChange}
-                        required
-                        placeholder={`Enter amount (min ${isPakistan ? 'Rs' : '$'}${currentLimits.min.toLocaleString()})`}
-                        min={currentLimits.min}
-                        step="0.01"
-                        className={budgetError ? "border-red-500" : ""}
-                      />
-                      {budgetError && (
-                        <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
-                          <AlertCircle className="w-4 h-4" />
-                          {budgetError}
-                        </p>
-                      )}
-                    </div>
-                <div>
-                      <Label htmlFor="deadline">Deadline</Label>
-                      <Input
-                        id="deadline"
-                        name="deadline"
-                        type="date"
-                        value={formData.deadline}
-                        onChange={handleInputChange}
-                      />
-                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      When do you need this completed? We'll work with you to meet your deadline.
+                    </p>
                   </div>
                 </div>
               </div>
 
-              {/* Payment Section */}
-              {formData.budget && (
-                <div>
-                  <h3 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
-                    <CreditCard className="w-5 h-5 text-primary" />
-                    Payment (50% Advance)
-                  </h3>
-                  <Card className="p-6 bg-green-50 border-green-200">
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground">Total Budget:</span>
-                        <span className="font-bold text-foreground">
-                          {isPakistan ? 'Rs' : '$'}{parseFloat(formData.budget || '0').toLocaleString()}
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center border-t pt-4">
-                        <span className="text-lg font-semibold text-foreground">50% Advance Payment:</span>
-                        <span className="text-2xl font-bold text-green-600">
-                          {isPakistan ? 'Rs' : '$'}{paymentAmount.toFixed(2)}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        Please send the advance payment and upload the screenshot below.
-                      </p>
-                </div>
-              </Card>
-
-                  {/* Payment Methods */}
-                  <div className="mt-6 space-y-4">
-                    {isPakistan ? (
-                      <div>
-                        <Label className="mb-3 block">Payment Methods (Pakistan):</Label>
-                        <div className="space-y-3">
-                          {companyBankAccounts.map((account, idx) => (
-                            <Card key={idx} className="p-4">
-                              <div className="font-semibold">{account.bankName}</div>
-                              <div className="text-sm text-muted-foreground">Account: {account.accountNumber}</div>
-                              <div className="text-sm text-muted-foreground">Name: {account.accountTitle}</div>
-                            </Card>
-                          ))}
-            </div>
-          </div>
-                    ) : (
-                      <div>
-                        <Label className="mb-3 block">Payment Methods (International - Crypto):</Label>
-                        <div className="space-y-3">
-                          {companyCryptoWallets.map((wallet, idx) => (
-                            <Card key={idx} className="p-4">
-                              <div className="font-semibold">{wallet.network} {wallet.coin}</div>
-                              <div className="text-sm text-muted-foreground break-all">{wallet.address}</div>
-                            </Card>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Payment Screenshot Upload */}
-                  <div className="mt-6">
-                    <Label htmlFor="paymentScreenshot">Payment Screenshot *</Label>
-                    <div className="mt-2">
-                      <Input
-                        id="paymentScreenshot"
-                        key={paymentInputKey}
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        required
-                        className="cursor-pointer"
-                      />
-                      {paymentScreenshot && (
-                        <p className="text-sm text-muted-foreground mt-2">
-                          Selected: {paymentScreenshot.name}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
+              {/* Info Message */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p className="text-sm text-blue-900">
+                  <strong>Note:</strong> After submitting your request, our team will contact you within 24 hours to discuss pricing and finalize the project details.
+                </p>
+              </div>
 
               {/* Submit Button */}
               <Button
