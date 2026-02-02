@@ -464,14 +464,100 @@ const ServiceDetail = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+<<<<<<< HEAD
     setFormData(prev => ({ ...prev, [name]: value }));
+=======
+    
+    // For budget field, clamp to max if exceeds
+    if (name === "budget") {
+      const budget = parseFloat(value);
+      if (!isNaN(budget) && budget > currentLimits.max) {
+        // Clamp to maximum value
+        setFormData(prev => ({ ...prev, [name]: currentLimits.max.toString() }));
+        validateBudget(currentLimits.max.toString());
+      } else {
+        setFormData(prev => ({ ...prev, [name]: value }));
+        validateBudget(value);
+      }
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleCountryChange = (country: string) => {
+    setSelectedCountry(country);
+<<<<<<< HEAD
+    setFormData(prev => ({ ...prev, country }));
+    // Clear country error when country is selected
+    if (country) {
+      setCountryError("");
+    }
+    // Re-validate budget when country changes (different limits)
+    if (formData.budget) {
+      validateBudget(formData.budget);
+=======
+    // Reset payment-related fields whenever country changes so stale payment doesn't remain
+    setFormData(prev => ({ ...prev, country, budget: "" }));
+    setPaymentScreenshot(null);
+    setBudgetError("");
+    setPaymentInputKey((k) => k + 1);
+    // Clear country error when country is selected
+    if (country) {
+      setCountryError("");
+>>>>>>> 8e4a769326a82360bf3768334c3c85e2ef763552
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setPaymentScreenshot(e.target.files[0]);
+    }
+  };
+
+  const handleProjectFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const filesArray = Array.from(e.target.files);
+      setProjectFiles(prev => [...prev, ...filesArray]);
+    }
+  };
+
+  const removeProjectFile = (index: number) => {
+    setProjectFiles(prev => prev.filter((_, i) => i !== index));
+>>>>>>> fce0c89cab2746d1549a277947fb92fe36bda0f7
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+<<<<<<< HEAD
+=======
     // Track form submission
     trackRequestServiceClick('service_detail_form_submit', currentService.title);
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 8e4a769326a82360bf3768334c3c85e2ef763552
+    // Validate country selection
+    if (!formData.country || formData.country.trim() === "") {
+      setCountryError("Please select your country");
+      toast({
+        title: "Country Required",
+        description: "Please select your country to proceed.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Validate budget before submission
+    if (!validateBudget(formData.budget)) {
+      toast({
+        title: "Invalid Budget Amount",
+        description: budgetError,
+        variant: "destructive",
+      });
+      return;
+    }
+>>>>>>> fce0c89cab2746d1549a277947fb92fe36bda0f7
 
     setIsSubmitting(true);
 
@@ -710,8 +796,39 @@ const ServiceDetail = () => {
                       placeholder="+92 300 1234567"
                     />
                   </div>
+<<<<<<< HEAD
                 </div>
               </div>
+=======
+                  <div>
+                    <Label className="flex items-center gap-2"><MapPin className="w-4 h-4" /> Country *</Label>
+                    <Select onValueChange={handleCountryChange} value={formData.country} required>
+                      <SelectTrigger className={countryError ? "border-red-500" : ""}>
+                        <SelectValue placeholder="Select your country" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {countries.map((c) => (
+                          <SelectItem key={c.name} value={c.name}>
+                            <span className="text-lg mr-2">{c.flag}</span> {c.name} ({c.currency})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {countryError && (
+                      <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {countryError}
+                      </p>
+                    )}
+<<<<<<< HEAD
+                  </div>
+                </div>
+=======
+                </div>
+                </div>
+>>>>>>> 8e4a769326a82360bf3768334c3c85e2ef763552
+            </div>
+>>>>>>> fce0c89cab2746d1549a277947fb92fe36bda0f7
 
               {/* Project Requirements */}
               <div>
