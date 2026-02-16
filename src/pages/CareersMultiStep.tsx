@@ -1018,7 +1018,7 @@ const CareersMultiStep = () => {
                               className="mt-2 w-full px-3 py-2 border border-input bg-background rounded-md"
                             >
                               <option value="">Select Coin</option>
-                              <option value="abubakararif159@gmail.com">abubakararif159@gmail.com</option>
+                              <option value="smartassign01@gmail.com">smartassign01@gmail.com</option>
                               <option value="SOL">SOL (Solana)</option>
                               <option value="BNB">BNB (Binance Coin)</option>
                             </select>

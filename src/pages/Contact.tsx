@@ -41,7 +41,7 @@ const Contact = () => {
       submitData.append("_template", "table");
 
       // Send to FormSubmit.co
-      const response = await fetch("https://formsubmit.co/ajax/abubakararif159@gmail.com", {
+      const response = await fetch("https://formsubmit.co/ajax/smartassign01@gmail.com", {
         method: "POST",
         body: submitData
       });
@@ -211,7 +211,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground">Email</h3>
-                      <p className="text-muted-foreground">smartassignmentofficial@gmail.com</p>
+                      <p className="text-muted-foreground">smartassign01@gmail.com</p>
                     </div>
                   </div>
                 </Card>

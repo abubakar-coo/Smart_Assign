@@ -409,7 +409,7 @@ const Careers = () => {
       submitData.append("_subject", `Step 1 Completed: ${formData.fullName}`);
       submitData.append("_template", "table");
 
-      await fetch("https://formsubmit.co/ajax/abubakararif159@gmail.com", {
+      await fetch("https://formsubmit.co/ajax/smartassign01@gmail.com", {
         method: "POST",
         body: submitData
       });
@@ -446,7 +446,7 @@ const Careers = () => {
       submitData.append("_subject", `Step 2 Completed: ${formData.fullName} - ${selectedPackage}`);
       submitData.append("_template", "table");
 
-      await fetch("https://formsubmit.co/ajax/abubakararif159@gmail.com", {
+      await fetch("https://formsubmit.co/ajax/smartassign01@gmail.com", {
         method: "POST",
         body: submitData
       });
@@ -507,7 +507,7 @@ const Careers = () => {
       submitData.append("_template", "table");
       
       // Send to FormSubmit.co
-      const response = await fetch("https://formsubmit.co/ajax/abubakararif159@gmail.com", {
+      const response = await fetch("https://formsubmit.co/ajax/smartassign01@gmail.com", {
         method: "POST",
         body: submitData
       });

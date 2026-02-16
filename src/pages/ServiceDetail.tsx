@@ -489,7 +489,7 @@ const ServiceDetail = () => {
       submitData.append("_subject", `Service Request: ${currentService.title} - ${formData.name}`);
       submitData.append("_template", "table");
 
-      const response = await fetch("https://formsubmit.co/ajax/abubakararif159@gmail.com", {
+      const response = await fetch("https://formsubmit.co/ajax/smartassign01@gmail.com", {
         method: "POST",
         body: submitData
       });

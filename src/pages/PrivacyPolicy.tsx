@@ -196,7 +196,7 @@ const PrivacyPolicy = () => {
                 </p>
                 <div className="bg-gradient-hero p-6 rounded-lg">
                   <p className="text-foreground font-semibold mb-2">Smart Assign</p>
-                  <p className="text-muted-foreground mb-1">Email: <a href="mailto:smartassignmentofficial@gmail.com" className="text-primary hover:underline">smartassignmentofficial@gmail.com</a></p>
+                  <p className="text-muted-foreground mb-1">Email: <a href="mailto:smartassign01@gmail.com" className="text-primary hover:underline">smartassign01@gmail.com</a></p>
                   <p className="text-muted-foreground mb-1">Phone: <a href="tel:+923098091819" className="text-primary hover:underline">+92 3098091819</a></p>
                   <p className="text-muted-foreground">Website: <a href="/contact" className="text-primary hover:underline">Contact Page</a></p>
                 </div>

@@ -48,7 +48,7 @@ const Footer = () => {
   ];
 
   const contactInfo = [
-    { icon: Mail, text: "smartassignmentofficial@gmail.com", href: "mailto:smartassignmentofficial@gmail.com" },
+    { icon: Mail, text: "smartassign01@gmail.com", href: "mailto:smartassign01@gmail.com" },
     { icon: Phone, text: "+92 3098091819", href: "tel:+923098091819" },
     { icon: MapPin, text: "Remote", href: "#" },
   ];
@@ -81,7 +81,7 @@ const Footer = () => {
       submitData.append("_subject", "New Newsletter Subscription");
       submitData.append("_template", "table");
 
-      const response = await fetch("https://formsubmit.co/ajax/abubakararif159@gmail.com", {
+      const response = await fetch("https://formsubmit.co/ajax/smartassign01@gmail.com", {
         method: "POST",
         body: submitData
       });

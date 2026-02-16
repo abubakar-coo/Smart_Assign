@@ -56,7 +56,7 @@ const allTeamMembers = {
     ],
     experience: "10+ years",
     location: "Remote",
-    email: "smartassignmentofficial@gmail.com",
+    email: "smartassign01@gmail.com",
     linkedin: "#",
     specialties: [
       "Digital Transformation",
@@ -85,7 +85,7 @@ const allTeamMembers = {
     ],
     experience: "8+ years",
     location: "Remote",
-    email: "smartassignmentofficial@gmail.com",
+    email: "smartassign01@gmail.com",
     linkedin: "#",
     specialties: [
       "Operations Management",
@@ -114,7 +114,7 @@ const allTeamMembers = {
     ],
     experience: "2+ years",
     location: "Remote",
-    email: "smartassignmentofficial@gmail.com",
+    email: "smartassign01@gmail.com",
     linkedin: "#",
     specialties: [
       "Project Management",
@@ -143,7 +143,7 @@ const allTeamMembers = {
     ],
     experience: "6+ years",
     location: "Remote",
-    email: "smartassignmentofficial@gmail.com",
+    email: "smartassign01@gmail.com",
     linkedin: "#",
     specialties: [
       "UI/UX Design",
@@ -172,7 +172,7 @@ const allTeamMembers = {
     ],
     experience: "9+ years",
     location: "Remote",
-    email: "smartassignmentofficial@gmail.com",
+    email: "smartassign01@gmail.com",
     linkedin: "#",
     specialties: [
       "Project Management",
@@ -201,7 +201,7 @@ const allTeamMembers = {
     ],
     experience: "5+ years",
     location: "Remote",
-    email: "smartassignmentofficial@gmail.com",
+    email: "smartassign01@gmail.com",
     linkedin: "#",
     specialties: [
       "Content Strategy",
@@ -230,7 +230,7 @@ const allTeamMembers = {
     ],
     experience: "8+ years",
     location: "Remote",
-    email: "smartassignmentofficial@gmail.com",
+    email: "smartassign01@gmail.com",
     linkedin: "#",
     specialties: [
       "Market Research",
@@ -259,7 +259,7 @@ const allTeamMembers = {
     ],
     experience: "10+ years",
     location: "Remote",
-    email: "smartassignmentofficial@gmail.com",
+    email: "smartassign01@gmail.com",
     linkedin: "#",
     specialties: [
       "Talent Acquisition",
@@ -288,7 +288,7 @@ const allTeamMembers = {
     ],
     experience: "7+ years",
     location: "Remote",
-    email: "smartassignmentofficial@gmail.com",
+    email: "smartassign01@gmail.com",
     linkedin: "#",
     specialties: [
       "Web Development",
@@ -317,7 +317,7 @@ const allTeamMembers = {
     ],
     experience: "4+ years",
     location: "Remote",
-    email: "smartassignmentofficial@gmail.com",
+    email: "smartassign01@gmail.com",
     linkedin: "#",
     specialties: [
       "AI & Machine Learning",
